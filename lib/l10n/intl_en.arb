@@ -1,0 +1,8 @@
+{
+    "enter_your_phone_number":"Enter Your Phone Number",
+    "phone_number":"Phone Number",
+    "next":"Next",
+    "continue_to_get_confirmation_code":"Continue to get Confirmation code to your number",
+    "please_enter_a_correct_phone_number":"Please enter correct 10 digits of mobile number",
+    "otp_cant_be_less_than_six_characters":"OTP can't be less than 6 characters",
+}
