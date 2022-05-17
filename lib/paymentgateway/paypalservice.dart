@@ -9,8 +9,8 @@ class PaypalServices {
 //  String domain = "https://api.paypal.com"; // for production mode
 
   // change clientId and secret with your own, provided by paypal
-  String clientId = 'Ab4vS4vmfQFgUuQMH49F9Uy3L1FdNHtfGrASCyjNijm_EkHWCFM96ex0la-YFbwavw41R3rTKU3k_Bbm';
-  String secret = 'EDjvPfYgTYqdYWR2BfOiBW4dz_jeeuadqH7Z98pZMDvY33PcViiooqYFWVPFSGbfKBfNOb3LnroSI1hv';
+  String clientId = 'PAYPAL_CLIENTID';
+  String secret = 'PAYAPL_SECRET';
 
   // for getting the access token from Paypal
   Future<String?> getAccessToken() async {
