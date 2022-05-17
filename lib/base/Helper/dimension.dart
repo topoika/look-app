@@ -7,3 +7,7 @@ double getHorizontal(BuildContext context) {
 double getVertical(BuildContext context) {
   return MediaQuery.of(context).size.height;
 }
+
+double getTextScale(BuildContext context) {
+  return MediaQuery.of(context).textScaleFactor;
+}

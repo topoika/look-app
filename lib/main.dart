@@ -1,7 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:look/frontend/homepage.dart';
+
+import 'base/pages/mobile_login.dart';
+import 'generated/l10n.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,14 +20,24 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
+      locale: const Locale('en'),
+      localizationsDelegates: const [
+        S.delegate,
+        // GlobalMaterialLocalizations.delegate,
+        // GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
       theme: ThemeData(
         buttonColor: const Color(0xffff7f6b),
         accentColor: const Color(0xfffccac8),
+        scaffoldBackgroundColor: Colors.white.withOpacity(.7),
         textTheme: const TextTheme(
-          headline3: TextStyle(
+          bodyText1: TextStyle(
             color: Colors.black,
+            fontWeight: FontWeight.w500,
+            fontSize: 15,
           ),
           button: TextStyle(
             fontWeight: FontWeight.bold,
@@ -34,7 +45,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           ),
         ),
       ),
-      home: const HomePage(),
+      home: const MobilePhoneLogin(),
     );
   }
 }

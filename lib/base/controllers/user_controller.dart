@@ -1,9 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 class UserController extends ControllerMVC {
-  late GlobalKey<ScaffoldState> scaffoldKey;
-  late GlobalKey<FormState> phoneFormKey;
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+  GlobalKey<FormState> phoneFormKey = GlobalKey();
 
   @override
   void initState() {
@@ -22,7 +24,9 @@ class UserController extends ControllerMVC {
         onPressed: () {},
       ),
     );
-    ScaffoldMessenger.of(scaffoldKey.currentState!.context)
-        .showSnackBar(snackBar);
+    log("This is the message to the world");
+    setState(() {});
+    // ScaffoldMessenger.of(scaffoldKey.currentState!.context)
+    //     .showSnackBar(snackBar);
   }
 }

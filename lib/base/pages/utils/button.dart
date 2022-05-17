@@ -1,23 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:look/base/Helper/dimension.dart';
 
-Widget buttons(String txt, BuildContext context) {
-  return Container(
-    margin: EdgeInsets.only(
-        top: 10,
-        left: getHorizontal(context) * 0.03,
-        right: getHorizontal(context) * 0.03),
-    width: getHorizontal(context) * 0.9,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(20),
-      color: Theme.of(context).buttonColor,
-    ),
-    child: Text(
-      txt,
-      style: TextStyle(
-        fontSize: getHorizontal(context) * 0.045,
-        fontWeight: FontWeight.bold,
-        color: Colors.white,
+import '../../Helper/dimension.dart';
+
+Widget buttonWidget(BuildContext context, Function ontap, String text) {
+  return InkWell(
+    splashColor: Colors.white,
+    onTap: () => ontap(),
+    child: Container(
+      width: MediaQuery.of(context).size.width,
+      alignment: Alignment.center,
+      padding: const EdgeInsets.symmetric(vertical: 18),
+      margin: EdgeInsets.symmetric(
+          horizontal: getVertical(context) * 0.02, vertical: 10),
+      decoration: BoxDecoration(
+        color: Theme.of(context).buttonColor,
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: Text(
+        text.toUpperCase(),
+        textScaleFactor: MediaQuery.of(context).textScaleFactor,
+        style: const TextStyle(
+          fontWeight: FontWeight.w700,
+          letterSpacing: 1,
+          color: Colors.white,
+        ),
       ),
     ),
   );

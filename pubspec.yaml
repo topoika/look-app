@@ -20,6 +20,8 @@ dependencies:
   firebase_storage: ^10.1.0
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   flutter_launcher_icons: ^0.9.2
   flutter_multi_formatter: ^2.5.1
   flutter_spinkit: ^5.1.0
