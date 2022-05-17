@@ -5,10 +5,9 @@ import 'dart:convert' as convert;
 class PaypalServices {
   String domain = "https://api.sandbox.paypal.com"; // for sandbox mode
 
-  String clientId =
-      '';
-  String secret =
-      '';
+  // change clientId and secret with your own, provided by paypal
+  String clientId = 'PAYPAL_CLIENTID';
+  String secret = 'PAYAPL_SECRET';
 
   // for getting the access token from Paypal
   Future<String?> getAccessToken() async {
