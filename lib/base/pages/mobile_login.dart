@@ -1,12 +1,13 @@
 import 'dart:developer';
 
-import 'package:country_picker/country_picker.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/strings.dart';
+import 'package:look/base/pages/mobile_verification.dart';
+import 'package:look/base/repositories/user_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-
 import '../../generated/l10n.dart';
 import '../controllers/user_controller.dart';
 import './utils/button.dart';
@@ -23,6 +24,15 @@ class _MobilePhoneLoginState extends StateMVC<MobilePhoneLogin> {
 
   _MobilePhoneLoginState() : super(UserController());
   final TextEditingController _phone = TextEditingController();
+  final GlobalKey<FormState> _phoneFormKey = GlobalKey();
+  @override
+  void initState() {
+    setState(() {
+      _phone.text = "+82";
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,11 +51,17 @@ class _MobilePhoneLoginState extends StateMVC<MobilePhoneLogin> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(
-                    left: 20.0, right: 20.0, bottom: 10.0),
+                padding: EdgeInsets.only(
+                    left: 20.0,
+                    right: 20.0,
+                    bottom: 10.0,
+                    top: getVertical(context) * 0.08),
                 child: Container(
                   width: getHorizontal(context),
                   height: getVertical(context) * 0.6,
+                  padding:
+                      EdgeInsets.symmetric(vertical: getVertical(context)) *
+                          0.05,
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(10.0),
@@ -54,33 +70,24 @@ class _MobilePhoneLoginState extends StateMVC<MobilePhoneLogin> {
                   ),
                   child: Column(
                     children: [
-                      Text(S.of(context).enter_your_phone_number,
-                          style: Theme.of(context).textTheme.headline3),
-                      InkWell(
-                        onTap: () => showCountryPicker(
-                          context: context,
-                          showPhoneCode: true,
-                          onSelect: (Country country) {
-                            setState(() {
-                              _phone.text = "+" + country.countryCode;
-                            });
-                          },
+                      Text(S.of(context).enter_your_phone_number.toUpperCase(),
+                          style: Theme.of(context).textTheme.subtitle1),
+                      CountryCodePicker(
+                        onChanged: (value) {
+                          setState(() {
+                            _phone.text = value.toString();
+                          });
+                        },
+                        initialSelection: 'KR',
+                        showFlagDialog: true,
+                        showDropDownButton: true,
+                        flagDecoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
                         ),
-                        child: Row(
-                          children: [
-                            Text('     +354',
-                                textScaleFactor: getTextScale(context),
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600, fontSize: 16)),
-                            IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.arrow_drop_down,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
+                        textStyle: const TextStyle(
+                          color: Colors.black,
                         ),
+                        comparator: (a, b) => b.name!.compareTo(a.name ?? ""),
                       ),
                       Container(
                         padding: EdgeInsets.symmetric(
@@ -95,6 +102,7 @@ class _MobilePhoneLoginState extends StateMVC<MobilePhoneLogin> {
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Form(
+                          key: _phoneFormKey,
                           child: TextFormField(
                             controller: _phone,
                             keyboardType: TextInputType.number,
@@ -105,6 +113,8 @@ class _MobilePhoneLoginState extends StateMVC<MobilePhoneLogin> {
                                   const TextStyle(fontWeight: FontWeight.bold),
                               border: InputBorder.none,
                             ),
+                            onChanged: (value) =>
+                                currentUser.value.phone = value,
                             validator: (val) {
                               if (val!.isEmpty || val.length < 10) {
                                 return S
@@ -130,7 +140,13 @@ class _MobilePhoneLoginState extends StateMVC<MobilePhoneLogin> {
                           ),
                         ),
                       ),
+                      SizedBox(height: getVertical(context) * 0.06),
                       buttonWidget(context, () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const MobileVerification()));
                         log("Hello World");
                       }, "Next"),
                     ],

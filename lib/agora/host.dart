@@ -6,7 +6,6 @@ import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as rtc_local_view;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:look/constant/theme.dart';
 import 'package:look/constant/variables.dart';
 import 'package:look/liveusers/liveusers.dart';
@@ -215,10 +214,9 @@ class _HostState extends State<Host> {
                 margin: const EdgeInsets.only(top: 10, left: 15),
                 width: w * 0.18,
                 height: 28,
-                decoration: BoxDecoration(
-                    color: HexColor('#f02e63'),
-                    borderRadius:
-                        const BorderRadius.all(Radius.circular(20.0))),
+                decoration: const BoxDecoration(
+                    color: Color(0xfff02e63),
+                    borderRadius: BorderRadius.all(Radius.circular(20.0))),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,

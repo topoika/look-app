@@ -109,6 +109,256 @@ class S {
       args: [],
     );
   }
+
+  /// `Resend`
+  String get resend {
+    return Intl.message(
+      'Resend',
+      name: 'resend',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `I don't get the code`
+  String get i_did_not_get_the_code {
+    return Intl.message(
+      'I don\'t get the code',
+      name: 'i_did_not_get_the_code',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue`
+  String get continue_text {
+    return Intl.message(
+      'Continue',
+      name: 'continue_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter Your Code`
+  String get enter_your_code {
+    return Intl.message(
+      'Enter Your Code',
+      name: 'enter_your_code',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To use look, you should read and agree to the terms of use`
+  String get to_use_look_you_must_read_and_agree_to_the_terms_of_user {
+    return Intl.message(
+      'To use look, you should read and agree to the terms of use',
+      name: 'to_use_look_you_must_read_and_agree_to_the_terms_of_user',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Location Based Service Terms`
+  String get location_based_service_terms {
+    return Intl.message(
+      'Location Based Service Terms',
+      name: 'location_based_service_terms',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Terms Of Use`
+  String get terms_of_use {
+    return Intl.message(
+      'Terms Of Use',
+      name: 'terms_of_use',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Personal Information Handling Methods`
+  String get personal_information_handling_methods {
+    return Intl.message(
+      'Personal Information Handling Methods',
+      name: 'personal_information_handling_methods',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `I agree with above personal handling information`
+  String get i_agree_with_above_personal_handling_information {
+    return Intl.message(
+      'I agree with above personal handling information',
+      name: 'i_agree_with_above_personal_handling_information',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Welcome to Look`
+  String get welcome_to_look {
+    return Intl.message(
+      'Welcome to Look',
+      name: 'welcome_to_look',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Improve your profile to get more attention`
+  String get improve_your_profile_to_get_more_attention {
+    return Intl.message(
+      'Improve your profile to get more attention',
+      name: 'improve_your_profile_to_get_more_attention',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Women`
+  String get women {
+    return Intl.message(
+      'Women',
+      name: 'women',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Men`
+  String get men {
+    return Intl.message(
+      'Men',
+      name: 'men',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User Name`
+  String get username {
+    return Intl.message(
+      'User Name',
+      name: 'username',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Skip`
+  String get skip {
+    return Intl.message(
+      'Skip',
+      name: 'skip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Register the correct birthday to enjoy more and more fun`
+  String get register_the_correct_birthday_to_enjoy_more_and_more_fun {
+    return Intl.message(
+      'Register the correct birthday to enjoy more and more fun',
+      name: 'register_the_correct_birthday_to_enjoy_more_and_more_fun',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Marital Status`
+  String get martitual_status {
+    return Intl.message(
+      'Marital Status',
+      name: 'martitual_status',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Single`
+  String get single {
+    return Intl.message(
+      'Single',
+      name: 'single',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Single Mom`
+  String get single_mom {
+    return Intl.message(
+      'Single Mom',
+      name: 'single_mom',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Single Dad`
+  String get single_dad {
+    return Intl.message(
+      'Single Dad',
+      name: 'single_dad',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `In a Relationship`
+  String get in_a_relationship {
+    return Intl.message(
+      'In a Relationship',
+      name: 'in_a_relationship',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Married`
+  String get married {
+    return Intl.message(
+      'Married',
+      name: 'married',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Separated`
+  String get separated {
+    return Intl.message(
+      'Separated',
+      name: 'separated',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Devorced`
+  String get devorced {
+    return Intl.message(
+      'Devorced',
+      name: 'devorced',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Widowed`
+  String get widowed {
+    return Intl.message(
+      'Widowed',
+      name: 'widowed',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

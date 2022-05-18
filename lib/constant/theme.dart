@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 
-class theme{
-  Color mC=HexColor('#ff7f6b');
-  Color lightmC=HexColor('#fccac8');
-  Color mPurple = Color(0xFFf62459);
+class theme {
+  Color mC = const Color(0xffff7f6b);
+  Color lightmC = const Color(0xfffccac8);
+  Color mPurple = const Color(0xFFf62459);
 }

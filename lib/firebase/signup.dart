@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,7 +7,6 @@ import 'package:look/constant/variables.dart';
 import 'package:look/firebase/signin.dart';
 import 'package:look/firebase/termscondition.dart';
 import 'package:look/firebase/verify.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -19,13 +16,11 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-
-  bool isLoading=false;
-  bool _passwordVisible=true;
+  bool isLoading = false;
+  bool _passwordVisible = true;
   TextEditingController emailEditingController = TextEditingController();
   TextEditingController passwordEditingController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-
 
   @override
   void dispose() {
@@ -34,14 +29,14 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-
-    double w=MediaQuery.of(context).size.width;
-    double h=MediaQuery.of(context).size.height;
-    TextStyle textstyle= TextStyle(fontSize: w*0.041 ,fontWeight: FontWeight.bold,fontFamily: 'PopR');
+    double w = MediaQuery.of(context).size.width;
+    double h = MediaQuery.of(context).size.height;
+    TextStyle textstyle = TextStyle(
+        fontSize: w * 0.041, fontWeight: FontWeight.bold, fontFamily: 'PopR');
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body:  SingleChildScrollView(
+        body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -62,8 +57,7 @@ class _SignUpState extends State<SignUp> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(
-                            left: w * 0.09),
+                        padding: EdgeInsets.only(left: w * 0.09),
                         child: Text(
                           "Email",
                           style: textstyle,
@@ -71,17 +65,18 @@ class _SignUpState extends State<SignUp> {
                       ),
                       Container(
                         width: w * 0.8,
-                        margin: EdgeInsets.only(left: w * 0.09,top: 5),
+                        margin: EdgeInsets.only(left: w * 0.09, top: 5),
                         child: TextFormField(
                           controller: emailEditingController,
                           style: textstyle,
-                          decoration:const Dialogg().textFieldInputDecoration("Email", Icons.email),
+                          decoration: const Dialogg()
+                              .textFieldInputDecoration("Email", Icons.email),
                           validator: (value) {
                             if (value != null) {
                               if (value.isEmpty) {
                                 return RegExp(
-                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                    .hasMatch(value)
+                                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                        .hasMatch(value)
                                     ? null
                                     : "Please Enter Correct Email";
                               }
@@ -92,11 +87,14 @@ class _SignUpState extends State<SignUp> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: w * 0.09, top: h * 0.03),
-                        child: Text("Password", style: textstyle,),
+                        child: Text(
+                          "Password",
+                          style: textstyle,
+                        ),
                       ),
                       Container(
                         width: w * 0.8,
-                        margin: EdgeInsets.only(left: w * 0.09,top: 5),
+                        margin: EdgeInsets.only(left: w * 0.09, top: 5),
                         child: TextFormField(
                           obscureText: _passwordVisible,
                           validator: (val) {
@@ -119,7 +117,6 @@ class _SignUpState extends State<SignUp> {
                                   color: Colors.black26,
                                 ),
                                 onPressed: () {
-
                                   setState(() {
                                     _passwordVisible = !_passwordVisible;
                                   });
@@ -132,46 +129,41 @@ class _SignUpState extends State<SignUp> {
                                 color: Colors.red,
                                 wordSpacing: 3.0,
                               ),
-                              hintStyle: const TextStyle(
-                                  letterSpacing: 1.3),
-                              contentPadding:
-                              const EdgeInsets.all(15.0),
+                              hintStyle: const TextStyle(letterSpacing: 1.3),
+                              contentPadding: const EdgeInsets.all(15.0),
                               // Inside box padding
                               border: OutlineInputBorder(
                                   gapPadding: 0.0,
-                                  borderRadius:
-                                  BorderRadius.circular(15))),
-
+                                  borderRadius: BorderRadius.circular(15))),
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
-                Padding(
-                padding:  EdgeInsets.only(top: h*0.08,bottom: h*0.07),
+              Padding(
+                padding: EdgeInsets.only(top: h * 0.08, bottom: h * 0.07),
                 child: buttons("Sign Up"),
               ),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                   Text(
+                  Text(
                     "Already have an account? ",
                     style: TextStyle(
                       color: Colors.black,
                       fontFamily: 'PopM',
-                      fontSize:  w*0.04,
+                      fontSize: w * 0.04,
                     ),
                   ),
                   InkWell(
                     onTap: () {
-                      Get.to(()=>const SignIn());
+                      Get.to(() => const SignIn());
                     },
                     child: Text(
                       " Sign In",
                       style: TextStyle(
-                          color:theme().mC,
+                          color: theme().mC,
                           fontFamily: 'PopM',
                           fontSize: 17,
                           decoration: TextDecoration.underline),
@@ -179,18 +171,17 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ],
               ),
-
             ],
           ),
         ),
       ),
     );
   }
-  Widget textFields(double w,double h,TextStyle textstyle)
-  {
-    return  SizedBox(
+
+  Widget textFields(double w, double h, TextStyle textstyle) {
+    return SizedBox(
       width: w * 1,
-      height: h*0.8,
+      height: h * 0.8,
       child: Form(
         key: formKey,
         child: Padding(
@@ -200,30 +191,28 @@ class _SignUpState extends State<SignUp> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-
                 Padding(
-                  padding: EdgeInsets.only(
-                      left: w * 0.09,
-                      top: h * 0.035),
+                  padding: EdgeInsets.only(left: w * 0.09, top: h * 0.035),
                   child: Text(
                     "Email",
                     style: textstyle,
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: w * 0.09,top: 5),
+                  padding: EdgeInsets.only(left: w * 0.09, top: 5),
                   child: SizedBox(
                     width: w * 0.8,
                     child: TextFormField(
                       controller: emailEditingController,
                       style: textstyle,
-                      decoration: const Dialogg().textFieldInputDecoration("Email",Icons.email),
+                      decoration: const Dialogg()
+                          .textFieldInputDecoration("Email", Icons.email),
                       validator: (value) {
                         if (value != null) {
                           if (value.isEmpty) {
                             return RegExp(
-                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                .hasMatch(value)
+                                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                    .hasMatch(value)
                                 ? null
                                 : "Please Enter Correct Email";
                           }
@@ -235,11 +224,15 @@ class _SignUpState extends State<SignUp> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: w * 0.09, top: h * 0.04),
-                  child: Text("Password", style: textstyle,),
+                  child: Text(
+                    "Password",
+                    style: textstyle,
+                  ),
                 ),
                 Container(
                   width: w * 0.8,
-                  margin: EdgeInsets.only(left: w * 0.09, top:5,bottom: h*0.1),
+                  margin:
+                      EdgeInsets.only(left: w * 0.09, top: 5, bottom: h * 0.1),
                   child: TextFormField(
                     controller: passwordEditingController,
                     keyboardType: TextInputType.text,
@@ -260,8 +253,7 @@ class _SignUpState extends State<SignUp> {
                           ),
                           onPressed: () {
                             setState(() {
-                              _passwordVisible =
-                              !_passwordVisible;
+                              _passwordVisible = !_passwordVisible;
                             });
                           },
                         ),
@@ -272,18 +264,14 @@ class _SignUpState extends State<SignUp> {
                           color: Colors.red,
                           wordSpacing: 3.0,
                         ),
-                        hintStyle: const TextStyle(
-                            letterSpacing: 1.3),
-                        contentPadding:
-                        const EdgeInsets.all(15.0),
+                        hintStyle: const TextStyle(letterSpacing: 1.3),
+                        contentPadding: const EdgeInsets.all(15.0),
                         // Inside box padding
                         border: OutlineInputBorder(
                             gapPadding: 0.0,
-                            borderRadius:
-                            BorderRadius.circular(15))),
+                            borderRadius: BorderRadius.circular(15))),
                     validator: (value) {
-                      if (value!.isEmpty ||
-                          value.length < 7) {
+                      if (value!.isEmpty || value.length < 7) {
                         return 'Please enter password at least 8 characters';
                       }
                       return null;
@@ -292,7 +280,7 @@ class _SignUpState extends State<SignUp> {
                 ),
                 buttons("Sign Up"),
                 Padding(
-                  padding: EdgeInsets.only(top: h*0.1),
+                  padding: EdgeInsets.only(top: h * 0.1),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -302,7 +290,7 @@ class _SignUpState extends State<SignUp> {
                       ),
                       InkWell(
                         onTap: () {
-                          Get.to(()=>SignIn());
+                          Get.to(() => SignIn());
                         },
                         child: Text(
                           "Sign In now",
@@ -325,7 +313,6 @@ class _SignUpState extends State<SignUp> {
   }
 
   signUp() async {
-
     var _auth1 = FirebaseAuth.instance;
     if (formKey.currentState!.validate()) {
       setState(() {
@@ -334,72 +321,80 @@ class _SignUpState extends State<SignUp> {
 
       final pass = passwordEditingController.text.toString().trim();
       final email = emailEditingController.text.toString().trim();
-      try
-      {
-       await _auth1.createUserWithEmailAndPassword(email: email, password: pass);
+      try {
+        await _auth1.createUserWithEmailAndPassword(
+            email: email, password: pass);
         EMAIL = email;
-       Get.to(() => const TermsAndCondition(val: true,));
-        Get.to(() =>   VerifyScreen(email: email,pass: pass,));
-      }
-      catch(e)
-      {
-        popUp("Can\'t Sign Up",e.toString());
+        Get.to(() => const TermsAndCondition(
+              val: true,
+            ));
+        Get.to(() => VerifyScreen(
+              email: email,
+              pass: pass,
+            ));
+      } catch (e) {
+        popUp("Can\'t Sign Up", e.toString());
         setState(() {
           isLoading = false;
         });
       }
-
-   }
+    }
   }
-  Widget buttons(String txt)
-  {
-    double w=MediaQuery.of(context).size.width;
+
+  Widget buttons(String txt) {
+    double w = MediaQuery.of(context).size.width;
 
     return Center(
       child: TextButton(
-        onPressed: ()
-        {
+        onPressed: () {
           signUp();
         },
         child: Container(
-          width: w*0.5,
-          padding:const EdgeInsets.all(10),
+          width: w * 0.5,
+          padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color:theme().mC,
+            color: theme().mC,
           ),
-          child: Center(child:(isLoading==false)?Text(txt,style:TextStyle(fontSize: w*0.045,fontWeight: FontWeight.bold,
-              color: Colors.white,fontFamily: 'PopR'),):const Center(
-                child: CircularProgressIndicator(
-            strokeWidth: 2,
-            color: Colors.white,
-          ),
-              )
-          ),
-          ),
-
+          child: Center(
+              child: (isLoading == false)
+                  ? Text(
+                      txt,
+                      style: TextStyle(
+                          fontSize: w * 0.045,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontFamily: 'PopR'),
+                    )
+                  : const Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
+                    )),
+        ),
       ),
     );
   }
-  void popUp(String txt1,String txt2) {
 
-    Alert(
-      context: context,
-      type:AlertType.error,
-      title: txt1,
-      desc:  (txt2=='[firebase_auth/invalid-email] The email address is badly formatted.')?"Email is not correct, try with another email"
-       :(txt2=='[firebase_auth/network-request-failed] A network error (such as timeout, interrupted connection or unreachable host) has occurred.')?"Check your internet connection and try again":"Email is already taken, try with another email",
+  void popUp(String txt1, String txt2) {
+    // Alert(
+    //   context: context,
+    //   type:AlertType.error,
+    //   title: txt1,
+    //   desc:  (txt2=='[firebase_auth/invalid-email] The email address is badly formatted.')?"Email is not correct, try with another email"
+    //    :(txt2=='[firebase_auth/network-request-failed] A network error (such as timeout, interrupted connection or unreachable host) has occurred.')?"Check your internet connection and try again":"Email is already taken, try with another email",
 
-      buttons: [
-        DialogButton(
-          child: const Text(
-            "OK",
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-          onPressed: () => Navigator.pop(context),
-          width: 120,
-        )
-      ],
-    ).show();
+    //   buttons: [
+    //     DialogButton(
+    //       child: const Text(
+    //         "OK",
+    //         style: TextStyle(color: Colors.white, fontSize: 20),
+    //       ),
+    //       onPressed: () => Navigator.pop(context),
+    //       width: 120,
+    //     )
+    //   ],
+    // ).show();
   }
 }

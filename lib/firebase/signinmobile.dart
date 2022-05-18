@@ -1,4 +1,3 @@
-import 'package:country_picker/country_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -163,19 +162,7 @@ class _SignInPhoneState extends State<SignInPhone> {
     );
   }
 
-  void fun() {
-    showCountryPicker(
-      context: context,
-      showPhoneCode: true,
-      onSelect: (Country country) {
-        setState(() {
-          code = "  (" + country.name + ")  +" + country.phoneCode;
-          countryName = country.name;
-          simCode = "+" + country.phoneCode;
-        });
-      },
-    );
-  }
+  void fun() {}
 
   Widget buttons(String txt, int nav) {
     double w = MediaQuery.of(context).size.width;

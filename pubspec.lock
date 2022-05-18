@@ -120,13 +120,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
-  country_picker:
+  country_code_picker:
     dependency: "direct main"
     description:
-      name: country_picker
+      name: country_code_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.15"
+    version: "2.0.2"
   cross_file:
     dependency: transitive
     description:
@@ -553,6 +553,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.7.0"
+  modal_bottom_sheet:
+    dependency: transitive
+    description:
+      name: modal_bottom_sheet
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
   mvc_pattern:
     dependency: "direct main"
     description:

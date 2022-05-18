@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 
 class Dialogg extends StatelessWidget {
   const Dialogg({Key? key}) : super(key: key);
@@ -10,22 +9,22 @@ class Dialogg extends StatelessWidget {
   }
 
   void popUp(BuildContext ctx, String txt1, String txt2, int n) {
-    Alert(
-      context: ctx,
-      type: (num == n) ? AlertType.error : AlertType.info,
-      title: txt1,
-      desc: txt2,
-      buttons: [
-        DialogButton(
-          child: const Text(
-            "OK",
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-          onPressed: () => Navigator.pop(ctx),
-          width: 120,
-        )
-      ],
-    ).show();
+    // Alert(
+    //   context: ctx,
+    //   type: (num == n) ? AlertType.error : AlertType.info,
+    //   title: txt1,
+    //   desc: txt2,
+    //   buttons: [
+    //     DialogButton(
+    //       child: const Text(
+    //         "OK",
+    //         style: TextStyle(color: Colors.white, fontSize: 20),
+    //       ),
+    //       onPressed: () => Navigator.pop(ctx),
+    //       width: 120,
+    //     )
+    //   ],
+    // ).show();
   }
 
   InputDecoration textFieldInputDecoration(String hintText, IconData icon) {

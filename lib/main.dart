@@ -32,7 +32,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       theme: ThemeData(
         buttonColor: const Color(0xffff7f6b),
         accentColor: const Color(0xfffccac8),
-        scaffoldBackgroundColor: Colors.white.withOpacity(.7),
+        scaffoldBackgroundColor: Colors.white.withOpacity(.96),
         textTheme: const TextTheme(
           bodyText1: TextStyle(
             color: Colors.black,

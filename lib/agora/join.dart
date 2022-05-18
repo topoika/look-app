@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,17 +7,20 @@ import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as rtc_local_view;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:look/constant/theme.dart';
 import 'package:look/constant/variables.dart';
 import 'package:look/liveusers/liveusers.dart';
 
-
 class Join extends StatefulWidget {
   final String channelName;
-final String myName;
-final String myImage;
-  const Join({Key? key,required this.channelName,required this.myImage,required this.myName}) : super(key: key);
+  final String myName;
+  final String myImage;
+  const Join(
+      {Key? key,
+      required this.channelName,
+      required this.myImage,
+      required this.myName})
+      : super(key: key);
 
   @override
   _JoinState createState() => _JoinState();
@@ -29,15 +31,15 @@ class _JoinState extends State<Join> {
   late RtcEngine _engine;
   bool muted = false;
   late int? streamId;
-  bool loading=true;
+  bool loading = true;
   var result;
   late int viewers;
-  bool get=false;
-  bool viewerAdded=false;
+  bool get = false;
+  bool viewerAdded = false;
   late int msgAdded;
-  bool msgadded=false;
+  bool msgadded = false;
   final _channelMessageController = TextEditingController();
-  int end=0;
+  int end = 0;
   var currentFocus;
 
   unfocus() {
@@ -47,6 +49,7 @@ class _JoinState extends State<Join> {
       currentFocus.unfocus();
     }
   }
+
   @override
   void dispose() {
     // clear users
@@ -58,47 +61,47 @@ class _JoinState extends State<Join> {
   @override
   void initState() {
     super.initState();
-      getData();
-
+    getData();
   }
-  void getData()async
-  {
-   try
-       {
-         JOINCURRENTCHANNEL=widget.channelName;
-         result= await FirebaseFirestore.instance.collection('channels').doc(widget.channelName).get();
-         if(result.data()['channelname']!=null)
-         {
-           if (!mounted) return;
-             setState(() {
-               viewers = result.data()['viewers'];
-               end = result.data()['end'];
-               msgAdded = result.data()['msgadded'];
-             });
 
-           if(viewerAdded==false)
-             {
-               await FirebaseFirestore.instance.collection('channels').doc(widget.channelName).update({
-                 'viewers':viewers+1,
-               });
+  void getData() async {
+    try {
+      JOINCURRENTCHANNEL = widget.channelName;
+      result = await FirebaseFirestore.instance
+          .collection('channels')
+          .doc(widget.channelName)
+          .get();
+      if (result.data()['channelname'] != null) {
+        if (!mounted) return;
+        setState(() {
+          viewers = result.data()['viewers'];
+          end = result.data()['end'];
+          msgAdded = result.data()['msgadded'];
+        });
 
-             }
-           if (!mounted) return;
-             setState(() {
-               viewerAdded = true;
-               get = true;
-             });
+        if (viewerAdded == false) {
+          await FirebaseFirestore.instance
+              .collection('channels')
+              .doc(widget.channelName)
+              .update({
+            'viewers': viewers + 1,
+          });
+        }
+        if (!mounted) return;
+        setState(() {
+          viewerAdded = true;
+          get = true;
+        });
 
-           initializeAgora();
-         }
-       }catch(e)
-    {
+        initializeAgora();
+      }
+    } catch (e) {
       print("Errorr");
       print(e.toString());
     }
   }
-  Future<void> initializeAgora() async {
 
+  Future<void> initializeAgora() async {
     await _initAgoraRtcEngine();
 
     streamId = await _engine.createDataStream(false, false);
@@ -106,21 +109,19 @@ class _JoinState extends State<Join> {
     _engine.setEventHandler(RtcEngineEventHandler(
       joinChannelSuccess: (channel, uid, elapsed) {
         if (!mounted) return;
-          setState(() {
-            print('onJoinChannel: $channel, uid: $uid');
-          });
-
+        setState(() {
+          print('onJoinChannel: $channel, uid: $uid');
+        });
       },
       leaveChannel: (stats) {
         if (!mounted) return;
-          setState(() {
-            print('onLeaveChannel');
-            _users.clear();
-          });
-
+        setState(() {
+          print('onLeaveChannel');
+          _users.clear();
+        });
       },
       userJoined: (uid, elapsed) {
-        if(mounted) {
+        if (mounted) {
           setState(() {
             print('userJoined: $uid');
             _users.add(uid);
@@ -129,10 +130,10 @@ class _JoinState extends State<Join> {
       },
       userOffline: (uid, elapsed) {
         if (!mounted) return;
-          setState(() {
-            print('userOffline: $uid');
-            _users.remove(uid);
-          });
+        setState(() {
+          print('userOffline: $uid');
+          _users.remove(uid);
+        });
       },
       streamMessage: (_, __, message) {
         final String info = "here is the message $message";
@@ -150,9 +151,7 @@ class _JoinState extends State<Join> {
       setState(() {
         loading = false;
       });
-
-        }catch(e)
-    {
+    } catch (e) {
       final snackBar = SnackBar(
         margin: const EdgeInsets.all(20),
         behavior: SnackBarBehavior.floating,
@@ -160,8 +159,7 @@ class _JoinState extends State<Join> {
         backgroundColor: (Colors.redAccent),
         action: SnackBarAction(
           label: 'dismiss',
-          onPressed: () {
-          },
+          onPressed: () {},
         ),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -169,63 +167,66 @@ class _JoinState extends State<Join> {
   }
 
   Future<void> _initAgoraRtcEngine() async {
-    _engine = await RtcEngine.createWithConfig(RtcEngineConfig('a8b946e934e74e33a6f7b627bd1d169b'));
+    _engine = await RtcEngine.createWithConfig(
+        RtcEngineConfig('a8b946e934e74e33a6f7b627bd1d169b'));
     await _engine.enableVideo();
 
     await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
     await _engine.setClientRole(ClientRole.Audience);
-
   }
 
   @override
   Widget build(BuildContext context) {
-
-
-    double w=MediaQuery.of(context).size.width;
-    double h=MediaQuery.of(context).size.height;
+    double w = MediaQuery.of(context).size.width;
+    double h = MediaQuery.of(context).size.height;
 
     return WillPopScope(
-        onWillPop:  _onWillPop,
+      onWillPop: _onWillPop,
       child: SafeArea(
         child: Scaffold(
-          body: (get==true)?(end==1)?
-          Container():Center(
-              child:Stack(//(loading==false)?
-                children: <Widget>[
-                  _broadcastView(),
-                  _toolbar(w,h),
-                ],
-              )
-            //:const CircularProgressIndicator(),
-          ):Container(),
-
+          body: (get == true)
+              ? (end == 1)
+                  ? Container()
+                  : Center(
+                      child: Stack(
+                      //(loading==false)?
+                      children: <Widget>[
+                        _broadcastView(),
+                        _toolbar(w, h),
+                      ],
+                    )
+                      //:const CircularProgressIndicator(),
+                      )
+              : Container(),
         ),
       ),
     );
   }
+
   Future<bool> _onWillPop() async {
     return (await showDialog(
-      context: context,
-      builder: (context) =>  AlertDialog(
-        title:const Text('Are you sure?'),
-        content:  const Text('Do you want to leave streaming'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('No'),
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Are you sure?'),
+            content: const Text('Do you want to leave streaming'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('No'),
+              ),
+              TextButton(
+                onPressed: () {
+                  _onCallEnd(context);
+                },
+                child: const Text('Yes'),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () {
-              _onCallEnd(context);
-            },
-            child:const Text('Yes'),
-          ),
-        ],
-      ),
-    )) ?? false;
+        )) ??
+        false;
   }
-  void popUp()
-  {
+
+  void popUp() {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -235,14 +236,13 @@ class _JoinState extends State<Join> {
           content: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children : const <Widget>[
+            children: const <Widget>[
               Expanded(
                 child: Text(
                   "Broadcaster Has Stopped Streaming",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.red,
-
                   ),
                 ),
               )
@@ -253,59 +253,68 @@ class _JoinState extends State<Join> {
                 child: const Text('Ok'),
                 onPressed: () {
                   _onCallEnd(context);
-
                 })
           ],
         );
       },
     );
   }
-  Widget _toolbar(double w,double h) {
-    return  ListView(
+
+  Widget _toolbar(double w, double h) {
+    return ListView(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-                margin:const EdgeInsets.only(top: 10,left: 15),
-                width: w*0.18,
+                margin: const EdgeInsets.only(top: 10, left: 15),
+                width: w * 0.18,
                 height: 28,
-                decoration: BoxDecoration(
-                    color: HexColor('#f02e63'),
-                    borderRadius: const BorderRadius.all(Radius.circular(20.0))),
+                decoration: const BoxDecoration(
+                    color: Color(0xfff02e63),
+                    borderRadius: BorderRadius.all(Radius.circular(20.0))),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       margin: const EdgeInsets.only(top: 5),
-                      width: w*0.06,
+                      width: w * 0.06,
                       height: 30,
                       child: (get == true)
                           ? ListView.builder(
-                          itemCount: 1,
-                          itemBuilder: (BuildContext context, int index) {
-                            Timer.periodic(const Duration(seconds: 5), (timer) {
-                              if(end==1) {
-                                popUp();
-                              }
-                              getData();
-                            });
-                            return  Text(' $viewers',style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.white),);
-                          })
+                              itemCount: 1,
+                              itemBuilder: (BuildContext context, int index) {
+                                Timer.periodic(const Duration(seconds: 5),
+                                    (timer) {
+                                  if (end == 1) {
+                                    popUp();
+                                  }
+                                  getData();
+                                });
+                                return Text(
+                                  ' $viewers',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                );
+                              })
                           : Container(),
                     ),
-                    const Icon(Icons.remove_red_eye,color: Colors.white,)
+                    const Icon(
+                      Icons.remove_red_eye,
+                      color: Colors.white,
+                    )
                   ],
                 )),
             Container(
               margin: const EdgeInsets.only(top: 10),
-              padding:const EdgeInsets.all(5),
+              padding: const EdgeInsets.all(5),
               decoration: const BoxDecoration(
                   color: Colors.red,
                   borderRadius: BorderRadius.all(Radius.circular(20.0))),
-              child: const  Text(
+              child: const Text(
                 'LIVE',
                 style: TextStyle(
                     color: Colors.white,
@@ -314,50 +323,58 @@ class _JoinState extends State<Join> {
               ),
             ),
             _endCall(),
-
           ],
         ),
         Container(
-          margin: EdgeInsets.only(top: h*0.4),
-          width: w*0.98,
-          height: h*0.4,
+          margin: EdgeInsets.only(top: h * 0.4),
+          width: w * 0.98,
+          height: h * 0.4,
           alignment: Alignment.bottomLeft,
-          child:  (msgAdded==1)?StreamBuilder(
-              stream: FirebaseFirestore.instance
-                  .collection('channels').doc(widget.channelName).collection('Messages').snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<cf.QuerySnapshot> snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(
-                    child: Text("No data found",style: TextStyle(color: Colors.red),),
-                  );
-                }
-                return ListView(
-                  children: snapshot.data!.docs.map((document) {
-                    return Center(
-                        child: ListTile(
+          child: (msgAdded == 1)
+              ? StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('channels')
+                      .doc(widget.channelName)
+                      .collection('Messages')
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<cf.QuerySnapshot> snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(
+                        child: Text(
+                          "No data found",
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      );
+                    }
+                    return ListView(
+                      children: snapshot.data!.docs.map((document) {
+                        return Center(
+                            child: ListTile(
                           leading: CircleAvatar(
-                            backgroundImage:
-                            NetworkImage(document['image']),
+                            backgroundImage: NetworkImage(document['image']),
                           ),
-                          title: Text(document['name'],style: const TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
-                          subtitle: Text(document['message'],style: const TextStyle(color: Colors.red,fontFamily: 'PopM')),
-
+                          title: Text(document['name'],
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold)),
+                          subtitle: Text(document['message'],
+                              style: const TextStyle(
+                                  color: Colors.red, fontFamily: 'PopM')),
                         ));
-                  }).toList(),
-                );
-              }):Container(),
+                      }).toList(),
+                    );
+                  })
+              : Container(),
         ),
-        row(w,h),
-
+        row(w, h),
       ],
     );
   }
-  Widget row(double w,double h)
-  {
-    return Container(
-      padding:const EdgeInsets.only(top: 10),
 
+  Widget row(double w, double h) {
+    return Container(
+      padding: const EdgeInsets.only(top: 10),
       child: Row(
         children: [
           Expanded(
@@ -371,12 +388,13 @@ class _JoinState extends State<Join> {
                   textCapitalization: TextCapitalization.sentences,
                   decoration: InputDecoration(
                     suffixIcon: IconButton(
-                      onPressed: ()
-                      {
-
+                      onPressed: () {
                         _sendMessage(_channelMessageController.text);
                       },
-                      icon: const Icon(Icons.send_rounded,color:Colors.redAccent,),
+                      icon: const Icon(
+                        Icons.send_rounded,
+                        color: Colors.redAccent,
+                      ),
                     ),
                     isDense: true,
                     hintText: 'Comment',
@@ -388,14 +406,14 @@ class _JoinState extends State<Join> {
                         borderRadius: BorderRadius.circular(50.0),
                         borderSide: const BorderSide(color: Colors.white)),
                   ))),
-
         ],
       ),
     );
   }
+
   Widget _endCall() {
     return Container(
-      margin: const EdgeInsets.only(top: 10,right: 15),
+      margin: const EdgeInsets.only(top: 10, right: 15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
@@ -411,12 +429,10 @@ class _JoinState extends State<Join> {
                     borderRadius: BorderRadius.all(Radius.circular(20.0))),
                 child: const Center(
                     child: Text(
-                      ' Leave ',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontFamily: 'PopM'),
-                    )),
+                  ' Leave ',
+                  style: TextStyle(
+                      color: Colors.white, fontSize: 20, fontFamily: 'PopM'),
+                )),
               )),
         ],
       ),
@@ -436,7 +452,9 @@ class _JoinState extends State<Join> {
 
   /// Video view row wrapper
   Widget _expandedVideoView(List<Widget> views) {
-    final wrappedViews = views.map<Widget>((view) => Expanded(child: Container(child: view))).toList();
+    final wrappedViews = views
+        .map<Widget>((view) => Expanded(child: Container(child: view)))
+        .toList();
     return Expanded(
       child: Row(
         children: wrappedViews,
@@ -463,75 +481,71 @@ class _JoinState extends State<Join> {
         );
       case 3:
         return Column(
-          children: <Widget>[_expandedVideoView(views.sublist(0, 2)), _expandedVideoView(views.sublist(2, 3))],
+          children: <Widget>[
+            _expandedVideoView(views.sublist(0, 2)),
+            _expandedVideoView(views.sublist(2, 3))
+          ],
         );
       case 4:
         return Column(
-          children: <Widget>[_expandedVideoView(views.sublist(0, 2)), _expandedVideoView(views.sublist(2, 4))],
+          children: <Widget>[
+            _expandedVideoView(views.sublist(0, 2)),
+            _expandedVideoView(views.sublist(2, 4))
+          ],
         );
       default:
     }
     return Container();
   }
-  void _onCallEnd(BuildContext context) async{
 
-    try
-        {
-          await FirebaseFirestore.instance.collection("channels").doc(widget.channelName).update({
-            'viewers':viewers-1,
-          });
-          JOINCURRENTCHANNEL='';
+  void _onCallEnd(BuildContext context) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("channels")
+          .doc(widget.channelName)
+          .update({
+        'viewers': viewers - 1,
+      });
+      JOINCURRENTCHANNEL = '';
 
-          Get.to(()=>const LiveUsers());
-
-        }
-        catch(e)
-    {
+      Get.to(() => const LiveUsers());
+    } catch (e) {
       print("Khan");
     }
-
   }
+
   void _sendMessage(text) async {
     unfocus();
     if (text.isEmpty) {
       return;
     }
-    if(msgadded==false)
-    {
-      try
-      {
-        await FirebaseFirestore.instance.collection('channels').doc(result.data()['name']).update({
-          'msgadded':1
-        });
+    if (msgadded == false) {
+      try {
+        await FirebaseFirestore.instance
+            .collection('channels')
+            .doc(result.data()['name'])
+            .update({'msgadded': 1});
         if (!mounted) return;
 
-            setState(() {
-              msgadded=true;
-            });
-
-      }catch(e)
-      {
-
-      }
+        setState(() {
+          msgadded = true;
+        });
+      } catch (e) {}
     }
     try {
-      await FirebaseFirestore.instance.collection('channels').doc(widget.channelName).collection("Messages").add(
-          {
-            'image':widget.myImage,
-            'name':widget.channelName,
-            'message':_channelMessageController.text,
-          }
-      );
+      await FirebaseFirestore.instance
+          .collection('channels')
+          .doc(widget.channelName)
+          .collection("Messages")
+          .add({
+        'image': widget.myImage,
+        'name': widget.channelName,
+        'message': _channelMessageController.text,
+      });
       _channelMessageController.clear();
-
     } catch (errorCode) {
       print('Send channel message error: ' + errorCode.toString());
       //log1('Send channel message error: ' + errorCode.toString());
     }
   }
-
 }
-
-
-
-
