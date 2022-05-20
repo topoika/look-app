@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -197,7 +198,7 @@ class _LiveUsersState extends State<LiveUsers> {
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: Text(
-                        "   Video Call  ",
+                        "Video Call",
                         style: TextStyle(
                             color: Colors.black,
                             fontFamily: 'PopM',
@@ -231,7 +232,7 @@ class _LiveUsersState extends State<LiveUsers> {
                               'assets/grid.PNG',
                             ),
                             Text(
-                              " Grid",
+                              "Grid",
                               style: TextStyle(
                                   fontFamily: "PopB",
                                   fontSize: w * 0.045,
@@ -245,7 +246,7 @@ class _LiveUsersState extends State<LiveUsers> {
                               'assets/list.PNG',
                             ),
                             Text(
-                              "  List",
+                              "List",
                               style: TextStyle(
                                   fontFamily: "PopB",
                                   fontSize: w * 0.045,
@@ -632,9 +633,7 @@ class _LiveUsersState extends State<LiveUsers> {
                   ),
                   IconButton(
                     onPressed: () {
-                      Get.to(() => MyProfile(
-                            myProfile: result,
-                          ));
+                      FirebaseAuth.instance.signOut();
                     },
                     icon: Icon(
                       Icons.person,
@@ -702,7 +701,7 @@ class _LiveUsersState extends State<LiveUsers> {
 
   void connectionChecker() async {
     bool check = await DataConnectionChecker().hasConnection;
-    print("CHeck value is " + '$check');
+    log("CHeck value is " + '$check');
     if (check) {
       onJoin();
     } else {
@@ -714,8 +713,7 @@ class _LiveUsersState extends State<LiveUsers> {
   Future<void> onJoin() async {
     await [Permission.camera, Permission.microphone].request();
     if (result.data()['name'] != null) {
-      print("NAMES");
-      print(result.data()['name']);
+      log(result.data()['name']);
       Get.to(() => Host(
             uid: uiD,
             isBroadcaster: true,
@@ -727,7 +725,6 @@ class _LiveUsersState extends State<LiveUsers> {
   Future<void> join(String channel) async {
     var result =
         await FirebaseFirestore.instance.collection("Users").doc(uiD).get();
-
     if (result.data()!['name'] != null) {
       Get.to(() => Join(
           channelName: channel,

@@ -25,6 +25,7 @@ class _MobilePhoneLoginState extends StateMVC<MobilePhoneLogin> {
   _MobilePhoneLoginState() : super(UserController());
   final TextEditingController _phone = TextEditingController();
   final GlobalKey<FormState> _phoneFormKey = GlobalKey();
+  String country = "Korea";
   @override
   void initState() {
     setState(() {
@@ -75,8 +76,10 @@ class _MobilePhoneLoginState extends StateMVC<MobilePhoneLogin> {
                       CountryCodePicker(
                         onChanged: (value) {
                           setState(() {
-                            _phone.text = value.toString();
+                            _phone.text = value.dialCode.toString();
+                            country = value.name!;
                           });
+                          value.name;
                         },
                         initialSelection: 'KR',
                         showFlagDialog: true,
@@ -143,6 +146,7 @@ class _MobilePhoneLoginState extends StateMVC<MobilePhoneLogin> {
                       SizedBox(height: getVertical(context) * 0.06),
                       buttonWidget(context, () {
                         if (_phoneFormKey.currentState!.validate()) {
+                          currentUser.value.country = country;
                           phoneLogin(_phone.text, context);
                         }
 

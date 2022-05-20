@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -7,12 +9,12 @@ import '../models/user_model.dart' as userModel;
 import 'package:path/path.dart' as Path;
 
 import '../pages/mobile_verification.dart';
+import '../pages/termscondition.dart';
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final FirebaseAuth auth = FirebaseAuth.instance;
 
-ValueNotifier<userModel.User> currentUser =
-    ValueNotifier(userModel.User(uid: ""));
+ValueNotifier<userModel.User> currentUser = ValueNotifier(userModel.User());
 const liveCollection = 'liveuser';
 const userCollection = 'Users';
 const emailCollection = 'emails_to_approve';
@@ -20,34 +22,34 @@ const emailCollectionStudents = 'students_emails_to_approve';
 const approvedCollection = 'Approved_users';
 const approvedCollectionStudents = 'students_Approved_users';
 
-Future<userModel.User> registerUser(userModel.User user, photo) async {
-  Reference storageReference = FirebaseStorage.instance
-      .ref()
-      .child('${user.email}/${Path.basename(photo.path)}');
-  UploadTask uploadTask = storageReference.putFile(photo);
-  await uploadTask.then((res) {
-    res.ref.getDownloadURL();
+Future<userModel.User> getUser(String id) async {
+  return await _firestore
+      .collection(userCollection)
+      .doc(id)
+      .get()
+      .then((value) {
+    currentUser.value = userModel.User.fromMap(value.data());
+    log(value.data().toString());
+    currentUser.notifyListeners();
+    log(currentUser.value.toMap().toString());
+    return currentUser.value;
   });
-  await storageReference.getDownloadURL().then((value) async {
-    user.image = value;
-    await _firestore
-        .collection(userCollection)
-        .doc(user.uid)
-        .set(user.toMap())
-        .then((value) async {
-      await _firestore
+}
+
+Future<userModel.User> registerUser(userModel.User user) async {
+  return await _firestore
+      .collection(userCollection)
+      .doc(user.uid)
+      .update(user.toMap())
+      .then((value) async => await _firestore
           .collection(userCollection)
           .doc(user.uid)
           .get()
-          .then((value) {
-        user = userModel.User.fromMap(value.data());
-      });
-    });
-  });
-  return user;
+          .then((value) => userModel.User.fromMap(value.data())));
 }
 
 Future<userModel.User> updateUser(userModel.User user) async {
+  log(user.uid ?? "sdsds");
   await _firestore
       .collection(userCollection)
       .doc(user.uid)
@@ -58,10 +60,12 @@ Future<userModel.User> updateUser(userModel.User user) async {
         .doc(user.uid)
         .get()
         .then((value) {
-      user = userModel.User.fromMap(value.data());
+      currentUser.value = userModel.User.fromMap(value.data());
+      currentUser.notifyListeners();
+      return currentUser.value;
     });
   });
-  return user;
+  return currentUser.value;
 }
 
 Future<void> profilePhoto({photo, email}) async {
@@ -122,13 +126,35 @@ Future phoneLogin(String mobile, BuildContext context) async {
   );
 }
 
-Future verifyPhone(String verificationCode, String smscode) async {
+Future verifyPhone(
+    String verificationCode, String smscode, BuildContext context) async {
   var _credential = PhoneAuthProvider.credential(
       verificationId: verificationCode, smsCode: smscode.trim());
-  return await auth.signInWithCredential(_credential).then((value) {
+  await auth.signInWithCredential(_credential).then((value) {
     if (value.user != null) {
-      return true;
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const TermsAndCondition(val: true)));
+    } else {
+      Scaffold.of(context)
+          .showSnackBar(const SnackBar(content: Text("Verification Failer")));
     }
     currentUser.value.uid = value.user!.uid;
+    registerUser(currentUser.value);
+  });
+}
+
+Future<userModel.User> uploadProfilePicture(photo, userModel.User user) async {
+  Reference storageReference = FirebaseStorage.instance
+      .ref()
+      .child('${user.uid}/${Path.basename(photo.path)}');
+  UploadTask uploadTask = storageReference.putFile(photo);
+  await uploadTask.then((res) {
+    res.ref.getDownloadURL();
+  });
+  return await storageReference.getDownloadURL().then((value) {
+    currentUser.value.image = value;
+    return updateUser(currentUser.value);
   });
 }

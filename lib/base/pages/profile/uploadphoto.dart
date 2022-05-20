@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:look/base/pages/utils/button.dart';
 import 'package:look/constant/theme.dart';
 import 'package:look/constant/variables.dart';
+import 'package:look/base/pages/profile/education.dart';
 
 import '../../../generated/l10n.dart';
 import '../../Helper/dimension.dart';
@@ -184,12 +186,13 @@ class _UploadPhotoState extends State<UploadPhoto> {
                       _user.dob = _selectedDate;
                       _user.name = _userName.text;
                       _user.gender = _groupValue == 0 ? "Female" : "Male";
-                      PHOTO = _image;
-                      registerUser(currentUser.value, _image).then((value) {
+                      registerUser(currentUser.value).then((value) {
                         setState(() {
                           currentUser.value = value;
+                          uploadProfilePicture(_image, value);
                           currentUser.notifyListeners();
                         });
+                        Get.to(() => const Education());
                       });
                     }
                   } else {

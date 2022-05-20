@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:look/constant/variables.dart';
 import 'package:look/base/pages/termscondition.dart';
-import 'package:look/profile/education.dart';
+import 'package:look/base/pages/profile/education.dart';
 
 class Authentication {
   FirebaseAuth auth = FirebaseAuth.instance;

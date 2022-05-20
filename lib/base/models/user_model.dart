@@ -1,5 +1,5 @@
 class User {
-  String uid = "";
+  String? uid;
   String? name;
   String? email;
   String? country;
@@ -11,14 +11,15 @@ class User {
   String? phone;
   String? gender;
   String? marital;
-  String? drinStringsmoking;
-  String? eating;
-  String? personality;
-  String? interests;
   String? image;
   double? points;
+  String? personality;
+  String? drinking;
+  String? smoking;
+  String? eating;
+  List<String>? interests;
   User({
-    required uid,
+    this.uid,
     this.name,
     this.email,
     this.country,
@@ -30,16 +31,18 @@ class User {
     this.phone,
     this.gender,
     this.marital,
-    this.drinStringsmoking,
-    this.eating,
-    this.personality,
-    this.interests,
     this.image,
     this.points,
+    this.personality,
+    this.drinking,
+    this.smoking,
+    this.eating,
+    this.interests,
   });
 
   Map<String, dynamic> toMap() {
     return {
+      'uid': uid,
       'name': name,
       'email': email,
       'country': country,
@@ -51,19 +54,20 @@ class User {
       'phone': phone,
       'gender': gender,
       'marital': marital,
-      'drinStringsmoking': drinStringsmoking,
-      'eating': eating,
-      'personality': personality,
-      'interests': interests,
-      'uid': uid,
-      'fileURL': image,
+      'image': image,
       'points': points,
+      'personality': personality,
+      'drinking': drinking,
+      'smoking': smoking,
+      'eating': eating,
+      'interests': interests,
     };
   }
 
   factory User.fromMap(Map<String, dynamic>? map) {
     return User(
-      name: map!['name'],
+      uid: map!['uid'],
+      name: map['name'],
       email: map['email'],
       country: map['country'],
       job: map['job'],
@@ -74,13 +78,14 @@ class User {
       phone: map['phone'],
       gender: map['gender'],
       marital: map['marital'],
-      drinStringsmoking: map['drinStringsmoking'],
-      eating: map['eating'],
-      personality: map['personality'],
-      interests: map['interests'],
-      uid: map['uid'],
       image: map['image'],
       points: map['points']?.toDouble(),
+      personality: map['personality'],
+      drinking: map['drinking'],
+      smoking: map['smoking'],
+      eating: map['eating'],
+      interests:
+          map['interests'] != null ? List<String>.from(map['interests']) : null,
     );
   }
 }

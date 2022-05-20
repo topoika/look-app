@@ -1,7 +1,13 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get/get.dart';
+import 'package:look/liveusers/liveusers.dart';
 import 'base/pages/mobile_login.dart';
+import 'base/repositories/user_repository.dart';
 import 'generated/l10n.dart';
 
 void main() async {
@@ -19,8 +25,16 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
+  void initState() {
+    FirebaseAuth.instance.currentUser != null
+        ? getUser(FirebaseAuth.instance.currentUser!.uid)
+        : log("No User Founde");
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       locale: const Locale('en'),
       localizationsDelegates: const [
@@ -45,7 +59,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           ),
         ),
       ),
-      home: const MobilePhoneLogin(),
+      home: FirebaseAuth.instance.currentUser == null
+          ? const MobilePhoneLogin()
+          : const LiveUsers(),
     );
   }
 }

@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/pages/utils/button.dart';
 import 'package:look/base/repositories/user_repository.dart';
-import 'package:look/base/pages/termscondition.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../generated/l10n.dart';
 import '../Helper/dimension.dart';
@@ -19,11 +22,20 @@ class MobileVerification extends StatefulWidget {
 
 class _MobileVerificationState extends StateMVC<MobileVerification> {
   final UserController _con = UserController();
-  final TextEditingController _first = TextEditingController();
-  final TextEditingController _second = TextEditingController();
-  final TextEditingController _third = TextEditingController();
-  final TextEditingController _forth = TextEditingController();
+  final TextEditingController _sms = TextEditingController();
+  StreamController<ErrorAnimationType>? errorController;
   _MobileVerificationState() : super(UserController());
+  @override
+  void initState() {
+    errorController = StreamController<ErrorAnimationType>();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    errorController!.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +50,7 @@ class _MobileVerificationState extends StateMVC<MobileVerification> {
                   top: getVertical(context) * 0.15,
                   bottom: getVertical(context) * 0.06),
               child: Image.asset(
-                'assets/look8.png',
+                logo,
                 scale: 5,
               ),
             ),
@@ -76,14 +88,45 @@ class _MobileVerificationState extends StateMVC<MobileVerification> {
             Container(
               width: getVertical(context) * 0.8,
               margin: EdgeInsets.only(top: getHorizontal(context) * 0.04),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  OtpCharWidget(first: _first),
-                  OtpCharWidget(first: _second),
-                  OtpCharWidget(first: _third),
-                  OtpCharWidget(first: _forth),
+              child: PinCodeTextField(
+                appContext: context,
+                pastedTextStyle: TextStyle(
+                  color: Colors.green.shade600,
+                  fontWeight: FontWeight.bold,
+                ),
+                length: 6,
+                obscureText: true,
+                obscuringCharacter: '*',
+                blinkWhenObscuring: true,
+                animationType: AnimationType.fade,
+                validator: (v) {
+                  if (v!.length < 3) {
+                    return "I'm from validator";
+                  } else {
+                    return null;
+                  }
+                },
+                pinTheme: PinTheme(
+                  shape: PinCodeFieldShape.box,
+                  borderRadius: BorderRadius.circular(5),
+                  fieldHeight: 50,
+                  fieldWidth: 40,
+                  activeFillColor: Colors.white,
+                ),
+                cursorColor: Colors.black,
+                animationDuration: const Duration(milliseconds: 300),
+                enableActiveFill: true,
+                errorAnimationController: errorController,
+                controller: _sms,
+                keyboardType: TextInputType.number,
+                boxShadows: const [
+                  BoxShadow(
+                    offset: Offset(0, 1),
+                    color: Colors.black12,
+                    blurRadius: 10,
+                  )
                 ],
+                onChanged: (String value) {},
               ),
             ),
             SizedBox(height: getVertical(context) * 0.07),
@@ -110,13 +153,7 @@ class _MobileVerificationState extends StateMVC<MobileVerification> {
             ),
             SizedBox(height: getVertical(context) * 0.12),
             buttonWidget(context, () {
-              
-
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const TermsAndCondition(val: true)));
+              verifyPhone(widget.verificationId, _sms.text, context);
             }, S.of(context).continue_text)
           ],
         ),
