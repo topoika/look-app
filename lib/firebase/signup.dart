@@ -5,7 +5,7 @@ import 'package:look/constant/dailog.dart';
 import 'package:look/constant/theme.dart';
 import 'package:look/constant/variables.dart';
 import 'package:look/firebase/signin.dart';
-import 'package:look/firebase/termscondition.dart';
+import 'package:look/base/pages/termscondition.dart';
 import 'package:look/firebase/verify.dart';
 
 class SignUp extends StatefulWidget {

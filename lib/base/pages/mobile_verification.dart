@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:look/base/pages/utils/button.dart';
 import 'package:look/base/repositories/user_repository.dart';
-import 'package:look/firebase/termscondition.dart';
+import 'package:look/base/pages/termscondition.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
@@ -9,7 +9,9 @@ import '../Helper/dimension.dart';
 import '../controllers/user_controller.dart';
 
 class MobileVerification extends StatefulWidget {
-  const MobileVerification({Key? key}) : super(key: key);
+  const MobileVerification({Key? key, required this.verificationId})
+      : super(key: key);
+  final String verificationId;
 
   @override
   _MobileVerificationState createState() => _MobileVerificationState();
@@ -108,6 +110,8 @@ class _MobileVerificationState extends StateMVC<MobileVerification> {
             ),
             SizedBox(height: getVertical(context) * 0.12),
             buttonWidget(context, () {
+              
+
               Navigator.push(
                   context,
                   MaterialPageRoute(

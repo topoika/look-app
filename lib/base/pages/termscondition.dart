@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:look/base/Helper/dimension.dart';
 
-import '../base/pages/utils/button.dart';
-import '../generated/l10n.dart';
+import 'profile/uploadphoto.dart';
+import 'utils/button.dart';
+import '../../generated/l10n.dart';
 
 class TermsAndCondition extends StatefulWidget {
   final bool val;
@@ -18,9 +19,6 @@ class _TermsAndConditionState extends State<TermsAndCondition> {
 
   @override
   Widget build(BuildContext context) {
-    double w = MediaQuery.of(context).size.width;
-    double h = MediaQuery.of(context).size.height;
-
     return Scaffold(
       body: SingleChildScrollView(
         padding:
@@ -30,22 +28,26 @@ class _TermsAndConditionState extends State<TermsAndCondition> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: EdgeInsets.only(top: w * 0.15, bottom: w * 0.1),
+              padding: EdgeInsets.only(
+                  top: getVertical(context) * 0.15,
+                  bottom: getHorizontal(context) * 0.1),
               child: Image.asset(
                 'assets/look8.png',
                 scale: 5,
               ),
             ),
             Padding(
-                padding: const EdgeInsets.all(15),
+                padding: const EdgeInsets.all(20),
                 child: Text(
                   S
                       .of(context)
                       .to_use_look_you_must_read_and_agree_to_the_terms_of_user,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 15),
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w500),
                 )),
             InkWell(
+              focusColor: Colors.transparent,
               onTap: () {
                 popUp(context);
               },
@@ -57,7 +59,9 @@ class _TermsAndConditionState extends State<TermsAndCondition> {
             _termsPageItem(S.of(context).personal_information_handling_methods,
                 'assets/location.PNG'),
             Padding(
-              padding: EdgeInsets.only(top: h * 0.1, left: w * 0.07),
+              padding: EdgeInsets.only(
+                  top: getVertical(context) * 0.1,
+                  left: getHorizontal(context) * 0.07),
               child: Row(
                 children: [
                   Checkbox(
@@ -103,7 +107,13 @@ class _TermsAndConditionState extends State<TermsAndCondition> {
                       ),
                     ),
                   )
-                : buttonWidget(context, () {}, S.of(context).next)
+                : buttonWidget(
+                    context,
+                    () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const UploadPhoto())),
+                    S.of(context).next)
           ],
         ),
       ),

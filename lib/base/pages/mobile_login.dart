@@ -142,11 +142,10 @@ class _MobilePhoneLoginState extends StateMVC<MobilePhoneLogin> {
                       ),
                       SizedBox(height: getVertical(context) * 0.06),
                       buttonWidget(context, () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const MobileVerification()));
+                        if (_phoneFormKey.currentState!.validate()) {
+                          phoneLogin(_phone.text, context);
+                        }
+
                         log("Hello World");
                       }, "Next"),
                     ],

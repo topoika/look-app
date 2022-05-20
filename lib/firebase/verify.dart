@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:look/constant/variables.dart';
-import 'package:look/firebase/termscondition.dart';
+import 'package:look/base/pages/termscondition.dart';
 
 
 

@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:look/constant/variables.dart';
-import 'package:look/firebase/termscondition.dart';
+import 'package:look/base/pages/termscondition.dart';
 import 'package:look/profile/education.dart';
 
 class Authentication {

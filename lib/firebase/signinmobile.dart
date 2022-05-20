@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:look/constant/dailog.dart';
 import 'package:look/constant/theme.dart';
 import 'package:look/constant/variables.dart';
-import 'package:look/firebase/termscondition.dart';
+import 'package:look/base/pages/termscondition.dart';
 
 class SignInPhone extends StatefulWidget {
   const SignInPhone({Key? key}) : super(key: key);

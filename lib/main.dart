@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'base/pages/mobile_login.dart';
 import 'generated/l10n.dart';
 
@@ -25,8 +25,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       locale: const Locale('en'),
       localizationsDelegates: const [
         S.delegate,
-        // GlobalMaterialLocalizations.delegate,
-        // GlobalWidgetsLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: S.delegate.supportedLocales,
       theme: ThemeData(

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:look/constant/theme.dart';
 import 'package:look/constant/variables.dart';
-import 'package:look/profile/uploadphoto.dart';
+
+import '../base/pages/profile/uploadphoto.dart';
 
 class CountryPhone extends StatefulWidget {
   const CountryPhone({Key? key}) : super(key: key);
