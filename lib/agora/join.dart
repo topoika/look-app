@@ -9,7 +9,7 @@ import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
 import 'package:get/get.dart';
 import 'package:look/constant/theme.dart';
 import 'package:look/constant/variables.dart';
-import 'package:look/liveusers/liveusers.dart';
+import 'package:look/base/pages/liveusers.dart';
 
 class Join extends StatefulWidget {
   final String channelName;

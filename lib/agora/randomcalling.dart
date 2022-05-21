@@ -8,7 +8,7 @@ import 'package:look/agora/liveclass.dart';
 import 'package:look/constant/dailog.dart';
 import 'package:look/constant/theme.dart';
 import 'package:look/constant/variables.dart';
-import 'package:look/liveusers/liveusers.dart';
+import 'package:look/base/pages/liveusers.dart';
 
 class RandomCalling extends StatefulWidget {
   final String currentUserImage;

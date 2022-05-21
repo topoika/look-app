@@ -5,7 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
-import 'package:look/liveusers/liveusers.dart';
+import 'package:look/base/pages/liveusers.dart';
 import 'base/pages/mobile_login.dart';
 import 'base/repositories/user_repository.dart';
 import 'generated/l10n.dart';

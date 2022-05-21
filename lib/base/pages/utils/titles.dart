@@ -25,3 +25,14 @@ Widget skiptText(BuildContext context) {
         color: Colors.black45),
   );
 }
+
+Widget channelName(text) {
+  return Text(
+    text,
+    style: const TextStyle(
+      fontWeight: FontWeight.w900,
+      color: Colors.white,
+      fontSize: 14,
+    ),
+  );
+}

@@ -1,17 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/repositories/user_repository.dart';
-import 'package:look/chatting/chat.dart';
-import 'package:look/chatting/chatrooms.dart';
-import 'package:look/constant/theme.dart';
-import 'package:look/firebase/database/database.dart';
 import 'package:look/frontend/recharge.dart';
 import './../../models/user_model.dart' as userModel;
 
 import '../../../generated/l10n.dart';
-import '../../../profile/editprofile.dart';
 import '../../Helper/strings.dart';
 
 class MyProfile extends StatefulWidget {
@@ -33,8 +27,7 @@ class _MyProfileState extends State<MyProfile> {
               width: getHorizontal(context) * 1,
               height: getVertical(context) * 0.5,
               child: Image.network(
-                _user.image ??
-                    "https://t4.ftcdn.net/jpg/04/70/29/97/240_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg",
+                _user.image ?? noImage,
                 fit: BoxFit.cover,
               ),
             ),
@@ -52,9 +45,8 @@ class _MyProfileState extends State<MyProfile> {
             ),
             Padding(
               padding: EdgeInsets.only(left: getHorizontal(context) * 0.4),
-              child: Text("\n\nMyinfo",
+              child: Text(S.of(context).my_info,
                   style: TextStyle(
-                      fontFamily: 'PopZ',
                       fontSize: getHorizontal(context) * 0.065,
                       color: Colors.white)),
             ),
@@ -76,7 +68,6 @@ class _MyProfileState extends State<MyProfile> {
                         Text(
                           _user.name ?? "",
                           style: TextStyle(
-                              fontFamily: 'PopB',
                               fontSize: getHorizontal(context) * 0.055,
                               color: Colors.black),
                         ),
@@ -92,7 +83,7 @@ class _MyProfileState extends State<MyProfile> {
                             //     ));
                           },
                           child: Image.asset(
-                            "assets/edit.PNG",
+                            edit,
                           ),
                         ),
                       ],
@@ -108,7 +99,6 @@ class _MyProfileState extends State<MyProfile> {
                       margin: const EdgeInsets.only(top: 10),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
-                        color: theme().mC,
                       ),
                       child: Row(
                         children: [
@@ -116,7 +106,7 @@ class _MyProfileState extends State<MyProfile> {
                             padding: const EdgeInsets.only(
                                 left: 10, top: 10, bottom: 10),
                             child: Image.asset(
-                              'assets/daimond.PNG',
+                              daimond,
                               scale: 1,
                             ),
                           ),
@@ -129,9 +119,8 @@ class _MyProfileState extends State<MyProfile> {
                                     color: Colors.white),
                               ),
                               Text(
-                                "          Points                ",
+                                S.of(context).points,
                                 style: TextStyle(
-                                    fontFamily: 'PopB',
                                     fontSize: getHorizontal(context) * 0.055,
                                     color: Colors.white),
                               ),
@@ -151,9 +140,8 @@ class _MyProfileState extends State<MyProfile> {
                                 color: Colors.white,
                               ),
                               child: Text(
-                                "Recharge",
+                                S.of(context).recharge,
                                 style: TextStyle(
-                                    fontFamily: 'PopB',
                                     fontSize: getHorizontal(context) * 0.05,
                                     color: Colors.black),
                               ),
@@ -170,12 +158,10 @@ class _MyProfileState extends State<MyProfile> {
                         child: cont(callhistory, S.of(context).call_history)),
                     InkWell(
                       onTap: () {},
-                      child: cont(publicnotice, "      Public Notice"),
+                      child: cont(publicnotice, S.of(context).public_notice),
                     ),
                     InkWell(
-                      onTap: () {
-                        sendMessage('adminmuhammad');
-                      },
+                      onTap: () {},
                       child: cont(inquiry, "1:1 " + S.of(context).inquiry),
                     ),
                     InkWell(
@@ -202,7 +188,6 @@ class _MyProfileState extends State<MyProfile> {
                               Icon(
                                 Icons.logout,
                                 size: getHorizontal(context) * 0.12,
-                                color: theme().mC,
                               ),
                               Text(
                                 S.of(context).log_out,
@@ -236,14 +221,13 @@ class _MyProfileState extends State<MyProfile> {
                       onPressed: () {},
                       icon: Icon(
                         Icons.search,
-                        color: theme().mC,
                         size: getHorizontal(context) * 0.075,
                       ),
                     ),
                     InkWell(
                       onTap: () {},
                       child: Image.asset(
-                        "assets/terms.PNG",
+                        terms,
                         scale: 1.8,
                       ),
                     ),
@@ -256,7 +240,6 @@ class _MyProfileState extends State<MyProfile> {
                       },
                       icon: Icon(
                         Icons.message,
-                        color: theme().mC,
                         size: getHorizontal(context) * 0.075,
                       ),
                     ),
@@ -264,7 +247,6 @@ class _MyProfileState extends State<MyProfile> {
                       onPressed: () {},
                       icon: Icon(
                         Icons.person,
-                        color: theme().mC,
                         size: getHorizontal(context) * 0.075,
                       ),
                     ),
@@ -301,37 +283,5 @@ class _MyProfileState extends State<MyProfile> {
         ],
       ),
     );
-  }
-
-  sendMessage(String userName) {
-    // List<String> users = [widget.myProfile.data()['name'], userName];
-
-    // // String chatRoomId =
-    // //     getChatRoomId(widget.myProfile.data()['userid'], userName);
-
-    // Map<String, dynamic> chatRoom = {
-    //   "usersData": users,
-    //   "chatRoomId": chatRoomId,
-    // };
-
-    // DatabaseService().addChatRoom(chatRoom, chatRoomId);
-
-    // // Navigator.push(
-    // //     context,
-    //     MaterialPageRoute(
-    //         builder: (context) => Chat(
-    //               chatRoomId: chatRoomId,
-    //               uid: widget.myProfile.data()['userid'],
-    //               senderName: userName,
-    //               myName: widget.myProfile.data()['name'],
-    //             )));
-  }
-
-  getChatRoomId(String a, String b) {
-    if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
-      return "$b\_$a";
-    } else {
-      return "$a\_$b";
-    }
   }
 }

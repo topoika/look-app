@@ -5,7 +5,7 @@ import 'package:look/base/pages/utils/snackbar.dart';
 import 'package:look/base/pages/utils/titles.dart';
 import 'package:look/base/repositories/user_repository.dart';
 import 'package:look/constant/theme.dart';
-import 'package:look/liveusers/liveusers.dart';
+import 'package:look/base/pages/liveusers.dart';
 
 import '../../../generated/l10n.dart';
 

@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/repositories/user_repository.dart';
-import 'package:look/liveusers/liveusers.dart';
+import 'package:look/base/pages/liveusers.dart';
 
 import 'profile/uploadphoto.dart';
 import 'utils/button.dart';
