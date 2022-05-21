@@ -5,7 +5,6 @@ import 'package:look/constant/dailog.dart';
 import 'package:look/constant/theme.dart';
 import 'package:look/constant/variables.dart';
 import 'package:look/firebase/signup.dart';
-import 'package:look/frontend/homepage.dart';
 import 'package:look/liveusers/liveusers.dart';
 
 class SignIn extends StatefulWidget {

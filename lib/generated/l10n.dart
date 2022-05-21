@@ -240,6 +240,26 @@ class S {
     );
   }
 
+  /// `Male`
+  String get male {
+    return Intl.message(
+      'Male',
+      name: 'male',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Female`
+  String get female {
+    return Intl.message(
+      'Female',
+      name: 'female',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `User Name`
   String get username {
     return Intl.message(
@@ -355,6 +375,566 @@ class S {
     return Intl.message(
       'Widowed',
       name: 'widowed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `What is Your Education`
+  String get what_is_your_education {
+    return Intl.message(
+      'What is Your Education',
+      name: 'what_is_your_education',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `None`
+  String get none {
+    return Intl.message(
+      'None',
+      name: 'none',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `High School`
+  String get high_school {
+    return Intl.message(
+      'High School',
+      name: 'high_school',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `College`
+  String get college {
+    return Intl.message(
+      'College',
+      name: 'college',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bachelor Degree`
+  String get bachelor_degree {
+    return Intl.message(
+      'Bachelor Degree',
+      name: 'bachelor_degree',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Post Graduate`
+  String get post_graduate {
+    return Intl.message(
+      'Post Graduate',
+      name: 'post_graduate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Masters`
+  String get masters {
+    return Intl.message(
+      'Masters',
+      name: 'masters',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phd/Doctorate`
+  String get phd {
+    return Intl.message(
+      'Phd/Doctorate',
+      name: 'phd',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Post Doctorate`
+  String get post_doctorate {
+    return Intl.message(
+      'Post Doctorate',
+      name: 'post_doctorate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Drinking`
+  String get drinking {
+    return Intl.message(
+      'Drinking',
+      name: 'drinking',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Smoking`
+  String get smoking {
+    return Intl.message(
+      'Smoking',
+      name: 'smoking',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Eating`
+  String get eating {
+    return Intl.message(
+      'Eating',
+      name: 'eating',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Non Drinker`
+  String get non_drinker {
+    return Intl.message(
+      'Non Drinker',
+      name: 'non_drinker',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Social Drinker`
+  String get social_drinker {
+    return Intl.message(
+      'Social Drinker',
+      name: 'social_drinker',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Heavy Drinker`
+  String get heavy_drinker {
+    return Intl.message(
+      'Heavy Drinker',
+      name: 'heavy_drinker',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Non Smoker`
+  String get non_smoker {
+    return Intl.message(
+      'Non Smoker',
+      name: 'non_smoker',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lighter Smoker`
+  String get lighter_smoker {
+    return Intl.message(
+      'Lighter Smoker',
+      name: 'lighter_smoker',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Heavy Smoker`
+  String get heavy_smoker {
+    return Intl.message(
+      'Heavy Smoker',
+      name: 'heavy_smoker',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Vegan`
+  String get vegan {
+    return Intl.message(
+      'Vegan',
+      name: 'vegan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Vegeterian`
+  String get vegeterian {
+    return Intl.message(
+      'Vegeterian',
+      name: 'vegeterian',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Personality`
+  String get personality {
+    return Intl.message(
+      'Personality',
+      name: 'personality',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Funny`
+  String get funny {
+    return Intl.message(
+      'Funny',
+      name: 'funny',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Romantic`
+  String get romantic {
+    return Intl.message(
+      'Romantic',
+      name: 'romantic',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open Minded`
+  String get open_minded {
+    return Intl.message(
+      'Open Minded',
+      name: 'open_minded',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Interests`
+  String get interests {
+    return Intl.message(
+      'Interests',
+      name: 'interests',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dancing`
+  String get dancing {
+    return Intl.message(
+      'Dancing',
+      name: 'dancing',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hiking`
+  String get hiking {
+    return Intl.message(
+      'Hiking',
+      name: 'hiking',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Singing`
+  String get singing {
+    return Intl.message(
+      'Singing',
+      name: 'singing',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reading`
+  String get reading {
+    return Intl.message(
+      'Reading',
+      name: 'reading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fishing`
+  String get fishing {
+    return Intl.message(
+      'Fishing',
+      name: 'fishing',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Travel`
+  String get travel {
+    return Intl.message(
+      'Travel',
+      name: 'travel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fitness`
+  String get fitness {
+    return Intl.message(
+      'Fitness',
+      name: 'fitness',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Photography`
+  String get photography {
+    return Intl.message(
+      'Photography',
+      name: 'photography',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Music`
+  String get music {
+    return Intl.message(
+      'Music',
+      name: 'music',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Movie`
+  String get movie {
+    return Intl.message(
+      'Movie',
+      name: 'movie',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Camping`
+  String get camping {
+    return Intl.message(
+      'Camping',
+      name: 'camping',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sports`
+  String get sports {
+    return Intl.message(
+      'Sports',
+      name: 'sports',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lives In`
+  String get lives_in {
+    return Intl.message(
+      'Lives In',
+      name: 'lives_in',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter Current Location`
+  String get enter_current_location {
+    return Intl.message(
+      'Enter Current Location',
+      name: 'enter_current_location',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Get Current Location`
+  String get get_current_location {
+    return Intl.message(
+      'Get Current Location',
+      name: 'get_current_location',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Input your job`
+  String get input_your_job {
+    return Intl.message(
+      'Input your job',
+      name: 'input_your_job',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Describe yourself`
+  String get describe_yourself {
+    return Intl.message(
+      'Describe yourself',
+      name: 'describe_yourself',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check your internet connection`
+  String get check_internet_connection {
+    return Intl.message(
+      'Check your internet connection',
+      name: 'check_internet_connection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Live Streaming`
+  String get live_streaming {
+    return Intl.message(
+      'Live Streaming',
+      name: 'live_streaming',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Grid`
+  String get grid {
+    return Intl.message(
+      'Grid',
+      name: 'grid',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `List`
+  String get list {
+    return Intl.message(
+      'List',
+      name: 'list',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Video Call`
+  String get video_call {
+    return Intl.message(
+      'Video Call',
+      name: 'video_call',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Points`
+  String get points {
+    return Intl.message(
+      'Points',
+      name: 'points',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Call History`
+  String get call_history {
+    return Intl.message(
+      'Call History',
+      name: 'call_history',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Public Notice`
+  String get public_notice {
+    return Intl.message(
+      'Public Notice',
+      name: 'public_notice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Inquiry`
+  String get inquiry {
+    return Intl.message(
+      'Inquiry',
+      name: 'inquiry',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My Invitee`
+  String get my_invitee {
+    return Intl.message(
+      'My Invitee',
+      name: 'my_invitee',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Coin Store`
+  String get coin_store {
+    return Intl.message(
+      'Coin Store',
+      name: 'coin_store',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Log Out`
+  String get log_out {
+    return Intl.message(
+      'Log Out',
+      name: 'log_out',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recharge`
+  String get recharge {
+    return Intl.message(
+      'Recharge',
+      name: 'recharge',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My Info`
+  String get my_info {
+    return Intl.message(
+      'My Info',
+      name: 'my_info',
       desc: '',
       args: [],
     );

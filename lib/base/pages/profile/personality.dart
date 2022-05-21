@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:look/base/pages/utils/titles.dart';
 import 'package:look/base/repositories/user_repository.dart';
-import 'package:look/profile/location.dart';
+import 'package:look/base/pages/profile/location.dart';
 
+import '../../../generated/l10n.dart';
 import '../../Helper/dimension.dart';
 
 class Personality extends StatefulWidget {
@@ -40,80 +42,65 @@ class _PersonalityState extends State<Personality> {
                         Get.to(() => const GetUserLocation());
                       },
                       child: Text(
-                        "Skip    ",
+                        S.of(context).skip,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: getHorizontal(context) * 0.05,
-                            fontFamily: "PopZ",
                             color: Colors.black45),
                       ))
                 ],
               ),
-              Text(
-                "Personality\n",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: getHorizontal(context) * 0.05,
-                    fontFamily: "PopZ",
-                    color: Colors.black45),
-              ),
-              choices("Funny"),
-              choices("Romantic"),
-              choices("Open-minded"),
-              Text(
-                "\nInterests\n",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: getHorizontal(context) * 0.05,
-                    fontFamily: "PopZ",
-                    color: Colors.black45),
-              ),
+              title(context, S.of(context).personality),
+              choices(S.of(context).funny),
+              choices(S.of(context).romantic),
+              choices(S.of(context).open_minded),
+              title(context, S.of(context).interests),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  choices1("Dancing"),
-                  choices1("Hiking"),
+                  choices1(S.of(context).dancing),
+                  choices1(S.of(context).hiking),
                 ],
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  choices1("Singing"),
-                  choices1("Reading"),
+                  choices1(S.of(context).singing),
+                  choices1(S.of(context).reading),
                 ],
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  choices1("Fishing"),
-                  choices1("Travel"),
+                  choices1(S.of(context).fishing),
+                  choices1(S.of(context).travel),
                 ],
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  choices1("Fitness"),
-                  choices1("Photography"),
+                  choices1(S.of(context).fitness),
+                  choices1(S.of(context).photography),
                 ],
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  choices1("Music"),
-                  choices1("Movie"),
+                  choices1(S.of(context).music),
+                  choices1(S.of(context).movie),
                 ],
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  choices1("Camping"),
-                  choices1("Sports"),
+                  choices1(S.of(context).camping),
+                  choices1(S.of(context).sports),
                 ],
               ),
             ],
@@ -127,9 +114,9 @@ class _PersonalityState extends State<Personality> {
     return InkWell(
       onTap: () => setState(() => currentUser.value.personality = txt),
       child: Container(
-        margin: const EdgeInsets.all(15),
+        margin: const EdgeInsets.all(10),
         padding: const EdgeInsets.all(10),
-        width: getHorizontal(context) * 0.8,
+        width: getHorizontal(context) * 0.82,
         decoration: BoxDecoration(
           border: Border.all(
               color: currentUser.value.personality != null &&

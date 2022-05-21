@@ -43,7 +43,7 @@
     "post_doctorate":"Post Doctorate",
     "drinking":"Drinking",
     "smoking":"Smoking",
-    "eating":"Eating"
+    "eating":"Eating",
     "non_drinker":"Non Drinker",
     "social_drinker":"Social Drinker",
     "heavy_drinker":"Heavy Drinker",
@@ -69,6 +69,23 @@
     "movie":"Movie",
     "camping":"Camping",
     "sports":"Sports",
-
-
+    "lives_in":"Lives In",
+    "enter_current_location":"Enter Current Location",
+    "get_current_location":"Get Current Location",
+    "input_your_job":"Input your job",
+    "describe_yourself":"Describe yourself",
+    "check_internet_connection":"Check your internet connection",
+    "live_streaming":"Live Streaming",
+    "grid":"Grid",
+    "list":"List",
+    "video_call":"Video Call",
+    "points":"Points",
+    "call_history":"Call History",
+    "public_notice":"Public Notice",
+    "inquiry":"Inquiry",
+    "my_invitee":"My Invitee",
+    "coin_store":"Coin Store",
+    "log_out":"Log Out",
+    "recharge":"Recharge",
+    "my_info":"My Info"
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:look/constant/variables.dart';
-import 'package:look/profile/location.dart';
+import 'package:look/base/pages/profile/location.dart';
 
 
 class ModifyInterests extends StatefulWidget {

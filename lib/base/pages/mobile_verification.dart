@@ -153,6 +153,9 @@ class _MobileVerificationState extends StateMVC<MobileVerification> {
             ),
             SizedBox(height: getVertical(context) * 0.12),
             buttonWidget(context, () {
+              setState(() {
+                currentUser.value.points = 15;
+              });
               verifyPhone(widget.verificationId, _sms.text, context);
             }, S.of(context).continue_text)
           ],

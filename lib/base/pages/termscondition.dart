@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/get_core.dart';
 import 'package:look/base/Helper/dimension.dart';
+import 'package:look/base/repositories/user_repository.dart';
+import 'package:look/liveusers/liveusers.dart';
 
 import 'profile/uploadphoto.dart';
 import 'utils/button.dart';
@@ -109,10 +113,9 @@ class _TermsAndConditionState extends State<TermsAndCondition> {
                   )
                 : buttonWidget(
                     context,
-                    () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const UploadPhoto())),
+                    () => currentUser.value.dob != null
+                        ? Get.to(() => const LiveUsers())
+                        : Get.to(() => const UploadPhoto()),
                     S.of(context).next)
           ],
         ),

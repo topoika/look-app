@@ -15,7 +15,6 @@ import 'package:look/constant/theme.dart';
 import 'package:look/constant/variables.dart';
 import 'package:look/frontend/awards.dart';
 import 'package:look/liveusers/videocall.dart';
-import 'package:look/profile/showprofile.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class LiveUsers extends StatefulWidget {
