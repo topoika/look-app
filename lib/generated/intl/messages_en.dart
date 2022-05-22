@@ -52,6 +52,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "funny": MessageLookupByLibrary.simpleMessage("Funny"),
         "get_current_location":
             MessageLookupByLibrary.simpleMessage("Get Current Location"),
+        "go_live": MessageLookupByLibrary.simpleMessage("Go Live"),
         "grid": MessageLookupByLibrary.simpleMessage("Grid"),
         "heavy_drinker": MessageLookupByLibrary.simpleMessage("Heavy Drinker"),
         "heavy_smoker": MessageLookupByLibrary.simpleMessage("Heavy Smoker"),

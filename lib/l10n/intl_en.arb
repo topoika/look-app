@@ -87,5 +87,7 @@
     "coin_store":"Coin Store",
     "log_out":"Log Out",
     "recharge":"Recharge",
-    "my_info":"My Info"
+    "my_info":"My Info",
+    "go_live":"Go Live",
+    "all":"All"
 }

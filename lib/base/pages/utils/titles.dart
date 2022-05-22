@@ -32,7 +32,7 @@ Widget channelName(text) {
     style: const TextStyle(
       fontWeight: FontWeight.w900,
       color: Colors.white,
-      fontSize: 14,
+      fontSize: 16,
     ),
   );
 }
