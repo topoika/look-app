@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/strings.dart';
-import 'package:look/base/pages/mobile_verification.dart';
 import 'package:look/base/repositories/user_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../generated/l10n.dart';

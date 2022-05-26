@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/helper.dart';
 import 'package:look/base/pages/mobile_login.dart';

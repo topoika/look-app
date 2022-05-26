@@ -1,16 +1,16 @@
-
 import 'package:flutter/material.dart';
 
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 
-
 class LiveClass extends StatefulWidget {
   final String channelName;
   final bool isBroadcaster;
 
-  const LiveClass({ Key? key, required this.channelName, required this.isBroadcaster}) : super(key: key);
+  const LiveClass(
+      {Key? key, required this.channelName, required this.isBroadcaster})
+      : super(key: key);
 
   @override
   _LiveClassState createState() => _LiveClassState();
@@ -41,7 +41,8 @@ class _LiveClassState extends State<LiveClass> {
   Future<void> initializeAgora() async {
     await _initAgoraRtcEngine();
 
-    if (widget.isBroadcaster) streamId = (await _engine.createDataStream(false, false))!;
+    if (widget.isBroadcaster)
+      streamId = (await _engine.createDataStream(false, false))!;
 
     _engine.setEventHandler(RtcEngineEventHandler(
       joinChannelSuccess: (channel, uid, elapsed) {
@@ -82,7 +83,8 @@ class _LiveClassState extends State<LiveClass> {
   }
 
   Future<void> _initAgoraRtcEngine() async {
-    _engine = await RtcEngine.createWithConfig(RtcEngineConfig('d5d048ebcb88420bb9f7dcb5b79a085d'));
+    _engine = await RtcEngine.createWithConfig(
+        RtcEngineConfig('d5d048ebcb88420bb9f7dcb5b79a085d'));
     await _engine.enableVideo();
 
     await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
@@ -110,50 +112,50 @@ class _LiveClassState extends State<LiveClass> {
   Widget _toolbar() {
     return widget.isBroadcaster
         ? Container(
-      alignment: Alignment.bottomCenter,
-      padding: const EdgeInsets.symmetric(vertical: 48),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          RawMaterialButton(
-            onPressed: _onToggleMute,
-            child: Icon(
-              muted ? Icons.mic_off : Icons.mic,
-              color: muted ? Colors.white : Colors.blueAccent,
-              size: 20.0,
+            alignment: Alignment.bottomCenter,
+            padding: const EdgeInsets.symmetric(vertical: 48),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                RawMaterialButton(
+                  onPressed: _onToggleMute,
+                  child: Icon(
+                    muted ? Icons.mic_off : Icons.mic,
+                    color: muted ? Colors.white : Colors.blueAccent,
+                    size: 20.0,
+                  ),
+                  shape: const CircleBorder(),
+                  elevation: 2.0,
+                  fillColor: muted ? Colors.blueAccent : Colors.white,
+                  padding: const EdgeInsets.all(12.0),
+                ),
+                RawMaterialButton(
+                  onPressed: () => _onCallEnd(context),
+                  child: const Icon(
+                    Icons.call_end,
+                    color: Colors.white,
+                    size: 35.0,
+                  ),
+                  shape: const CircleBorder(),
+                  elevation: 2.0,
+                  fillColor: Colors.redAccent,
+                  padding: const EdgeInsets.all(15.0),
+                ),
+                RawMaterialButton(
+                  onPressed: _onSwitchCamera,
+                  child: const Icon(
+                    Icons.switch_camera,
+                    color: Colors.blueAccent,
+                    size: 20.0,
+                  ),
+                  shape: const CircleBorder(),
+                  elevation: 2.0,
+                  fillColor: Colors.white,
+                  padding: const EdgeInsets.all(12.0),
+                ),
+              ],
             ),
-            shape: const CircleBorder(),
-            elevation: 2.0,
-            fillColor: muted ? Colors.blueAccent : Colors.white,
-            padding: const EdgeInsets.all(12.0),
-          ),
-          RawMaterialButton(
-            onPressed: () => _onCallEnd(context),
-            child: const Icon(
-              Icons.call_end,
-              color: Colors.white,
-              size: 35.0,
-            ),
-            shape: const CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.redAccent,
-            padding: const EdgeInsets.all(15.0),
-          ),
-          RawMaterialButton(
-            onPressed: _onSwitchCamera,
-            child: const Icon(
-              Icons.switch_camera,
-              color: Colors.blueAccent,
-              size: 20.0,
-            ),
-            shape: const CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.white,
-            padding: const EdgeInsets.all(12.0),
-          ),
-        ],
-      ),
-    )
+          )
         : Container();
   }
 
@@ -161,15 +163,22 @@ class _LiveClassState extends State<LiveClass> {
   List<Widget> _getRenderViews() {
     final List<StatefulWidget> list = [];
     if (widget.isBroadcaster) {
-      list.add(RtcLocalView.SurfaceView());
+      list.add(const RtcLocalView.SurfaceView());
     }
-    _users.forEach((int uid) => list.add(RtcRemoteView.SurfaceView(uid: uid)));
+    for (var uid in _users) {
+      list.add(RtcRemoteView.SurfaceView(
+        uid: uid,
+        channelId: "sdkskjkdj",
+      ));
+    }
     return list;
   }
 
   /// Video view row wrapper
   Widget _expandedVideoView(List<Widget> views) {
-    final wrappedViews = views.map<Widget>((view) => Expanded(child: Container(child: view))).toList();
+    final wrappedViews = views
+        .map<Widget>((view) => Expanded(child: Container(child: view)))
+        .toList();
     return Expanded(
       child: Row(
         children: wrappedViews,
@@ -184,28 +193,34 @@ class _LiveClassState extends State<LiveClass> {
       case 1:
         return Container(
             child: Column(
-              children: <Widget>[
-                _expandedVideoView([views[0]])
-              ],
-            ));
+          children: <Widget>[
+            _expandedVideoView([views[0]])
+          ],
+        ));
       case 2:
         return Container(
             child: Column(
-              children: <Widget>[
-                _expandedVideoView([views[0]]),
-                _expandedVideoView([views[1]])
-              ],
-            ));
+          children: <Widget>[
+            _expandedVideoView([views[0]]),
+            _expandedVideoView([views[1]])
+          ],
+        ));
       case 3:
         return Container(
             child: Column(
-              children: <Widget>[_expandedVideoView(views.sublist(0, 2)), _expandedVideoView(views.sublist(2, 3))],
-            ));
+          children: <Widget>[
+            _expandedVideoView(views.sublist(0, 2)),
+            _expandedVideoView(views.sublist(2, 3))
+          ],
+        ));
       case 4:
         return Container(
             child: Column(
-              children: <Widget>[_expandedVideoView(views.sublist(0, 2)), _expandedVideoView(views.sublist(2, 4))],
-            ));
+          children: <Widget>[
+            _expandedVideoView(views.sublist(0, 2)),
+            _expandedVideoView(views.sublist(2, 4))
+          ],
+        ));
       default:
     }
     return Container();
@@ -223,7 +238,7 @@ class _LiveClassState extends State<LiveClass> {
   }
 
   void _onSwitchCamera() {
-  //  if (streamId != null) _engine?.sendStreamMessage(streamId, "mute user blet");
+    //  if (streamId != null) _engine?.sendStreamMessage(streamId, "mute user blet");
     _engine.switchCamera();
   }
 }

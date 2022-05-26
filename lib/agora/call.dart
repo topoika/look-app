@@ -7,8 +7,6 @@ import 'package:flutter/material.dart';
 
 import 'ids.dart';
 
-
-
 class CallPage extends StatefulWidget {
   final String? channelName;
   const CallPage({Key? key, this.channelName}) : super(key: key);
@@ -33,7 +31,8 @@ class _CallPageState extends State<CallPage> {
     if (APP_ID.isEmpty) {
       setState(() {
         _infoStrings.add(
-          'APP_ID missing, please provide your APP_ID in settings.dart',);
+          'APP_ID missing, please provide your APP_ID in settings.dart',
+        );
         _infoStrings.add('Agora Engine is not starting');
       });
       return;
@@ -53,7 +52,6 @@ class _CallPageState extends State<CallPage> {
     await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
     await _engine.setClientRole(ClientRole.Broadcaster);
   }
-
 
   void _addAgoraEventHandlers() {
     _engine.setEventHandler(RtcEngineEventHandler(error: (code) {
@@ -94,10 +92,13 @@ class _CallPageState extends State<CallPage> {
   List<Widget> _getRenderViews() {
     final List<StatefulWidget> list = [];
     if (ClientRole.Broadcaster == ClientRole.Broadcaster) {
-      list.add(RtcLocalView.SurfaceView());
+      list.add(const RtcLocalView.SurfaceView());
     }
     for (var uid in _users) {
-      list.add(RtcRemoteView.SurfaceView(uid: uid));
+      list.add(RtcRemoteView.SurfaceView(
+        uid: uid,
+        channelId: "skdkskd",
+      ));
     }
     return list;
   }
@@ -121,32 +122,32 @@ class _CallPageState extends State<CallPage> {
       case 1:
         return Container(
             child: Column(
-              children: <Widget>[_videoView(views[0])],
-            ));
+          children: <Widget>[_videoView(views[0])],
+        ));
       case 2:
         return Container(
             child: Column(
-              children: <Widget>[
-                _expandedVideoRow([views[0]]),
-                _expandedVideoRow([views[1]])
-              ],
-            ));
+          children: <Widget>[
+            _expandedVideoRow([views[0]]),
+            _expandedVideoRow([views[1]])
+          ],
+        ));
       case 3:
         return Container(
             child: Column(
-              children: <Widget>[
-                _expandedVideoRow(views.sublist(0, 2)),
-                _expandedVideoRow(views.sublist(2, 3))
-              ],
-            ));
+          children: <Widget>[
+            _expandedVideoRow(views.sublist(0, 2)),
+            _expandedVideoRow(views.sublist(2, 3))
+          ],
+        ));
       case 4:
         return Container(
             child: Column(
-              children: <Widget>[
-                _expandedVideoRow(views.sublist(0, 2)),
-                _expandedVideoRow(views.sublist(2, 4))
-              ],
-            ));
+          children: <Widget>[
+            _expandedVideoRow(views.sublist(0, 2)),
+            _expandedVideoRow(views.sublist(2, 4))
+          ],
+        ));
       default:
     }
     return Container();
@@ -179,7 +180,7 @@ class _CallPageState extends State<CallPage> {
               color: Colors.white,
               size: 35.0,
             ),
-            shape:const CircleBorder(),
+            shape: const CircleBorder(),
             elevation: 2.0,
             fillColor: Colors.redAccent,
             padding: const EdgeInsets.all(15.0),
@@ -200,6 +201,7 @@ class _CallPageState extends State<CallPage> {
       ),
     );
   }
+
   Widget _panel() {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 48),
@@ -213,7 +215,8 @@ class _CallPageState extends State<CallPage> {
             itemCount: _infoStrings.length,
             itemBuilder: (BuildContext context, int index) {
               if (_infoStrings.isEmpty) {
-                return const Text("null");  // return type can't be null, a widget was required
+                return const Text(
+                    "null"); // return type can't be null, a widget was required
               }
               return Padding(
                 padding: const EdgeInsets.symmetric(
@@ -254,12 +257,16 @@ class _CallPageState extends State<CallPage> {
   }
 
   void _onToggleMute() {
-    setState(() {muted = !muted;});
+    setState(() {
+      muted = !muted;
+    });
     _engine.muteLocalAudioStream(muted);
   }
+
   void _onSwitchCamera() {
     _engine.switchCamera();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -275,6 +282,7 @@ class _CallPageState extends State<CallPage> {
       ),
     );
   }
+
   @override
   void dispose() {
     _users.clear();

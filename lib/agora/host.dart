@@ -443,10 +443,15 @@ class _HostState extends State<Host> {
 
   List<Widget> _getRenderViews() {
     final List<StatefulWidget> list = [];
-    list.add(rtc_local_view.SurfaceView());
+    list.add(const rtc_local_view.SurfaceView(
+      channelId: "ksdkksd",
+    ));
 
     for (var uid in _users) {
-      list.add(rtc_remote_view.SurfaceView(uid: uid));
+      list.add(rtc_remote_view.SurfaceView(
+        uid: uid,
+        channelId: "ksdkksd",
+      ));
     }
     return list;
   }

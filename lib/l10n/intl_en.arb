@@ -89,5 +89,7 @@
     "recharge":"Recharge",
     "my_info":"My Info",
     "go_live":"Go Live",
-    "all":"All"
+    "all":"All",
+    "type_message":"Type Message",
+    "chats":"Chats"
 }

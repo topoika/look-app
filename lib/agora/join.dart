@@ -442,10 +442,10 @@ class _JoinState extends State<Join> {
   /// Helper function to get list of native views
   List<Widget> _getRenderViews() {
     final List<StatefulWidget> list = [];
-    list.add(rtc_local_view.SurfaceView());
+    list.add(rtc_local_view.SurfaceView(channelId: "sjdljsdl",));
 
     for (var uid in _users) {
-      list.add(rtc_remote_view.SurfaceView(uid: uid));
+      list.add(rtc_remote_view.SurfaceView(uid: uid,channelId:"hdhskdjks"));
     }
     return list;
   }

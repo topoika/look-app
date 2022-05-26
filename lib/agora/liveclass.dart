@@ -357,7 +357,7 @@ print(widget.channelName);
   // Display remote user's video
   Widget _remoteVideo() {
     if (_remoteUid != null) {
-      return RtcRemoteView.SurfaceView(uid: _remoteUid!);
+      return RtcRemoteView.SurfaceView(uid: _remoteUid! ,channelId: "dsklkdskd",);
     } else {
       return const Text(
         'wait ...',

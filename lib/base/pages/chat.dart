@@ -1,53 +1,43 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:look/base/Helper/dimension.dart';
+import 'package:look/base/controllers/chat_controller.dart';
+import 'package:look/base/models/chat_room_model.dart';
+import 'package:look/base/repositories/user_repository.dart';
 import 'package:look/constant/theme.dart';
-import 'package:look/firebase/database/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as cf;
+import 'package:mvc_pattern/mvc_pattern.dart';
 
 class Chat extends StatefulWidget {
-  final String chatRoomId;
-  final String uid;
-  final String senderName;
-  final String myName;
-  const Chat(
-      {Key? key,
-      required this.chatRoomId,
-      required this.uid,
-      required this.senderName,
-      required this.myName})
-      : super(key: key);
+  final ChatRoom chatRoom;
+  const Chat({Key? key, required this.chatRoom}) : super(key: key);
   @override
   _ChatState createState() => _ChatState();
 }
 
-class _ChatState extends State<Chat> {
-  List<String> length = [];
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class _ChatState extends StateMVC<Chat> {
+  final ChatController _con = ChatController();
+  _ChatState() : super(ChatController());
   final _controller = ScrollController();
-  TextEditingController messageEditingController = TextEditingController();
+  TextEditingController messageText = TextEditingController();
 
   Widget chatMessages() {
-    double h = MediaQuery.of(context).size.height;
     return SizedBox(
-      height: h * 0.75,
+      height: getVertical(context) * 0.75,
       child: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("chatRoom")
-            .doc(widget.chatRoomId)
+            .doc(widget.chatRoom.id)
             .collection("chats")
             .orderBy('time', descending: false)
             .snapshots(),
         builder:
             (BuildContext context, AsyncSnapshot<cf.QuerySnapshot> snapshot) {
-          WidgetsBinding.instance?.addPostFrameCallback((_) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
             if (_controller.hasClients) {
               _controller.jumpTo(_controller.position.maxScrollExtent);
             } else {
-              setState(() => null);
+              // setState(() => null);
             }
           });
           if (!snapshot.hasData) {
@@ -64,7 +54,8 @@ class _ChatState extends State<Chat> {
               return Center(
                 child: MessageTile(
                   message: document['message'].toString(),
-                  sendByMe: widget.senderName == document['sendBy'].toString(),
+                  sendByMe: currentUser.value.uid ==
+                      document['sendBy']['uid'].toString(),
                 ),
               );
             }).toList(),
@@ -74,28 +65,12 @@ class _ChatState extends State<Chat> {
     );
   }
 
-  addMessage() {
-    if (messageEditingController.text.isNotEmpty) {
-      Map<String, dynamic> chatMessageMap = {
-        "sendBy": widget.myName,
-        "message": messageEditingController.text,
-        'time': FieldValue.serverTimestamp(),
-      };
-
-      DatabaseService().addMessage(widget.chatRoomId, chatMessageMap);
-      setState(() {
-        messageEditingController.clear();
-      });
-    }
-    FocusScope.of(context).requestFocus(FocusNode());
-  }
-
   @override
   Widget build(BuildContext context) {
-    double w = MediaQuery.of(context).size.width;
     TextStyle textstyle = TextStyle(
-        fontSize: w * 0.041, fontWeight: FontWeight.bold, fontFamily: 'PopR');
-
+      fontSize: getHorizontal(context) * 0.041,
+      fontWeight: FontWeight.bold,
+    );
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -108,7 +83,7 @@ class _ChatState extends State<Chat> {
               Navigator.of(context).pop();
             }),
         title: Text(
-          widget.senderName,
+          "Test ChatRoom",
           style: TextStyle(color: theme().mPurple),
         ),
       ),
@@ -125,10 +100,10 @@ class _ChatState extends State<Chat> {
                 children: [
                   Expanded(
                       child: TextField(
-                    controller: messageEditingController,
+                    controller: messageText,
                     style: textstyle,
                     decoration: InputDecoration(
-                        hintText: "Message ...",
+                        hintText: "Type Message ...",
                         hintStyle: TextStyle(
                           color: Colors.grey[700],
                           fontSize: 16,
@@ -140,7 +115,10 @@ class _ChatState extends State<Chat> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      addMessage();
+                      _con.addMessage(
+                          messageText.text,
+                          widget.chatRoom.involved!.firstWhere((element) =>
+                              element.uid != currentUser.value.uid));
                     },
                     child: Container(
                         height: 40,

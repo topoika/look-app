@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "1054355818888-6ndvrbda9cah8h0rm1smolmp5k768m09.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.look.appDecoy",
+            "certificate_hash": "55a2b25821edd253db4982c5efc5814d744863c6"
+          }
+        },
+        {
           "client_id": "1054355818888-naagu09sehsn6g89e99nosf1u5l4hl46.apps.googleusercontent.com",
           "client_type": 3
         }

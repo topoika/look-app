@@ -7,8 +7,10 @@ import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/models/country_model.dart';
 import 'package:look/base/pages/liveusers.dart';
 
+import '../search.dart';
 import '../../../constant/theme.dart';
 import '../../../generated/l10n.dart';
+import '../profile/showprofile.dart';
 import '../videocall.dart';
 
 Widget countryItemWidget(BuildContext context, Country country) {
@@ -109,10 +111,7 @@ Widget bottomNavigation(BuildContext context) {
       children: [
         IconButton(
           onPressed: () {
-            // Get.to(() => Search(
-            //       uid: result.data()['userid'],
-            //       user: result.data()['name'],
-            //     ));
+            Get.to(() => const Search());
           },
           icon: Icon(
             Icons.search,
@@ -143,7 +142,7 @@ Widget bottomNavigation(BuildContext context) {
           ),
         ),
         IconButton(
-          onPressed: () {},
+          onPressed: () => Get.to(() => const MyProfile()),
           icon: Icon(
             Icons.person,
             color: theme().mC,
