@@ -22,6 +22,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "accept": MessageLookupByLibrary.simpleMessage("Accept"),
         "add_content": MessageLookupByLibrary.simpleMessage("Add content"),
         "all": MessageLookupByLibrary.simpleMessage("All"),
         "available_points":
@@ -41,6 +42,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Continue to get Confirmation code to your number"),
         "daily_task": MessageLookupByLibrary.simpleMessage("Daily Task"),
         "dancing": MessageLookupByLibrary.simpleMessage("Dancing"),
+        "date_of_birth": MessageLookupByLibrary.simpleMessage("Date of Birth"),
         "describe_yourself":
             MessageLookupByLibrary.simpleMessage("Describe yourself"),
         "devorced": MessageLookupByLibrary.simpleMessage("Devorced"),
@@ -150,6 +152,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "social_drinker":
             MessageLookupByLibrary.simpleMessage("Social Drinker"),
         "sports": MessageLookupByLibrary.simpleMessage("Sports"),
+        "status": MessageLookupByLibrary.simpleMessage("Status"),
         "terms_of_use": MessageLookupByLibrary.simpleMessage("Terms Of Use"),
         "to_use_look_you_must_read_and_agree_to_the_terms_of_user":
             MessageLookupByLibrary.simpleMessage(

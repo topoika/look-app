@@ -36,7 +36,7 @@ class _ChatState extends StateMVC<Chat> {
             .snapshots(),
         builder:
             (BuildContext context, AsyncSnapshot<cf.QuerySnapshot> snapshot) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
+          WidgetsBinding.instance!.addPostFrameCallback((_) {
             if (_controller.hasClients) {
               _controller.jumpTo(_controller.position.maxScrollExtent);
             } else {

@@ -9,6 +9,7 @@ import 'package:look/base/pages/liveusers.dart';
 import 'package:look/base/repositories/user_repository.dart';
 import 'package:look/base/pages/recharge.dart';
 
+import '../awards.dart';
 import '../chatrooms.dart';
 import '../search.dart';
 import '../../../constant/theme.dart';
@@ -48,9 +49,7 @@ Widget countryItemWidget(BuildContext context, Country country) {
 
 Widget rewardsWidget(BuildContext context) {
   return GestureDetector(
-    onTap: () {
-      log("Rewards");
-    },
+    onTap: ()=> Get.to(()=>Award()),
     child: Container(
       margin: EdgeInsets.only(right: getHorizontal(context) * 0.02, bottom: 5),
       width: 70,

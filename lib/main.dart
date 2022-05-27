@@ -41,6 +41,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         S.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: S.delegate.supportedLocales,
       theme: ThemeData(

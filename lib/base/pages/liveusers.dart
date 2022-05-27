@@ -40,7 +40,7 @@ class _LiveUsersState extends State<LiveUsers> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
-                      width: getHorizontal(context) * 0.45,
+                      width: getHorizontal(context) * 0.55,
                       child: TabBar(
                         indicatorColor: Colors.black,
                         indicatorSize: TabBarIndicatorSize.tab,

@@ -104,5 +104,11 @@
     "free_recharge":"Free Recharge",
     "daily_task":"Daily Task",
     "my_points":"My Points",
-    "points_recharge":"Points Recharge"
+    "points_recharge":"Points Recharge",
+    "accept":"Accept",
+    "status":"Status",
+    "date_of_birth":"Date of Birth",
+    "recieved_gifts":"Recieved Gifts",
+    "km_away":"km Away"
+    
 }

@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/constant/dailog.dart';
-import 'package:look/constant/theme.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import '../Helper/strings.dart';
 import '../../generated/l10n.dart';
 import '../models/country_model.dart';
 import '../repositories/user_repository.dart';
-import 'liveusers.dart';
+import 'otherusersdetails.dart';
 import 'utils/custom_containers.dart';
 import 'utils/titles.dart';
 
@@ -38,7 +37,7 @@ class _VideoCallsState extends State<VideoCalls> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
-                      width: getHorizontal(context) * 0.45,
+                      width: getHorizontal(context) * 0.55,
                       child: TabBar(
                         indicatorColor: Colors.black,
                         indicatorSize: TabBarIndicatorSize.tab,
@@ -132,7 +131,8 @@ class _VideoCallsState extends State<VideoCalls> {
               itemCount: 9,
               itemBuilder: (BuildContext context, int index) {
                 return InkWell(
-                  onTap: () {},
+                  onTap: () =>
+                      Get.to(() => OtherUsersDetails(user: currentUser.value)),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
