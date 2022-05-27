@@ -91,5 +91,16 @@
     "go_live":"Go Live",
     "all":"All",
     "type_message":"Type Message",
-    "chats":"Chats"
+    "chats":"Chats",
+    "search":"Search",
+    "search_username":"Search Username",
+    "add_content":"Add content",
+    "self_introduction":"Self-Introduction",
+    "job_title":"Job title",
+    "available_points":"Available Points",
+    "points_setting":"Points Setting",
+    "redeem_points":"Redeem Points",
+    "transaction_history":"Transaction History",
+    "free_recharge":"Free Recharge",
+    "daily_task":"Daily Task"
 }

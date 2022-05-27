@@ -22,10 +22,15 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "add_content": MessageLookupByLibrary.simpleMessage("Add content"),
+        "all": MessageLookupByLibrary.simpleMessage("All"),
+        "available_points":
+            MessageLookupByLibrary.simpleMessage("Available Points"),
         "bachelor_degree":
             MessageLookupByLibrary.simpleMessage("Bachelor Degree"),
         "call_history": MessageLookupByLibrary.simpleMessage("Call History"),
         "camping": MessageLookupByLibrary.simpleMessage("Camping"),
+        "chats": MessageLookupByLibrary.simpleMessage("Chats"),
         "check_internet_connection": MessageLookupByLibrary.simpleMessage(
             "Check your internet connection"),
         "coin_store": MessageLookupByLibrary.simpleMessage("Coin Store"),
@@ -34,6 +39,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "continue_to_get_confirmation_code":
             MessageLookupByLibrary.simpleMessage(
                 "Continue to get Confirmation code to your number"),
+        "daily_task": MessageLookupByLibrary.simpleMessage("Daily Task"),
         "dancing": MessageLookupByLibrary.simpleMessage("Dancing"),
         "describe_yourself":
             MessageLookupByLibrary.simpleMessage("Describe yourself"),
@@ -49,6 +55,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "female": MessageLookupByLibrary.simpleMessage("Female"),
         "fishing": MessageLookupByLibrary.simpleMessage("Fishing"),
         "fitness": MessageLookupByLibrary.simpleMessage("Fitness"),
+        "free_recharge": MessageLookupByLibrary.simpleMessage("Free Recharge"),
         "funny": MessageLookupByLibrary.simpleMessage("Funny"),
         "get_current_location":
             MessageLookupByLibrary.simpleMessage("Get Current Location"),
@@ -72,6 +79,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Input your job"),
         "inquiry": MessageLookupByLibrary.simpleMessage("Inquiry"),
         "interests": MessageLookupByLibrary.simpleMessage("Interests"),
+        "job_title": MessageLookupByLibrary.simpleMessage("Job title"),
         "lighter_smoker":
             MessageLookupByLibrary.simpleMessage("Lighter Smoker"),
         "list": MessageLookupByLibrary.simpleMessage("List"),
@@ -110,17 +118,25 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Please enter correct 10 digits of mobile number"),
         "points": MessageLookupByLibrary.simpleMessage("Points"),
+        "points_setting":
+            MessageLookupByLibrary.simpleMessage("Points Setting"),
         "post_doctorate":
             MessageLookupByLibrary.simpleMessage("Post Doctorate"),
         "post_graduate": MessageLookupByLibrary.simpleMessage("Post Graduate"),
         "public_notice": MessageLookupByLibrary.simpleMessage("Public Notice"),
         "reading": MessageLookupByLibrary.simpleMessage("Reading"),
         "recharge": MessageLookupByLibrary.simpleMessage("Recharge"),
+        "redeem_points": MessageLookupByLibrary.simpleMessage("Redeem Points"),
         "register_the_correct_birthday_to_enjoy_more_and_more_fun":
             MessageLookupByLibrary.simpleMessage(
                 "Register the correct birthday to enjoy more and more fun"),
         "resend": MessageLookupByLibrary.simpleMessage("Resend"),
         "romantic": MessageLookupByLibrary.simpleMessage("Romantic"),
+        "search": MessageLookupByLibrary.simpleMessage("Search"),
+        "search_username":
+            MessageLookupByLibrary.simpleMessage("Search Username"),
+        "self_introduction":
+            MessageLookupByLibrary.simpleMessage("Self-Introduction"),
         "separated": MessageLookupByLibrary.simpleMessage("Separated"),
         "singing": MessageLookupByLibrary.simpleMessage("Singing"),
         "single": MessageLookupByLibrary.simpleMessage("Single"),
@@ -135,7 +151,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "to_use_look_you_must_read_and_agree_to_the_terms_of_user":
             MessageLookupByLibrary.simpleMessage(
                 "To use look, you should read and agree to the terms of use"),
+        "transaction_history":
+            MessageLookupByLibrary.simpleMessage("Transaction History"),
         "travel": MessageLookupByLibrary.simpleMessage("Travel"),
+        "type_message": MessageLookupByLibrary.simpleMessage("Type Message"),
         "username": MessageLookupByLibrary.simpleMessage("User Name"),
         "vegan": MessageLookupByLibrary.simpleMessage("Vegan"),
         "vegeterian": MessageLookupByLibrary.simpleMessage("Vegeterian"),

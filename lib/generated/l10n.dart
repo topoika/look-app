@@ -949,6 +949,146 @@ class S {
       args: [],
     );
   }
+
+  /// `All`
+  String get all {
+    return Intl.message(
+      'All',
+      name: 'all',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Type Message`
+  String get type_message {
+    return Intl.message(
+      'Type Message',
+      name: 'type_message',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chats`
+  String get chats {
+    return Intl.message(
+      'Chats',
+      name: 'chats',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search`
+  String get search {
+    return Intl.message(
+      'Search',
+      name: 'search',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search Username`
+  String get search_username {
+    return Intl.message(
+      'Search Username',
+      name: 'search_username',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add content`
+  String get add_content {
+    return Intl.message(
+      'Add content',
+      name: 'add_content',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Self-Introduction`
+  String get self_introduction {
+    return Intl.message(
+      'Self-Introduction',
+      name: 'self_introduction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Job title`
+  String get job_title {
+    return Intl.message(
+      'Job title',
+      name: 'job_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Available Points`
+  String get available_points {
+    return Intl.message(
+      'Available Points',
+      name: 'available_points',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Points Setting`
+  String get points_setting {
+    return Intl.message(
+      'Points Setting',
+      name: 'points_setting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Redeem Points`
+  String get redeem_points {
+    return Intl.message(
+      'Redeem Points',
+      name: 'redeem_points',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transaction History`
+  String get transaction_history {
+    return Intl.message(
+      'Transaction History',
+      name: 'transaction_history',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Free Recharge`
+  String get free_recharge {
+    return Intl.message(
+      'Free Recharge',
+      name: 'free_recharge',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Daily Task`
+  String get daily_task {
+    return Intl.message(
+      'Daily Task',
+      name: 'daily_task',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

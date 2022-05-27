@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:look/base/Helper/dimension.dart';
+import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/controllers/search_controller.dart';
 import 'package:look/constant/theme.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import '../../generated/l10n.dart';
 import './../models/user_model.dart' as userModel;
 
 class Search extends StatefulWidget {
@@ -12,8 +14,11 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends StateMVC<Search> {
-  final SearchController _con = SearchController();
-  _SearchState() : super(SearchController());
+  late SearchController _con;
+
+  _SearchState() : super(SearchController()) {
+    _con = controller as SearchController;
+  }
   TextEditingController searchText = TextEditingController();
 
   Widget userList() {
@@ -30,11 +35,16 @@ class _SearchState extends StateMVC<Search> {
 
   Widget userTile(userModel.User user) {
     return ListTile(
+      leading: CircleAvatar(
+        radius: 30.0,
+        backgroundImage: NetworkImage(user.image ?? noImage),
+        backgroundColor: Colors.transparent,
+      ),
       title: Text(user.name ?? ""),
       subtitle: Text(user.location ?? ""),
       trailing: TextButton(
         child: const Text('Message'),
-        onPressed: () => _con.sendMessage(user.name ?? ""),
+        onPressed: () => _con.sendMessage(user),
       ),
     );
   }
@@ -42,9 +52,9 @@ class _SearchState extends StateMVC<Search> {
   @override
   Widget build(BuildContext context) {
     TextStyle textstyle = TextStyle(
-        fontSize: getHorizontal(context) * 0.041,
-        fontWeight: FontWeight.bold,
-        fontFamily: 'PopR');
+      fontSize: getHorizontal(context) * 0.041,
+      fontWeight: FontWeight.bold,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -57,7 +67,7 @@ class _SearchState extends StateMVC<Search> {
           },
         ),
         title: Text(
-          "Search",
+          S.of(context).search,
           style: TextStyle(
               color: theme().mPurple,
               fontWeight: FontWeight.bold,
@@ -66,52 +76,57 @@ class _SearchState extends StateMVC<Search> {
         centerTitle: true,
         elevation: 0.0,
       ),
-      body: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            color: Colors.grey[100],
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: searchText,
-                    style: textstyle,
-                    decoration: InputDecoration(
-                        hintText: "search username ...",
-                        hintStyle: TextStyle(
-                          color: theme().mC,
-                          fontSize: 16,
-                        ),
-                        border: InputBorder.none),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () => _con.initiateSearch(searchText.text),
-                  child: Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                            colors: [Color(0x36FFFFFF), Color(0x0FFFFFFF)],
-                            begin: FractionalOffset.topLeft,
-                            end: FractionalOffset.bottomRight),
-                        borderRadius: BorderRadius.circular(40)),
-                    padding: const EdgeInsets.all(12),
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.search,
-                        color: theme().lightmC,
-                      ),
+      body: Container(
+        width: double.infinity,
+        padding:
+            EdgeInsets.symmetric(horizontal: getHorizontal(context) * 0.05),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.black.withOpacity(.2),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: searchText,
+                      style: textstyle,
+                      decoration: InputDecoration(
+                          hintText: S.of(context).search_username + "...",
+                          hintStyle: TextStyle(
+                            color: theme().mC,
+                            fontSize: 16,
+                          ),
+                          border: InputBorder.none),
                     ),
                   ),
-                )
-              ],
+                  GestureDetector(
+                    onTap: () => _con.initiateSearch(searchText.text),
+                    child: Container(
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                              colors: [Color(0x36FFFFFF), Color(0x0FFFFFFF)],
+                              begin: FractionalOffset.topLeft,
+                              end: FractionalOffset.bottomRight),
+                          borderRadius: BorderRadius.circular(40)),
+                      padding: const EdgeInsets.all(12),
+                      child: const Icon(
+                        Icons.search,
+                        color: Colors.black,
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-          userList()
-        ],
+            userList()
+          ],
+        ),
       ),
     );
   }

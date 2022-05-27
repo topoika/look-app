@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:look/base/models/chat_room_model.dart';
 import 'package:look/base/models/message_model.dart';
+
+import 'user_repository.dart';
 
 FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
@@ -27,6 +30,13 @@ getChats(String chatRoomId) async {
       .snapshots();
 }
 
+Future<QuerySnapshot<Map<String, dynamic>>> getChatRooms() {
+  return firebaseFirestore
+      .collection("chatRoom")
+      .where('involes', arrayContains: currentUser.value.uid)
+      .get();
+}
+
 Future<void> awards({Uid}) async {
   await firebaseFirestore.collection('Awards').doc(Uid).set({
     'awardnumber': 0,
@@ -38,6 +48,21 @@ Future<void> awards({Uid}) async {
 }
 
 // ignore: missing_return
-Future<void> addChatRoom(chatRoom, chatRoomId) async {
-  firebaseFirestore.collection("chatRoom").doc(chatRoomId).set(chatRoom);
+Future<ChatRoom> addChatRoom(ChatRoom chatRoom) async {
+  // var exists = firebaseFirestore
+  //     .collection("chatRoom")
+  //     .where('involes', isEqualTo: chatRoom.involes)
+  //     .snapshots()
+  //     .toList();
+  return firebaseFirestore
+      .collection("chatRoom")
+      .add(chatRoom.toMap())
+      .then((value) {
+    chatRoom.id = value.id;
+    firebaseFirestore
+        .collection("chatRoom")
+        .doc(value.id)
+        .update({"id": value.id});
+    return chatRoom;
+  });
 }

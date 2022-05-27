@@ -7,6 +7,7 @@ import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/models/country_model.dart';
 import 'package:look/base/pages/liveusers.dart';
 
+import '../chatrooms.dart';
 import '../search.dart';
 import '../../../constant/theme.dart';
 import '../../../generated/l10n.dart';
@@ -128,12 +129,7 @@ Widget bottomNavigation(BuildContext context) {
             )),
         IconButton(
           onPressed: () {
-            // if (result.data()['name'] != null) {
-            //   Get.to(() => ChatRooms(
-            //         myUid: result.data()['userid'],
-            //         myName: result.data()['name'],
-            //       ));
-            // }
+            Get.to(() => const ChatRooms());
           },
           icon: Icon(
             Icons.message,

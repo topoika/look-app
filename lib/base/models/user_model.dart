@@ -1,6 +1,7 @@
 class User {
   String? uid;
   String? name;
+  String? userName;
   String? email;
   String? country;
   String? job;
@@ -21,6 +22,7 @@ class User {
   User({
     this.uid,
     this.name,
+    this.userName,
     this.email,
     this.country,
     this.job,
@@ -45,6 +47,7 @@ class User {
       'uid': uid,
       'name': name,
       'email': email,
+      'userName': userName,
       'country': country,
       'job': job,
       'location': location,
@@ -68,6 +71,7 @@ class User {
     return User(
       uid: map!['uid'],
       name: map['name'],
+      userName: map['userName'],
       email: map['email'],
       country: map['country'],
       job: map['job'],

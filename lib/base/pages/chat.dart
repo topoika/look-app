@@ -16,8 +16,11 @@ class Chat extends StatefulWidget {
 }
 
 class _ChatState extends StateMVC<Chat> {
-  final ChatController _con = ChatController();
-  _ChatState() : super(ChatController());
+  late ChatController _con;
+  _ChatState() : super(ChatController()) {
+    _con = controller as ChatController;
+  }
+
   final _controller = ScrollController();
   TextEditingController messageText = TextEditingController();
 
