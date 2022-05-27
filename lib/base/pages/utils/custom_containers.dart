@@ -6,6 +6,8 @@ import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/models/country_model.dart';
 import 'package:look/base/pages/liveusers.dart';
+import 'package:look/base/repositories/user_repository.dart';
+import 'package:look/base/pages/recharge.dart';
 
 import '../chatrooms.dart';
 import '../search.dart';
@@ -13,6 +15,7 @@ import '../../../constant/theme.dart';
 import '../../../generated/l10n.dart';
 import '../profile/showprofile.dart';
 import '../videocall.dart';
+import 'titles.dart';
 
 Widget countryItemWidget(BuildContext context, Country country) {
   return Container(
@@ -238,18 +241,53 @@ Widget topBarItem(BuildContext context, bool videocall) {
 
 Widget rechageContainer(BuildContext context) {
   return Container(
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 241, 84, 123),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      padding: EdgeInsets.symmetric(
-          horizontal: getHorizontal(context) * 0.054, vertical: 10),
-      child: Row(
-        children: <Widget>[
-          Image.asset(
+    decoration: BoxDecoration(
+      color: const Color.fromARGB(255, 241, 84, 123),
+      borderRadius: BorderRadius.circular(10),
+    ),
+    padding: EdgeInsets.symmetric(
+        horizontal: getHorizontal(context) * 0.034, vertical: 10),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Container(
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(20)),
+          padding: const EdgeInsets.all(5),
+          child: Image.asset(
             daimond,
-            scale: 1,
+            height: getVertical(context) * 0.03,
           ),
-        ],
-      ));
+        ),
+        Column(
+          children: <Widget>[
+            Text(
+              currentUser.value.points.toString(),
+              style: TextStyle(
+                  fontSize: getHorizontal(context) * 0.055,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+            Text(
+              "Available Points",
+              style: TextStyle(
+                  fontSize: getHorizontal(context) * 0.045,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+          ],
+        ),
+        GestureDetector(
+          onTap: () => Get.to(() => const Recharge()),
+          child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
+              alignment: Alignment.center,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              child: profileText(context, S.of(context).recharge)),
+        ),
+      ],
+    ),
+  );
 }

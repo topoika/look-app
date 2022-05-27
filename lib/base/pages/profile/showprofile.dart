@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/pages/utils/custom_containers.dart';
 import 'package:look/base/repositories/user_repository.dart';
-import 'package:look/frontend/recharge.dart';
+import 'package:look/base/pages/recharge.dart';
 import '../chatrooms.dart';
 import './../../models/user_model.dart' as userModel;
 import './../utils/titles.dart';
@@ -36,32 +36,19 @@ class _MyProfileState extends State<MyProfile> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 5.0, top: 5),
-              child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: const Icon(
-                    Icons.arrow_back_ios_outlined,
-                    color: Colors.red,
-                    size: 20,
-                  )),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: getHorizontal(context) * 0.4),
+              padding: EdgeInsets.only(
+                  left: getHorizontal(context) * 0.4,
+                  top: getVertical(context) * 0.07),
               child: Text(S.of(context).my_info,
                   style: TextStyle(
                       fontSize: getHorizontal(context) * 0.065,
-                      color: Colors.white)),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87)),
             ),
             Container(
               padding: const EdgeInsets.only(top: 15),
               color: Colors.white,
-              height: getVertical(context) * 0.9,
-              width: getHorizontal(context) * 1,
-              margin: EdgeInsets.only(
-                  top: getVertical(context) * 0.2,
-                  bottom: getVertical(context) * 0.1),
+              margin: EdgeInsets.only(top: getVertical(context) * 0.2),
               child: SingleChildScrollView(
                 child: Padding(
                   padding: EdgeInsets.symmetric(
@@ -69,7 +56,6 @@ class _MyProfileState extends State<MyProfile> {
                   child: Column(
                     children: [
                       Row(
-                        // mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Expanded(
                             child: Column(
@@ -82,10 +68,54 @@ class _MyProfileState extends State<MyProfile> {
                           ),
                           GestureDetector(
                               onTap: () => Get.to(() => const EditProfile()),
-                              child: Image.asset(edit)),
+                              child: Image.asset(
+                                edit,
+                                height: 30,
+                              )),
                         ],
                       ),
                       rechageContainer(context),
+                      Container(
+                        margin: const EdgeInsets.only(top: 15),
+                        padding: const EdgeInsets.only(bottom: 5),
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            bottom:
+                                BorderSide(width: 2.0, color: Colors.black54),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                S.of(context).points_setting,
+                                style: TextStyle(
+                                    fontSize: getHorizontal(context) * 0.055,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                              ),
+                            ),
+                            Image.asset(
+                              daimond,
+                              height: getVertical(context) * 0.024,
+                            ),
+                            SizedBox(width: getHorizontal(context) * 0.013),
+                            Text("10p/Msg  50p/Min",
+                                style: TextStyle(
+                                    fontSize: getHorizontal(context) * 0.045,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black)),
+                            SizedBox(width: getHorizontal(context) * 0.02),
+                            GestureDetector(
+                                //TODO
+                                // onTap: () => Get.to(() => const EditProfile()),
+                                child: Image.asset(
+                              edit,
+                              height: 30,
+                            )),
+                          ],
+                        ),
+                      ),
                       InkWell(
                           onTap: () {},
                           child: cont(callhistory, S.of(context).call_history)),
@@ -102,7 +132,15 @@ class _MyProfileState extends State<MyProfile> {
                         child: cont(invitee, S.of(context).my_invitee),
                       ),
                       InkWell(
-                          onTap: () => Get.to(() => const Recharge(points: 15)),
+                        onTap: () {},
+                        child: cont(inquiry, "Settings"),
+                      ),
+                      InkWell(
+                        onTap: () {},
+                        child: cont(invitee, "Transaction History"),
+                      ),
+                      InkWell(
+                          onTap: () => Get.to(() => const Recharge()),
                           child: cont(coinstore, S.of(context).coin_store)),
                       InkWell(
                         onTap: () {},
@@ -145,6 +183,8 @@ class _MyProfileState extends State<MyProfile> {
 
   Widget cont(String txt1, String txt2) {
     return Container(
+      margin: const EdgeInsets.only(top: 15),
+      padding: const EdgeInsets.only(bottom: 5),
       decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(width: 2.0, color: Colors.black54),

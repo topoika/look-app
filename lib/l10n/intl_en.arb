@@ -102,5 +102,7 @@
     "redeem_points":"Redeem Points",
     "transaction_history":"Transaction History",
     "free_recharge":"Free Recharge",
-    "daily_task":"Daily Task"
+    "daily_task":"Daily Task",
+    "my_points":"My Points",
+    "points_recharge":"Points Recharge"
 }

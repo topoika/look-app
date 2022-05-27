@@ -99,6 +99,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "music": MessageLookupByLibrary.simpleMessage("Music"),
         "my_info": MessageLookupByLibrary.simpleMessage("My Info"),
         "my_invitee": MessageLookupByLibrary.simpleMessage("My Invitee"),
+        "my_points": MessageLookupByLibrary.simpleMessage("My Points"),
         "next": MessageLookupByLibrary.simpleMessage("Next"),
         "non_drinker": MessageLookupByLibrary.simpleMessage("Non Drinker"),
         "non_smoker": MessageLookupByLibrary.simpleMessage("Non Smoker"),
@@ -118,6 +119,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Please enter correct 10 digits of mobile number"),
         "points": MessageLookupByLibrary.simpleMessage("Points"),
+        "points_recharge":
+            MessageLookupByLibrary.simpleMessage("Points Recharge"),
         "points_setting":
             MessageLookupByLibrary.simpleMessage("Points Setting"),
         "post_doctorate":
