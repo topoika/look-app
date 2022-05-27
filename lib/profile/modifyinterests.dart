@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:look/base/Helper/dimension.dart';
 
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:look/constant/variables.dart';
-import 'package:look/base/pages/profile/location.dart';
-
 
 class ModifyInterests extends StatefulWidget {
   const ModifyInterests({Key? key}) : super(key: key);
@@ -14,31 +11,23 @@ class ModifyInterests extends StatefulWidget {
 }
 
 class _ModifyInterestsState extends State<ModifyInterests> {
-
-
-  List myInterests=[];
+  List myInterests = [];
   @override
   Widget build(BuildContext context) {
-
-
-    double w = MediaQuery.of(context).size.width;
-
     return Scaffold(
-
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(left:15.0,bottom: 10),
+            padding: const EdgeInsets.only(left: 15.0, bottom: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Row(
-
                   children: [
                     IconButton(
-                      onPressed: (){
-                        ModifyINTERESTS=myInterests;
+                      onPressed: () {
+                        ModifyINTERESTS = myInterests;
                         final snackBar = SnackBar(
                           margin: const EdgeInsets.all(20),
                           behavior: SnackBarBehavior.floating,
@@ -46,155 +35,164 @@ class _ModifyInterestsState extends State<ModifyInterests> {
                           backgroundColor: (Colors.redAccent),
                           action: SnackBarAction(
                             label: 'dismiss',
-                            onPressed: () {
-                            },
+                            onPressed: () {},
                           ),
                         );
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         Navigator.of(context).pop();
                       },
-                      icon:const Icon(Icons.arrow_back_ios_outlined,color: Colors.black87,),
+                      icon: const Icon(
+                        Icons.arrow_back_ios_outlined,
+                        color: Colors.black87,
+                      ),
                     ),
-                    Text("\n              Modify Interests",style: TextStyle(fontWeight: FontWeight.bold,fontSize:w*0.05,
-                        fontFamily:"PopZ",color: Colors.black87),),
+                    Text(
+                      "\n              Modify Interests",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: getHorizontal(context) * 0.05,
+                          fontFamily: "PopZ",
+                          color: Colors.black87),
+                    ),
                   ],
                 ),
                 Align(
                   alignment: Alignment.centerRight,
                   child: Text(
                     '( ${myInterests.length}/5 )     ',
-                    style:  TextStyle(fontWeight: FontWeight.bold, color: Colors.red,fontSize: w*0.05),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                        fontSize: getHorizontal(context) * 0.05),
                   ),
                 ),
                 Row(
-
                   children: [
-                    choices1("outdoor activity",w),
-                    choices1("walk with pets ",w),
+                    choices1("outdoor activity"),
+                    choices1("walk with pets "),
                   ],
                 ),
                 Row(
                   children: [
-                    choices1("culture",w),
-                    choices1("museum",w),
-                    choices1("surfing",w),
-                    choices1("camping",w),
+                    choices1("culture"),
+                    choices1("museum"),
+                    choices1("surfing"),
+                    choices1("camping"),
                   ],
                 ),
                 Row(
-
                   children: [
-                    choices1("cup of tea",w),
-                    choices1("  car  ",w),
-                    choices1(" picnic ",w),
-                    choices1(" ESFJ ",w),
+                    choices1("cup of tea"),
+                    choices1("  car  "),
+                    choices1(" picnic "),
+                    choices1(" ESFJ "),
                   ],
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    choices1("walking with neighberhood",w),
-                    choices1("sweet dessert",w),
+                    choices1("walking with neighberhood"),
+                    choices1("sweet dessert"),
                   ],
                 ),
                 Row(
                   children: [
-                    choices1("cup of coffee",w),
-                    choices1("cat lover",w),
-                    choices1("instagram",w),
+                    choices1("cup of coffee"),
+                    choices1("cat lover"),
+                    choices1("instagram"),
                   ],
                 ),
                 Row(
                   children: [
-                    choices1(" INFJ ",w),
-                    choices1("environmental movement",w),
+                    choices1(" INFJ "),
+                    choices1("environmental movement"),
                   ],
                 ),
                 Row(
                   children: [
-                    choices1("animation",w),
-                    choices1("food tour",w),
-                    choices1("gardening",w),
+                    choices1("animation"),
+                    choices1("food tour"),
+                    choices1("gardening"),
                   ],
                 ),
                 Row(
                   children: [
-                    choices1("candid conversation",w),
-                    choices1("fashion",w),
-                    choices1("gamer",w),
+                    choices1("candid conversation"),
+                    choices1("fashion"),
+                    choices1("gamer"),
                   ],
                 ),
                 Row(
                   children: [
-                    choices1("football",w),
-                    choices1("nature",w),
-                    choices1("talk when bored",w),
+                    choices1("football"),
+                    choices1("nature"),
+                    choices1("talk when bored"),
                   ],
                 ),
                 Row(
                   children: [
-                    choices1("cycling",w),
-                    choices1("hiking",w),
-                    choices1("startup",w),
-                    choices1("consert",w),
+                    choices1("cycling"),
+                    choices1("hiking"),
+                    choices1("startup"),
+                    choices1("consert"),
                   ],
                 ),
                 Row(
                   children: [
-                    choices1("world traveler",w),
-                    choices1("K-pop",w),
-                    choices1("brunch",w),
+                    choices1("world traveler"),
+                    choices1("K-pop"),
+                    choices1("brunch"),
                   ],
                 ),
                 Row(
                   children: [
-                    choices1("author",w),
-                    choices1("running",w),
-                    choices1("learn new things",w),
+                    choices1("author"),
+                    choices1("running"),
+                    choices1("learn new things"),
                   ],
                 ),
                 Row(
                   children: [
-                    choices1("cooking",w),
-                    choices1("mukbung (eating show)",w),
+                    choices1("cooking"),
+                    choices1("mukbung (eating show)"),
                   ],
                 ),
                 Row(
                   children: [
-                    choices1("sports",w),
-                    choices1("craft beer",w),
-                    choices1("vegan",w),
-                    choices1(" ESTJ ",w),
+                    choices1("sports"),
+                    choices1("craft beer"),
+                    choices1("vegan"),
+                    choices1(" ESTJ "),
                   ],
                 ),
                 Row(
                   children: [
-                    choices1("baking",w),
-                    choices1("festival",w),
-                    choices1("language exchange",w),
+                    choices1("baking"),
+                    choices1("festival"),
+                    choices1("language exchange"),
                   ],
                 ),
                 Row(
                   children: [
-                    choices1("walk",w),
-                    choices1(" DIY ",w),
-                    choices1(" ENFJ ",w),
-                    choices1("cartoon cafe",w),
+                    choices1("walk"),
+                    choices1(" DIY "),
+                    choices1(" ENFJ "),
+                    choices1("cartoon cafe"),
                   ],
                 ),
                 Row(
                   children: [
-                    choices1("swimming",w),
-                    choices1(" INTJ ",w),
-                    choices1("make friend",w),
+                    choices1("swimming"),
+                    choices1(" INTJ "),
+                    choices1("make friend"),
                   ],
                 ),
                 Row(
                   children: [
-                    choices1("climbing",w),
-                    choices1(" ISTP ",w),
-                    choices1("PC room",w),
+                    choices1("climbing"),
+                    choices1(" ISTP "),
+                    choices1("PC room"),
                   ],
                 ),
               ],
@@ -205,44 +203,49 @@ class _ModifyInterestsState extends State<ModifyInterests> {
     );
   }
 
-  Widget choices1(String txt,double w)
-  {
-    double h=MediaQuery.of(context).size.height;
+  Widget choices1(String txt) {
+    double h = MediaQuery.of(context).size.height;
     return InkWell(
-      onTap: ()
-      {
-       if(myInterests.length<5)
-         {
-           if(myInterests.contains(txt))
-           {
-             setState(() {
-               myInterests.remove(txt);
-             });
-           }
-           else {
-             setState(() {
-               myInterests.add(txt);
-             });
-           }
-         }
-       else
-         {
-           if(myInterests.contains(txt))
-           {
-             setState(() {
-               myInterests.remove(txt);
-             });
-           }
-         }
+      onTap: () {
+        if (myInterests.length < 5) {
+          if (myInterests.contains(txt)) {
+            setState(() {
+              myInterests.remove(txt);
+            });
+          } else {
+            setState(() {
+              myInterests.add(txt);
+            });
+          }
+        } else {
+          if (myInterests.contains(txt)) {
+            setState(() {
+              myInterests.remove(txt);
+            });
+          }
+        }
       },
       child: Container(
-        margin: EdgeInsets.all((txt=="camping")?1:w*0.01),
-        padding:EdgeInsets.only(top: 4,bottom: h*0.004,left: (txt=="camping")?0:7,right: (txt=="camping")?0:7),
+        margin: EdgeInsets.all(
+            (txt == "camping") ? 1 : getHorizontal(context) * 0.01),
+        padding: EdgeInsets.only(
+            top: 4,
+            bottom: h * 0.004,
+            left: (txt == "camping") ? 0 : 7,
+            right: (txt == "camping") ? 0 : 7),
         decoration: BoxDecoration(
-          border: Border.all(color:(myInterests.contains(txt))?Colors.red:Colors.black45),
+          border: Border.all(
+              color: (myInterests.contains(txt)) ? Colors.red : Colors.black45),
           borderRadius: BorderRadius.circular(20),
         ),
-        child: Center(child: Text("  $txt  ",style:  TextStyle(fontWeight: FontWeight.bold,fontFamily: 'PopB',fontSize: w*0.035,color: Colors.black54),)),
+        child: Center(
+            child: Text(
+          "  $txt  ",
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: getHorizontal(context) * 0.035,
+              color: Colors.black54),
+        )),
       ),
     );
   }

@@ -1,13 +1,10 @@
 import 'dart:developer';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/pages/utils/custom_containers.dart';
 import 'package:look/base/repositories/user_repository.dart';
 import 'package:look/constant/dailog.dart';
-import 'package:look/constant/theme.dart';
-import 'package:look/base/pages/videocall.dart';
 
 import '../../generated/l10n.dart';
 import '../Helper/strings.dart';

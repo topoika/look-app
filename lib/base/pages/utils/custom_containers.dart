@@ -235,3 +235,21 @@ Widget topBarItem(BuildContext context, bool videocall) {
     ),
   );
 }
+
+Widget rechageContainer(BuildContext context) {
+  return Container(
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 241, 84, 123),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      padding: EdgeInsets.symmetric(
+          horizontal: getHorizontal(context) * 0.054, vertical: 10),
+      child: Row(
+        children: <Widget>[
+          Image.asset(
+            daimond,
+            scale: 1,
+          ),
+        ],
+      ));
+}
