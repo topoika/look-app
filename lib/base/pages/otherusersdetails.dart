@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:look/agora/call.dart';
+import 'package:look/base/pages/call.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/models/user_model.dart';
@@ -131,7 +131,10 @@ class _OtherUsersDetailsState extends State<OtherUsersDetails> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Image.asset(edit),
+                      Image.asset(
+                        directions,
+                        height: 30,
+                      ),
                       const SizedBox(width: 15),
                       Text(
                         "15km Away",
@@ -230,9 +233,7 @@ class _OtherUsersDetailsState extends State<OtherUsersDetails> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CallPage(
-          channelName: chennal,
-        ),
+        builder: (context) => const CallPage(),
       ),
     );
   }

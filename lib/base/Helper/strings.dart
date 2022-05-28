@@ -7,6 +7,7 @@ const String coinstore = 'assets/coinstore.PNG';
 const String terms = 'assets/terms.PNG';
 const String edit = "assets/edit.PNG";
 const String daimond = 'assets/diamond.png';
+const String directions = 'assets/direction.png';
 const String grid = 'assets/grid.PNG';
 const String list = 'assets/list.PNG';
 const String box = 'assets/box.png';

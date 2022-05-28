@@ -1,15 +1,15 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 import 'package:flutter/material.dart';
 
-import 'ids.dart';
+import '../../env.dart';
 
 class CallPage extends StatefulWidget {
-  final String? channelName;
-  const CallPage({Key? key, this.channelName}) : super(key: key);
+  const CallPage({Key? key}) : super(key: key);
   @override
   _CallPageState createState() => _CallPageState();
 }
@@ -23,31 +23,24 @@ class _CallPageState extends State<CallPage> {
   @override
   void initState() {
     super.initState();
-    // initialize agora sdk
     initialize();
   }
 
   Future<void> initialize() async {
-    if (APP_ID.isEmpty) {
-      setState(() {
-        _infoStrings.add(
-          'APP_ID missing, please provide your APP_ID in settings.dart',
-        );
-        _infoStrings.add('Agora Engine is not starting');
-      });
-      return;
-    }
-
     await _initAgoraRtcEngine();
     _addAgoraEventHandlers();
     VideoEncoderConfiguration configuration = VideoEncoderConfiguration();
     configuration.dimensions = VideoDimensions(width: 1920, height: 1080);
     await _engine.setVideoEncoderConfiguration(configuration);
-    await _engine.joinChannel(null, widget.channelName!, null, 0);
+    await _engine.joinChannel(
+        AGORA_TEST_CHANEL_TOKEN, AGORA_TEST_CHANEL_NAME, null, 0);
   }
 
   Future<void> _initAgoraRtcEngine() async {
-    _engine = await RtcEngine.create(APP_ID);
+    _engine = await RtcEngine.create(AGORA_APP_ID).then((value) {
+      log(value.toString());
+      return value;
+    });
     await _engine.enableVideo();
     await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
     await _engine.setClientRole(ClientRole.Broadcaster);
@@ -97,7 +90,7 @@ class _CallPageState extends State<CallPage> {
     for (var uid in _users) {
       list.add(RtcRemoteView.SurfaceView(
         uid: uid,
-        channelId: "skdkskd",
+        channelId: AGORA_TEST_CHANEL_NAME,
       ));
     }
     return list;
@@ -202,56 +195,6 @@ class _CallPageState extends State<CallPage> {
     );
   }
 
-  Widget _panel() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 48),
-      alignment: Alignment.bottomCenter,
-      child: FractionallySizedBox(
-        heightFactor: 0.5,
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 48),
-          child: ListView.builder(
-            reverse: true,
-            itemCount: _infoStrings.length,
-            itemBuilder: (BuildContext context, int index) {
-              if (_infoStrings.isEmpty) {
-                return const Text(
-                    "null"); // return type can't be null, a widget was required
-              }
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 3,
-                  horizontal: 10,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Flexible(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 2,
-                          horizontal: 5,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.yellowAccent,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Text(
-                          _infoStrings[index],
-                          style: const TextStyle(color: Colors.blueGrey),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      ),
-    );
-  }
-
   void _onCallEnd(BuildContext context) {
     Navigator.pop(context);
   }
@@ -275,7 +218,6 @@ class _CallPageState extends State<CallPage> {
         child: Stack(
           children: <Widget>[
             _viewRows(),
-            _panel(),
             _toolbar(),
           ],
         ),

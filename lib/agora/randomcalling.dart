@@ -58,7 +58,7 @@ class _RandomCallingState extends State<RandomCalling> {
       onWillPop: _onWillPop,
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Color(0xff5EEFC9),
+          backgroundColor: const Color(0xff5EEFC9),
           body: SingleChildScrollView(
             child: SizedBox(
                 width: w * 1,
@@ -165,11 +165,7 @@ class _RandomCallingState extends State<RandomCalling> {
                                     .doc(widget.currentUserUid)
                                     .delete();
                                 RANDOMCALL = false;
-
-                                Get.to(() => LiveClass(
-                                    channelName: channel,
-                                    currentUserUid: widget.currentUserUid,
-                                    currentUserName: widget.currentUserName));
+                                Get.to(() => const LiveClass());
                                 setState(() {
                                   otherUserName = '';
                                 });

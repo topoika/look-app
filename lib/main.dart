@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +26,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     FirebaseAuth.instance.currentUser != null
         ? getUser(FirebaseAuth.instance.currentUser!.uid)
-        : log("No User Founde");
+        : print("No User Founde");
     super.initState();
   }
 
