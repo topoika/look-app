@@ -2,9 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:look/base/pages/liveclass.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/models/country_model.dart';
+import 'package:look/base/pages/call.dart';
 import 'package:look/base/pages/liveusers.dart';
 import 'package:look/base/repositories/user_repository.dart';
 import 'package:look/base/pages/recharge.dart';
@@ -49,7 +51,7 @@ Widget countryItemWidget(BuildContext context, Country country) {
 
 Widget rewardsWidget(BuildContext context) {
   return GestureDetector(
-    onTap: ()=> Get.to(()=>Award()),
+    onTap: () => Get.to(() => const Award()),
     child: Container(
       margin: EdgeInsets.only(right: getHorizontal(context) * 0.02, bottom: 5),
       width: 70,
@@ -64,7 +66,7 @@ Widget rewardsWidget(BuildContext context) {
 
 Widget goLiveButton(BuildContext context, Function ontap) {
   return GestureDetector(
-    onTap: () => ontap,
+    onTap: () => Get.to(() => const LiveClass()),
     child: Container(
       margin: EdgeInsets.symmetric(
           horizontal: getHorizontal(context) * 0.06, vertical: 5),

@@ -1,14 +1,21 @@
 import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' as cf;
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/pages/utils/custom_containers.dart';
 import 'package:look/base/repositories/user_repository.dart';
 import 'package:look/constant/dailog.dart';
+import 'package:look/env.dart';
 
 import '../../generated/l10n.dart';
 import '../Helper/strings.dart';
 import '../models/country_model.dart';
+import '../models/user_model.dart';
+import 'liveclass.dart';
 import 'utils/titles.dart';
 
 class LiveUsers extends StatefulWidget {
@@ -21,6 +28,7 @@ class LiveUsers extends StatefulWidget {
 class _LiveUsersState extends State<LiveUsers> {
   bool recharge = false;
   String countryColors = 'All';
+  final _controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -51,13 +59,13 @@ class _LiveUsersState extends State<LiveUsers> {
                       ),
                     ),
                     const SizedBox(
-                      height: 25,
-                      width: 25,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.black,
-                      ),
-                    ),
+                        height: 28,
+                        width: 28,
+                        child: Icon(
+                          Icons.refresh,
+                          color: Colors.black,
+                          size: 28,
+                        )),
                   ],
                 ),
               ),
@@ -105,7 +113,9 @@ class _LiveUsersState extends State<LiveUsers> {
                 child: TabBarView(
                   children: [
                     gridView(),
-                    listView(),
+                    Center(
+                      child: Text(S.of(context).list),
+                    )
                   ],
                 ),
               ),
@@ -122,120 +132,160 @@ class _LiveUsersState extends State<LiveUsers> {
         SizedBox(
           width: getHorizontal(context) * 1,
           height: getVertical(context) * 0.95,
-          child: GridView.builder(
-              scrollDirection: Axis.vertical,
-              physics: const ScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.8,
-              ),
-              shrinkWrap: true,
-              itemCount: 9,
-              itemBuilder: (BuildContext context, int index) {
-                return InkWell(
-                  onTap: () {},
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    margin: const EdgeInsets.only(
-                        left: 3, right: 5, top: 5, bottom: 5),
-                    child: Stack(
-                      children: [
-                        SizedBox(
-                          width: getHorizontal(context) * 0.8,
-                          height: getVertical(context) * 0.9,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5),
-                            child: Image.network(
-                              currentUser.value.image ?? noImage,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(left: 5, top: 8),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          decoration: BoxDecoration(
-                            color: Colors.amber,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Text(
-                            (currentUser.value.country ?? " ").toUpperCase(),
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w800,
-                                color: Colors.white),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: Container(
-                            margin: const EdgeInsets.only(right: 5, top: 8),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            decoration: BoxDecoration(
-                              color: Colors.black12,
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              mainAxisSize: MainAxisSize.min,
-                              children: const [
-                                Icon(
-                                  Icons.remove_red_eye,
-                                  color: Colors.white,
-                                  size: 18,
-                                ),
-                                SizedBox(width: 5),
-                                Text(
-                                  "1200",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 5, bottom: 5),
-                            child: channelName("Text Channel"),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomRight,
-                          child: Container(
-                            margin: const EdgeInsets.only(right: 5, bottom: 5),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 1, 6, 36),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              mainAxisSize: MainAxisSize.min,
-                              children: const [
-                                Text(
-                                  "👏  120",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+          child: StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection("Users")
+                .where(
+                  "uid",
+                  isNotEqualTo: currentUser.value.uid,
+                )
+                .snapshots(),
+            builder: (BuildContext context,
+                AsyncSnapshot<cf.QuerySnapshot> snapshot) {
+              WidgetsBinding.instance!.addPostFrameCallback((_) {
+                if (_controller.hasClients) {
+                  _controller.jumpTo(_controller.position.maxScrollExtent);
+                } else {
+                  // setState(() => null);
+                }
+              });
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: Text(
+                    "No data found",
+                    style: TextStyle(color: Colors.red),
                   ),
                 );
-              }),
+              }
+              return ListView(
+                controller: _controller,
+                children: snapshot.data!.docs.map((document) {
+                  return GridView.builder(
+                      scrollDirection: Axis.vertical,
+                      physics: const ScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 0.8,
+                      ),
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        var _user = User.fromMap(snapshot.data!.docs[index]
+                            .data() as Map<String, dynamic>);
+                        return InkWell(
+                          onTap: () => Get.to(() => const LiveClass()),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            margin: const EdgeInsets.only(
+                                left: 3, right: 5, top: 5, bottom: 5),
+                            child: Stack(
+                              children: [
+                                SizedBox(
+                                  width: getHorizontal(context) * 0.8,
+                                  height: getVertical(context) * 0.9,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(5),
+                                    child: Image.network(
+                                      _user.image ?? noImage,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  margin:
+                                      const EdgeInsets.only(left: 5, top: 8),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 5),
+                                  decoration: BoxDecoration(
+                                    color: Colors.amber,
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: Text(
+                                    (_user.country ?? " ").toUpperCase(),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w800,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Container(
+                                    margin:
+                                        const EdgeInsets.only(right: 5, top: 8),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
+                                    decoration: BoxDecoration(
+                                      color: Colors.black12,
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: const [
+                                        Icon(
+                                          Icons.remove_red_eye,
+                                          color: Colors.white,
+                                          size: 18,
+                                        ),
+                                        SizedBox(width: 5),
+                                        Text(
+                                          "0",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 5, bottom: 5),
+                                    child: channelName("Alan Walker Mix"),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: Container(
+                                    margin: const EdgeInsets.only(
+                                        right: 5, bottom: 5),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
+                                    decoration: BoxDecoration(
+                                      color:
+                                          const Color.fromARGB(255, 1, 6, 36),
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: const [
+                                        Text(
+                                          "👏  0",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      });
+                }).toList(),
+              );
+            },
+          ),
         ),
         Align(
           alignment: Alignment.bottomCenter,
@@ -259,56 +309,96 @@ class _LiveUsersState extends State<LiveUsers> {
     );
   }
 
-  Widget listView() {
-    return SizedBox(
-      width: getHorizontal(context) * 0.98,
-      height: getVertical(context) * 0.9,
-      child: ListView.builder(
-          itemCount: 12,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              leading: CircleAvatar(
-                backgroundImage: NetworkImage(
-                  currentUser.value.image ?? noImage,
-                ),
-              ),
-              subtitle: Text(
-                "Korea".toUpperCase(),
-                style: TextStyle(
-                    fontSize: getHorizontal(context) * 0.03,
-                    color: Colors.black),
-              ),
-              title: Text(
-                "Channel Name",
-                style: TextStyle(
-                    fontSize: getHorizontal(context) * 0.05,
-                    color: Colors.black),
-              ),
-              trailing: SizedBox(
-                width: getHorizontal(context) * 0.13,
-                child: Row(
-                  children: const [
-                    Text(
-                      "43",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    Icon(
-                      Icons.remove_red_eye,
-                      color: Colors.black,
-                    ),
-                  ],
-                ),
-              ),
-              onTap: () {},
-            );
-          }),
-    );
-  }
+  // Widget listView() {
+  //   return SizedBox(
+  //     width: getHorizontal(context) * 0.98,
+  //     height: getVertical(context) * 0.9,
+  //     child: StreamBuilder(
+  //       stream: FirebaseFirestore.instance
+  //           .collection("Users")
+  //           .where(
+  //             "uid",
+  //             isNotEqualTo: currentUser.value.uid,
+  //           )
+  //           .snapshots(),
+  //       builder:
+  //           (BuildContext context, AsyncSnapshot<cf.QuerySnapshot> snapshot) {
+  //         if (!snapshot.hasData) {
+  //           return const Center(
+  //             child: Text(
+  //               "No data found",
+  //               style: TextStyle(color: Colors.red),
+  //             ),
+  //           );
+  //         }
+  //         return ListView(
+  //           children: snapshot.data!.docs.map((document) {
+  //             return ListView.builder(
+  //                 itemCount: snapshot.data!.docs.length,
+  //                 itemBuilder: (BuildContext context, int index) {
+  //                   var _user = User.fromMap(snapshot.data!.docs[index].data()
+  //                       as Map<String, dynamic>);
+  //                   return ListTile(
+  //                     leading: CircleAvatar(
+  //                       backgroundImage: NetworkImage(
+  //                         _user.image ?? noImage,
+  //                       ),
+  //                     ),
+  //                     subtitle: Text(
+  //                       _user.country!.toUpperCase(),
+  //                       style: TextStyle(
+  //                           fontSize: getHorizontal(context) * 0.03,
+  //                           color: Colors.black),
+  //                     ),
+  //                     title: Text(
+  //                       _user.name ?? "",
+  //                       style: TextStyle(
+  //                           fontSize: getHorizontal(context) * 0.05,
+  //                           color: Colors.black),
+  //                     ),
+  //                     trailing: SizedBox(
+  //                       width: getHorizontal(context) * 0.13,
+  //                       child: Row(
+  //                         children: const [
+  //                           Text(
+  //                             "0",
+  //                             style: TextStyle(color: Colors.black),
+  //                           ),
+  //                           Icon(
+  //                             Icons.remove_red_eye,
+  //                             color: Colors.black,
+  //                           ),
+  //                         ],
+  //                       ),
+  //                     ),
+  //                     onTap: () {},
+  //                   );
+  //                 });
+  //           }).toList(),
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
 
   void connectionChecker() async {
     bool check = await DataConnectionChecker().hasConnection;
     log("CHeck value is " '$check');
     if (check) {
+      // Scaffold.of(context).showBottomSheet(
+      //   (context) => Builder(
+      //     builder: (BuildContext context) {
+      //       return BottomSheet(
+      //           builder: (BuildContext context) {
+      //             return Container(
+      //               height: 500,
+      //               color: Colors.black,
+      //               child: Text("Please enter the title of your live stream"),
+      //             );
+      //           });
+      //     },
+      //   ),
+      // );
     } else {
       const Dialogg().popUp(context, "No Connection",
           "Please check your internet connection and try again later!", 0);

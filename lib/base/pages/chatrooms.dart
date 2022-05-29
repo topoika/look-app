@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/controllers/chat_controller.dart';
 import 'package:look/base/pages/search.dart';
@@ -39,14 +40,75 @@ class _ChatRoomsState extends StateMVC<ChatRooms> {
             .firstWhere((value) => value.uid != currentUser.value.uid);
         return GestureDetector(
           onTap: (() => Get.to(() => Chat(chatRoom: _chatRoom))),
-          child: ListTile(
-            leading: CircleAvatar(
-              radius: 30.0,
-              backgroundImage: NetworkImage(_otherUser.image ?? noImage),
-              backgroundColor: Colors.transparent,
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            margin: EdgeInsets.symmetric(
+                horizontal: getHorizontal(context) * 0.04, vertical: 5),
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(width: 1.0, color: Colors.black26),
+              ),
             ),
-            title: Text(_otherUser.name ?? ""),
-            subtitle: Text(_chatRoom.lastMessage!.message ?? ""),
+            child: Row(
+              children: <Widget>[
+                CircleAvatar(
+                  radius: 25.0,
+                  backgroundImage: NetworkImage(_otherUser.image ?? noImage),
+                  backgroundColor: Colors.transparent,
+                ),
+                SizedBox(
+                  width: getHorizontal(context) * 0.03,
+                ),
+                SizedBox(
+                  width: getHorizontal(context) * 0.6,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        _otherUser.name ?? "",
+                        maxLines: 1,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 20,
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        _chatRoom.lastMessage!.message ?? "",
+                        maxLines: 1,
+                      ),
+                    ],
+                  ),
+                ),
+                const Spacer(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Theme.of(context).accentColor,
+                      ),
+                      child: const Text(
+                        "10",
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                    const Text(
+                      "2 hours",
+                      style: TextStyle(
+                        color: Colors.black38,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         );
       },

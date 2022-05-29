@@ -1,12 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/controllers/chat_controller.dart';
 import 'package:look/base/models/chat_room_model.dart';
+import 'package:look/base/pages/call.dart';
 import 'package:look/base/repositories/user_repository.dart';
 import 'package:look/constant/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as cf;
 import 'package:mvc_pattern/mvc_pattern.dart';
+
+import '../Helper/strings.dart';
 
 class Chat extends StatefulWidget {
   final ChatRoom chatRoom;
@@ -58,7 +62,7 @@ class _ChatState extends StateMVC<Chat> {
                 child: MessageTile(
                   message: document['message'].toString(),
                   sendByMe: currentUser.value.uid ==
-                      document['sendBy']['uid'].toString(),
+                      document['recieved']['uid'].toString(),
                 ),
               );
             }).toList(),
@@ -74,75 +78,109 @@ class _ChatState extends StateMVC<Chat> {
       fontSize: getHorizontal(context) * 0.041,
       fontWeight: FontWeight.bold,
     );
+    var _otherUser = widget.chatRoom.involved!
+        .firstWhere((value) => value.uid != currentUser.value.uid);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        centerTitle: false,
-        leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios),
-            color: theme().mPurple,
-            onPressed: () {
-              Navigator.of(context).pop();
-            }),
-        title: Text(
-          "Test ChatRoom",
-          style: TextStyle(color: theme().mPurple),
-        ),
-      ),
-      body: Stack(
-        children: [
-          chatMessages(),
-          Container(
-            alignment: Alignment.bottomCenter,
-            width: MediaQuery.of(context).size.width,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-              color: const Color(0x54FFFFFF),
-              child: Row(
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          centerTitle: false,
+          leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios),
+              color: theme().mPurple,
+              onPressed: () {
+                Navigator.of(context).pop();
+              }),
+          leadingWidth: 30,
+          title: Row(
+            children: <Widget>[
+              CircleAvatar(
+                radius: 25.0,
+                backgroundImage: NetworkImage(_otherUser.image ?? noImage),
+                backgroundColor: Colors.transparent,
+              ),
+              SizedBox(
+                width: getHorizontal(context) * 0.03,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                      child: TextField(
-                    controller: messageText,
-                    style: textstyle,
-                    decoration: InputDecoration(
-                        hintText: "Type Message ...",
-                        hintStyle: TextStyle(
-                          color: Colors.grey[700],
-                          fontSize: 16,
-                        ),
-                        border: InputBorder.none),
-                  )),
-                  const SizedBox(
-                    width: 16,
+                  Text(
+                    _otherUser.name ?? "",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 20,
+                        color: Colors.black),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      _con.addMessage(
-                          messageText.text,
-                          widget.chatRoom.involved!.firstWhere((element) =>
-                              element.uid != currentUser.value.uid));
-                    },
-                    child: Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                                colors: [Color(0x36FFFFFF), Color(0x0FFFFFFF)],
-                                begin: FractionalOffset.topLeft,
-                                end: FractionalOffset.bottomRight),
-                            borderRadius: BorderRadius.circular(40)),
-                        padding: const EdgeInsets.all(12),
-                        child: IconButton(
-                          icon: const Icon(
-                            Icons.send,
-                            color: Colors.black,
-                          ),
-                          onPressed: () {},
-                        )),
-                  )
+                  SizedBox(
+                    height: getHorizontal(context) * 0.01,
+                  ),
+                  Text(
+                    _otherUser.location ?? "",
+                    style: const TextStyle(
+                        color: Colors.black87,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14),
+                  ),
                 ],
               ),
+            ],
+          ),
+          actions: [
+            GestureDetector(
+              onTap: () => Get.to(() => const CallPage()),
+              child: Icon(Icons.video_call,
+                  color: theme().mPurple, size: getHorizontal(context) * 0.09),
+            ),
+            SizedBox(
+              width: getHorizontal(context) * 0.03,
+            ),
+          ]),
+      body: Column(
+        children: [
+          Expanded(child: chatMessages()),
+          Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+            margin:
+                EdgeInsets.symmetric(horizontal: getHorizontal(context) * 0.02),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.black.withOpacity(.2),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                    child: TextField(
+                  controller: messageText,
+                  style: textstyle,
+                  decoration: InputDecoration(
+                      hintText: "Type Message ...",
+                      hintStyle: TextStyle(
+                        color: Colors.grey[700],
+                        fontSize: 16,
+                      ),
+                      border: InputBorder.none),
+                )),
+                const SizedBox(
+                  width: 16,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    _con.addMessage(
+                        messageText.text,
+                        widget.chatRoom.involved!.firstWhere(
+                            (element) => element.uid != currentUser.value.uid),
+                        widget.chatRoom.id ?? "");
+                    messageText.clear();
+                  },
+                  child: const Icon(
+                    Icons.send,
+                    color: Colors.black,
+                  ),
+                )
+              ],
             ),
           ),
         ],

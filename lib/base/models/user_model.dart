@@ -18,6 +18,8 @@ class User {
   String? drinking;
   String? smoking;
   String? eating;
+  int? videoRate;
+  int? smsRate;
   List<String>? interests;
   User({
     this.uid,
@@ -39,6 +41,8 @@ class User {
     this.drinking,
     this.smoking,
     this.eating,
+    this.videoRate,
+    this.smsRate,
     this.interests,
   });
 
@@ -63,6 +67,8 @@ class User {
       'drinking': drinking,
       'smoking': smoking,
       'eating': eating,
+      'videoRate': videoRate,
+      'smsRate': smsRate,
       'interests': interests,
     };
   }
@@ -88,6 +94,8 @@ class User {
       drinking: map['drinking'],
       smoking: map['smoking'],
       eating: map['eating'],
+      videoRate: map['videoRate'],
+      smsRate: map['smsRate'],
       interests:
           map['interests'] != null ? List<String>.from(map['interests']) : null,
     );

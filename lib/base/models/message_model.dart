@@ -6,7 +6,7 @@ class Message {
   String? time;
   User? sendBy;
   User? recieved;
-  List<String>? deleteBy;
+  List<dynamic>? deleteBy;
   Message({
     this.id,
     this.message,
@@ -39,7 +39,7 @@ class Message {
           ? User.fromMap(map['recieved'] as Map<String, dynamic>)
           : null,
       deleteBy: map['deleteBy'] != null
-          ? List<String>.from((map['deleteBy'] as List<String>))
+          ? List<dynamic>.from((map['deleteBy'] as List<dynamic>))
           : null,
     );
   }

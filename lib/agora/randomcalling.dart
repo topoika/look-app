@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:look/agora/liveclass.dart';
+import 'package:look/base/pages/liveclass.dart';
 import 'package:look/constant/dailog.dart';
 import 'package:look/constant/theme.dart';
 import 'package:look/constant/variables.dart';

@@ -1,14 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {
-  getUserChats(String itIsMyName) async {
-    return FirebaseFirestore.instance
-        .collection("chatRoom")
-        .where('usersData', arrayContains: itIsMyName)
-        .snapshots();
-  }
-
-//   // ignore: missing_return
   Future<void> addMessage(String chatRoomId, chatMessageData) async {
     await FirebaseFirestore.instance
         .collection("chatRoom")

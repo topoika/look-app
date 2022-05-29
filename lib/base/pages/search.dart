@@ -94,6 +94,9 @@ class _SearchState extends StateMVC<Search> {
                     child: TextField(
                       controller: searchText,
                       style: textstyle,
+                      onChanged: (val) {
+                        _con.initiateSearch(searchText.text);
+                      },
                       decoration: InputDecoration(
                           hintText: S.of(context).search_username + "...",
                           hintStyle: TextStyle(

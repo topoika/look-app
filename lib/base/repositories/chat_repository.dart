@@ -19,6 +19,14 @@ Future<void> addNewMessage(Message _message, String roomId) async {
       .doc(roomId)
       .collection("chats")
       .add(_message.toMap());
+  updateLastMessage(_message, roomId);
+}
+
+Future<void> updateLastMessage(Message _message, String roomId) async {
+  await firebaseFirestore
+      .collection("chatRoom")
+      .doc(roomId)
+      .update({"lastMessage": _message.toMap()});
 }
 
 getChats(String chatRoomId) async {

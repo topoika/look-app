@@ -11,11 +11,6 @@ import './../models/user_model.dart' as userModel;
 class SearchController extends ControllerMVC {
   List<userModel.User> searchResult = <userModel.User>[];
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-  @override
-  void initState() {
-    initiateSearch("davie~~");
-    super.initState();
-  }
 
   void initiateSearch(String searchText) async {
     setState(() => searchResult.clear());
@@ -36,10 +31,12 @@ class SearchController extends ControllerMVC {
 
   sendMessage(userModel.User otherUser) {
     ChatRoom _chatroom = ChatRoom();
+    Message _message = Message();
     _chatroom.deletedBy = [];
     _chatroom.involes = [currentUser.value.uid ?? "", otherUser.uid ?? ""];
     _chatroom.involved = [currentUser.value, otherUser];
-    _chatroom.lastMessage = Message.fromMap({});
+    _chatroom.lastMessage = _message;
+    _message.message = "This is a new conversation";
     _chatroom.lastUpdated = DateTime.now();
     addChatRoom(_chatroom).then((value) => Get.to(() => Chat(chatRoom: value)));
   }

@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:look/base/models/chat_room_model.dart';
 import 'package:look/base/models/message_model.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -12,14 +9,14 @@ import './../models/user_model.dart' as userModel;
 class ChatController extends ControllerMVC {
   final userModel.User _user = currentUser.value;
   List<ChatRoom> userChatRooms = <ChatRoom>[];
-  addMessage(String textMessage, userModel.User reciever) {
+  addMessage(String textMessage, userModel.User reciever, String roomId) {
     Message _message = Message();
-    _message.id = FieldPath.documentId as String?;
     _message.message = textMessage;
-    _message.time = FieldValue.serverTimestamp() as String?;
+    _message.time = DateTime.now().toString();
     _message.sendBy = _user;
     _message.recieved = reciever;
-    addNewMessage(_message, 'TextRoomId');
+    _message.deleteBy = [];
+    addNewMessage(_message, roomId);
   }
 
   listenForChatRooms() async {

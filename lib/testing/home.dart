@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:look/testing/liveclass.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -12,55 +10,44 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-
   @override
   Widget build(BuildContext context) {
-
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
 
     return Scaffold(
-
       body: SingleChildScrollView(
         child: Column(
           children: [
             SizedBox(
-              width: w*1,
-              height: h*0.3,
+              width: w * 1,
+              height: h * 0.3,
               child: GridView(
                 padding: const EdgeInsets.all(25),
                 children: [
-                 TextButton(
-                   onPressed: (){},
-                   child:  buildContainer('Maths', Colors.amber),
-                 ),
                   TextButton(
-                    onPressed: (){
-
-                    },
-                    child:  buildContainer( 'Chemistry', Colors.indigo),
+                    onPressed: () {},
+                    child: buildContainer('Maths', Colors.amber),
                   ),
                   TextButton(
-                      onPressed: (){
-
-
-                      },
-                      child:    buildContainer('Physics', Colors.lime),
+                    onPressed: () {},
+                    child: buildContainer('Chemistry', Colors.indigo),
                   ),
                   TextButton(
-                    onPressed: (){},
-                    child:    buildContainer('Biology', Colors.black12),
+                    onPressed: () {},
+                    child: buildContainer('Physics', Colors.lime),
                   ),
                   TextButton(
-                    onPressed: (){},
-                    child:
-                    buildContainer('English', Colors.deepPurple),
+                    onPressed: () {},
+                    child: buildContainer('Biology', Colors.black12),
                   ),
                   TextButton(
-                    onPressed: (){},
-                    child:
-                    buildContainer('History', Colors.deepOrange),
+                    onPressed: () {},
+                    child: buildContainer('English', Colors.deepPurple),
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: buildContainer('History', Colors.deepOrange),
                   ),
                 ],
                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -72,13 +59,10 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             TextButton(
-              onPressed: () {
-                onjoin();
-
-              },
+              onPressed: () {},
               child: Text("Join ",
                   style: TextStyle(
-                      fontSize: w*0.050,
+                      fontSize: w * 0.050,
                       fontWeight: FontWeight.bold,
                       color: Colors.red,
                       fontFamily: 'PopR')),
@@ -93,32 +77,29 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.blue,
                 border: Border.all(
                   // color: Colors.transparent,
-                  color:Colors.pinkAccent,
+                  color: Colors.pinkAccent,
                   width: 3.0,
                 ),
                 borderRadius: const BorderRadius.all(Radius.circular(
-                    25.0) //                 <--- border radius here
-                ),
+                        25.0) //                 <--- border radius here
+                    ),
               ),
               child: TextButton(
-                onPressed: () {
-                  onJoin();
-
-                },
+                onPressed: () {},
                 child: Text("Go Live",
                     style: TextStyle(
-                        fontSize: w*0.050,
+                        fontSize: w * 0.050,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                         fontFamily: 'PopR')),
               ),
             ),
-
           ],
         ),
       ),
     );
   }
+
   Widget buildContainer(String screenName, Color clr) {
     return Container(
       height: 200,
@@ -134,14 +115,14 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-  Future<void> onJoin() async
-  {
-    await [Permission.camera,Permission.microphone].request();
-    Get.to(const LiveClass(channelName:"Khan",isBroadcaster:true));
-  }
-  Future<void> onjoin() async
-  {
-    await [Permission.camera,Permission.microphone].request();
-    Get.to(const LiveClass(channelName:"Khan",isBroadcaster:false));
-  }
+  // Future<void> onJoin() async
+  // {
+  //   await [Permission.camera,Permission.microphone].request();
+  //   Get.to(const LiveClass(channelName:"Khan",isBroadcaster:true));
+  // }
+  // Future<void> onjoin() async
+  // {
+  //   await [Permission.camera,Permission.microphone].request();
+  //   Get.to(const LiveClass(channelName:"Khan",isBroadcaster:false));
+  // }
 }
