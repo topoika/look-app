@@ -62,9 +62,8 @@ class _AwardState extends State<Award> {
                 color: theme().mC,
               ),
               child: Text(
-                "        Free Recharge\n          Daily Task",
+                S.of(context).free_recharge + "\n" + S.of(context).daily_task,
                 style: TextStyle(
-                    fontFamily: 'PopB',
                     fontSize: getHorizontal(context) * 0.05,
                     color: Colors.black),
               ),
@@ -92,6 +91,9 @@ class _AwardState extends State<Award> {
                   },
                   child: cont(10),
                 ),
+                cont(20),
+                cont(20),
+                cont(20),
                 InkWell(
                     onTap: () async {
                       // await FirebaseFirestore.instance
@@ -148,7 +150,6 @@ class _AwardState extends State<Award> {
                 child: Text(
                   S.of(context).points_recharge,
                   style: TextStyle(
-                      fontFamily: 'PopB',
                       fontSize: getHorizontal(context) * 0.05,
                       color: Colors.black),
                 ),
@@ -172,7 +173,7 @@ class _AwardState extends State<Award> {
           width: getHorizontal(context) * 0.179,
           height: getVertical(context) * 0.2,
           child: Image.asset(
-            "assets/award.PNG",
+            award,
             fit: BoxFit.cover,
           ),
         ),
@@ -193,7 +194,7 @@ class _AwardState extends State<Award> {
           width: getHorizontal(context) * 0.179,
           height: getVertical(context) * 0.2,
           child: Image.asset(
-            "assets/award.PNG",
+            award,
             fit: BoxFit.cover,
           ),
         ),

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:look/base/Helper/dimension.dart';
 
-import 'package:look/constant/variables.dart';
-
 class ModifyInterests extends StatefulWidget {
   const ModifyInterests({Key? key}) : super(key: key);
 
@@ -27,7 +25,6 @@ class _ModifyInterestsState extends State<ModifyInterests> {
                   children: [
                     IconButton(
                       onPressed: () {
-                        ModifyINTERESTS = myInterests;
                         final snackBar = SnackBar(
                           margin: const EdgeInsets.all(20),
                           behavior: SnackBarBehavior.floating,
@@ -51,7 +48,6 @@ class _ModifyInterestsState extends State<ModifyInterests> {
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: getHorizontal(context) * 0.05,
-                          fontFamily: "PopZ",
                           color: Colors.black87),
                     ),
                   ],
@@ -204,7 +200,6 @@ class _ModifyInterestsState extends State<ModifyInterests> {
   }
 
   Widget choices1(String txt) {
-    double h = MediaQuery.of(context).size.height;
     return InkWell(
       onTap: () {
         if (myInterests.length < 5) {
@@ -230,7 +225,7 @@ class _ModifyInterestsState extends State<ModifyInterests> {
             (txt == "camping") ? 1 : getHorizontal(context) * 0.01),
         padding: EdgeInsets.only(
             top: 4,
-            bottom: h * 0.004,
+            bottom: getVertical(context) * 0.004,
             left: (txt == "camping") ? 0 : 7,
             right: (txt == "camping") ? 0 : 7),
         decoration: BoxDecoration(

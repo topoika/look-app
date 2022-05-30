@@ -46,70 +46,79 @@ class _DrinkingState extends State<Drinking> {
                 ],
               ),
               Text(
-                "Drinking",
+                S.of(context).drinking,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: getHorizontal(context) * 0.05,
                     color: Colors.black54),
               ),
               TextButton(
-                  onPressed: () => setUserSmoking("Non Drinker", 1),
+                  onPressed: () => setUserSmoking(S.of(context).non_drinker, 1),
                   child: choices(
-                      "Non Drinker",
+                      S.of(context).non_drinker,
                       currentUser.value.drinking != null &&
-                              currentUser.value.drinking == "Non Drinker"
+                              currentUser.value.drinking ==
+                                  S.of(context).non_drinker
                           ? Colors.red
                           : Colors.black45)),
               TextButton(
-                  onPressed: () => setUserSmoking("Social Drinker", 1),
+                  onPressed: () =>
+                      setUserSmoking(S.of(context).social_drinker, 1),
                   child: choices(
-                      "Social Drinker",
+                      S.of(context).social_drinker,
                       currentUser.value.drinking != null &&
-                              currentUser.value.drinking == "Social Drinker"
+                              currentUser.value.drinking ==
+                                  S.of(context).social_drinker
                           ? Colors.red
                           : Colors.black45)),
               TextButton(
-                  onPressed: () => setUserSmoking("Heavy Drinker", 1),
+                  onPressed: () =>
+                      setUserSmoking(S.of(context).heavy_drinker, 1),
                   child: choices(
-                      "Heavy Drinker",
+                      S.of(context).heavy_drinker,
                       currentUser.value.drinking != null &&
-                              currentUser.value.drinking == "Heavy Drinker"
+                              currentUser.value.drinking ==
+                                  S.of(context).heavy_drinker
                           ? Colors.red
                           : Colors.black45)),
               Text(
-                "\nSmoking",
+                S.of(context).smoking,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: getHorizontal(context) * 0.05,
-                    fontFamily: "PopZ",
                     color: Colors.black54),
               ),
               TextButton(
-                  onPressed: () => setUserSmoking("Non Smoker", 2),
+                  onPressed: () => setUserSmoking(S.of(context).non_smoker, 2),
                   child: choices(
-                      "Non Smoker",
+                      S.of(context).non_smoker,
                       currentUser.value.smoking != null &&
-                              currentUser.value.smoking == "Non Smoker"
+                              currentUser.value.smoking ==
+                                  S.of(context).non_smoker
                           ? Colors.red
                           : Colors.black45)),
               TextButton(
-                  onPressed: () => setUserSmoking("Lighter Smoker", 2),
+                  onPressed: () =>
+                      setUserSmoking(S.of(context).lighter_smoker, 2),
                   child: choices(
-                      "Lighter Smoker",
+                      S.of(context).lighter_smoker,
                       currentUser.value.smoking != null &&
-                              currentUser.value.smoking == "Lighter Smoker"
+                              currentUser.value.smoking ==
+                                  S.of(context).lighter_smoker
                           ? Colors.red
                           : Colors.black45)),
               TextButton(
-                  onPressed: () => setUserSmoking("Heavy Smoker", 2),
+                  onPressed: () =>
+                      setUserSmoking(S.of(context).heavy_smoker, 2),
                   child: choices(
-                      "Heavy Smoker",
+                      S.of(context).heavy_smoker,
                       currentUser.value.smoking != null &&
-                              currentUser.value.smoking == "Heavy Smoker"
+                              currentUser.value.smoking ==
+                                  S.of(context).heavy_smoker
                           ? Colors.red
                           : Colors.black45)),
               Text(
-                "\nEating",
+                S.of(context).eating,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: getHorizontal(context) * 0.05,
@@ -117,22 +126,23 @@ class _DrinkingState extends State<Drinking> {
               ),
               TextButton(
                   onPressed: () {
-                    setUserSmoking("Vegan", 3);
+                    setUserSmoking(S.of(context).vegan, 3);
                   },
                   child: choices(
-                      "Vegan",
+                      S.of(context).vegan,
                       currentUser.value.eating != null &&
-                              currentUser.value.eating == "Vegan"
+                              currentUser.value.eating == S.of(context).vegan
                           ? Colors.red
                           : Colors.black45)),
               TextButton(
                   onPressed: () {
-                    setUserSmoking("Vegetrian", 3);
+                    setUserSmoking(S.of(context).vegeterian, 3);
                   },
                   child: choices(
-                      "Vegetrian",
+                      S.of(context).vegeterian,
                       currentUser.value.eating != null &&
-                              currentUser.value.eating == "Vegetrian"
+                              currentUser.value.eating ==
+                                  S.of(context).vegeterian
                           ? Colors.red
                           : Colors.black45)),
             ],

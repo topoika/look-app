@@ -1,11 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/strings.dart';
 import 'package:look/constant/theme.dart';
-import 'package:look/constant/variables.dart';
-import 'package:look/profile/modifyinterests.dart';
+import 'package:look/base/pages/modifyinterests.dart';
 
 import '../../models/user_model.dart';
 import '../../repositories/user_repository.dart';

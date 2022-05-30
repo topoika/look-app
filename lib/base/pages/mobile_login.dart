@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/repositories/user_repository.dart';
@@ -25,14 +24,8 @@ class _MobilePhoneLoginState extends StateMVC<MobilePhoneLogin> {
   final TextEditingController _phone = TextEditingController();
   final GlobalKey<FormState> _phoneFormKey = GlobalKey();
   String country = "Korea";
+  String countryCode = "+82";
   @override
-  void initState() {
-    setState(() {
-      _phone.text = "+82";
-    });
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,7 +101,6 @@ class _MobilePhoneLoginState extends StateMVC<MobilePhoneLogin> {
                           child: TextFormField(
                             controller: _phone,
                             keyboardType: TextInputType.number,
-                            inputFormatters: [PhoneInputFormatter()],
                             decoration: InputDecoration(
                               hintText: S.of(context).phone_number,
                               hintStyle:
@@ -123,6 +115,7 @@ class _MobilePhoneLoginState extends StateMVC<MobilePhoneLogin> {
                                     .of(context)
                                     .please_enter_a_correct_phone_number;
                               }
+                              return null;
                             },
                           ),
                         ),
@@ -146,11 +139,10 @@ class _MobilePhoneLoginState extends StateMVC<MobilePhoneLogin> {
                       buttonWidget(context, () {
                         if (_phoneFormKey.currentState!.validate()) {
                           currentUser.value.country = country;
-                          phoneLogin(_phone.text, context);
+                          phoneLogin(_phone.text.replaceFirst("0", countryCode),
+                              context);
                         }
-
-                        log("Hello World");
-                      }, "Next"),
+                      }, S.of(context).next),
                     ],
                   ),
                 ),

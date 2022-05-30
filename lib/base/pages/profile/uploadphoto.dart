@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:look/base/pages/utils/button.dart';
 import 'package:look/constant/theme.dart';
-import 'package:look/constant/variables.dart';
 import 'package:look/base/pages/profile/education.dart';
 
 import '../../../generated/l10n.dart';
@@ -210,7 +209,7 @@ class _UploadPhotoState extends State<UploadPhoto> {
   Future chooseFile() async {
     final pickedFile = await ImagePicker().pickImage(
         source: ImageSource.gallery,
-        imageQuality: 70,
+        imageQuality: 90,
         maxHeight: 600,
         preferredCameraDevice: CameraDevice.front,
         maxWidth: 500);
@@ -218,7 +217,6 @@ class _UploadPhotoState extends State<UploadPhoto> {
       setState(() {
         selImage = true;
         _image = File(pickedFile.path);
-        PHOTO = _image;
       });
     } else {}
   }

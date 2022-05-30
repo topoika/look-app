@@ -1,6 +1,4 @@
-import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as cf;
 
 import 'package:flutter/material.dart';
@@ -8,8 +6,6 @@ import 'package:get/get.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/pages/utils/custom_containers.dart';
 import 'package:look/base/repositories/user_repository.dart';
-import 'package:look/constant/dailog.dart';
-import 'package:look/env.dart';
 
 import '../../generated/l10n.dart';
 import '../Helper/strings.dart';
@@ -382,26 +378,26 @@ class _LiveUsersState extends State<LiveUsers> {
   // }
 
   void connectionChecker() async {
-    bool check = await DataConnectionChecker().hasConnection;
-    log("CHeck value is " '$check');
-    if (check) {
-      // Scaffold.of(context).showBottomSheet(
-      //   (context) => Builder(
-      //     builder: (BuildContext context) {
-      //       return BottomSheet(
-      //           builder: (BuildContext context) {
-      //             return Container(
-      //               height: 500,
-      //               color: Colors.black,
-      //               child: Text("Please enter the title of your live stream"),
-      //             );
-      //           });
-      //     },
-      //   ),
-      // );
-    } else {
-      const Dialogg().popUp(context, "No Connection",
-          "Please check your internet connection and try again later!", 0);
-    }
+    // bool check = await DataConnectionChecker().hasConnection;
+    // log("CHeck value is " '$check');
+    // if (check) {
+    //   // Scaffold.of(context).showBottomSheet(
+    //   //   (context) => Builder(
+    //   //     builder: (BuildContext context) {
+    //   //       return BottomSheet(
+    //   //           builder: (BuildContext context) {
+    //   //             return Container(
+    //   //               height: 500,
+    //   //               color: Colors.black,
+    //   //               child: Text("Please enter the title of your live stream"),
+    //   //             );
+    //   //           });
+    //   //     },
+    //   //   ),
+    //   // );
+    // } else {
+    //   const Dialogg().popUp(context, "No Connection",
+    //       "Please check your internet connection and try again later!", 0);
+    // }
   }
 }

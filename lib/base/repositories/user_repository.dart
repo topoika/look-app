@@ -18,12 +18,12 @@ final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final FirebaseAuth auth = FirebaseAuth.instance;
 
 ValueNotifier<userModel.User> currentUser = ValueNotifier(userModel.User());
-const liveCollection = 'liveuser';
+// const liveCollection = 'liveuser';
 const userCollection = 'Users';
-const emailCollection = 'emails_to_approve';
-const emailCollectionStudents = 'students_emails_to_approve';
-const approvedCollection = 'Approved_users';
-const approvedCollectionStudents = 'students_Approved_users';
+// const emailCollection = 'emails_to_approve';
+// const emailCollectionStudents = 'students_emails_to_approve';
+// const approvedCollection = 'Approved_users';
+// const approvedCollectionStudents = 'students_Approved_users';
 OverlayEntry loader = OverlayEntry(
   builder: (BuildContext context) {
     return SafeArea(
@@ -46,7 +46,6 @@ Future<userModel.User> getUser(String id) async {
       .get()
       .then((value) {
     currentUser.value = userModel.User.fromMap(value.data());
-    log(value.data().toString());
     currentUser.notifyListeners();
     log(currentUser.value.toMap().toString());
     return currentUser.value;
@@ -54,29 +53,22 @@ Future<userModel.User> getUser(String id) async {
 }
 
 Future<userModel.User> registerUser(userModel.User user) async {
-  var contained =
-      await _firestore.collection(userCollection).doc(user.uid).get();
-  currentUser.value = contained.exists
-      ? await _firestore
+  // var contained =
+  //     await _firestore.collection(userCollection).doc(user.uid).get();
+  await _firestore
+      .collection(userCollection)
+      .doc(user.uid)
+      .set(user.toMap())
+      .then((value) async => await _firestore
           .collection(userCollection)
           .doc(user.uid)
           .get()
-          .then((value) => userModel.User.fromMap(value.data()))
-      : await _firestore
-          .collection(userCollection)
-          .doc(user.uid)
-          .set(user.toMap())
-          .then((value) async => await _firestore
-              .collection(userCollection)
-              .doc(user.uid)
-              .get()
-              .then((value) => userModel.User.fromMap(value.data())));
+          .then((value) => userModel.User.fromMap(value.data())));
   currentUser.notifyListeners();
   return currentUser.value;
 }
 
 Future<userModel.User> updateUser(userModel.User user) async {
-  log(user.uid ?? "sdsds");
   await _firestore
       .collection(userCollection)
       .doc(user.uid)
@@ -115,6 +107,7 @@ Future<void> profilePhoto({photo, email}) async {
 }
 
 Future phoneLogin(String mobile, BuildContext context) async {
+  Overlay.of(context)!.insert(loader);
   auth.verifyPhoneNumber(
     phoneNumber: mobile,
     timeout: const Duration(seconds: 60),
@@ -126,13 +119,16 @@ Future phoneLogin(String mobile, BuildContext context) async {
       ));
     },
     verificationFailed: (FirebaseAuthException authException) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Verification Fialed'),
-        backgroundColor: Colors.redAccent,
-        duration: Duration(seconds: 3),
-      ));
+      Helper.hideLoader(loader);
+
+      // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      //   content: Text('Verification Fialed'),
+      //   backgroundColor: Colors.redAccent,
+      //   duration: Duration(seconds: 3),
+      // ));
     },
     codeSent: (String verificationId, int? forceResendingToken) {
+      Helper.hideLoader(loader);
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -143,6 +139,7 @@ Future phoneLogin(String mobile, BuildContext context) async {
       );
     },
     codeAutoRetrievalTimeout: (String verificationId) {
+      Helper.hideLoader(loader);
       verificationId = verificationId;
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Verification TimeOut'),
@@ -155,15 +152,18 @@ Future phoneLogin(String mobile, BuildContext context) async {
 
 Future verifyPhone(
     String verificationCode, String smscode, BuildContext context) async {
+  Overlay.of(context)!.insert(loader);
   var _credential = PhoneAuthProvider.credential(
       verificationId: verificationCode, smsCode: smscode.trim());
   await auth.signInWithCredential(_credential).then((value) {
     if (value.user != null) {
+      Helper.hideLoader(loader);
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => const TermsAndCondition(val: true)));
     } else {
+      Helper.hideLoader(loader);
       Scaffold.of(context)
           .showSnackBar(const SnackBar(content: Text("Verification Failer")));
     }

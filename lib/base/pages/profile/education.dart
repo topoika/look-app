@@ -1,10 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/repositories/user_repository.dart';
-import 'package:look/constant/variables.dart';
 import 'package:look/generated/l10n.dart';
+import '../utils/titles.dart';
 import 'marital.dart';
 
 class Education extends StatefulWidget {
@@ -17,8 +16,6 @@ class Education extends StatefulWidget {
 class _EducationState extends State<Education> {
   @override
   Widget build(BuildContext context) {
-    double w = MediaQuery.of(context).size.width;
-
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -36,35 +33,26 @@ class _EducationState extends State<Education> {
                   ),
                   TextButton(
                       onPressed: () {
-                        EDUCATION = "Not Selected";
                         Get.to(() => const MaritalStatus());
                       },
-                      child: Text(
-                        "Skip    ",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: w * 0.05,
-                            fontFamily: "PopZ",
-                            color: Colors.black45),
-                      ))
+                      child: skiptText(context))
                 ],
               ),
               Text(
-                "What is Your Education?\n",
+                S.of(context).what_is_your_education,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: w * 0.05,
-                    fontFamily: "PopZ",
+                    fontSize: getHorizontal(context) * 0.05,
                     color: Colors.black45),
               ),
-              choices("None", w),
-              choices("High School", w),
-              choices("College", w),
-              choices("Bachelor Degree", w),
-              choices("Post Graduate", w),
-              choices("Master", w),
-              choices("Phd/Doctorate", w),
-              choices("Post Doctorate", w),
+              choices(S.of(context).none),
+              choices(S.of(context).high_school),
+              choices(S.of(context).college),
+              choices(S.of(context).bachelor_degree),
+              choices(S.of(context).post_graduate),
+              choices(S.of(context).masters),
+              choices(S.of(context).phd),
+              choices(S.of(context).post_doctorate),
             ],
           ),
         ),
@@ -72,7 +60,7 @@ class _EducationState extends State<Education> {
     );
   }
 
-  Widget choices(String txt, double w) {
+  Widget choices(String txt) {
     return InkWell(
       onTap: () {
         setState(() {
@@ -84,7 +72,7 @@ class _EducationState extends State<Education> {
       child: Container(
         margin: const EdgeInsets.all(15),
         padding: const EdgeInsets.all(10),
-        width: w * 0.8,
+        width: getHorizontal(context) * 0.8,
         decoration: BoxDecoration(
           border: Border.all(
               color: currentUser.value.education != null &&

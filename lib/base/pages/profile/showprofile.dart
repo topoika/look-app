@@ -133,11 +133,15 @@ class _MyProfileState extends State<MyProfile> {
                       ),
                       InkWell(
                         onTap: () {},
-                        child: cont(inquiry, "Settings"),
+                        child: cont(invitee, S.of(context).transaction_history),
                       ),
                       InkWell(
                         onTap: () {},
-                        child: cont(invitee, "Transaction History"),
+                        child: cont(invitee, S.of(context).transaction_history),
+                      ),
+                      InkWell(
+                        onTap: () {},
+                        child: cont(invitee, S.of(context).transaction_history),
                       ),
                       InkWell(
                           onTap: () => Get.to(() => const Recharge()),

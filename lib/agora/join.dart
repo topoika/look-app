@@ -8,7 +8,6 @@ import 'package:agora_rtc_engine/rtc_local_view.dart' as rtc_local_view;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
 import 'package:get/get.dart';
 import 'package:look/constant/theme.dart';
-import 'package:look/constant/variables.dart';
 import 'package:look/base/pages/liveusers.dart';
 
 class Join extends StatefulWidget {
@@ -66,7 +65,6 @@ class _JoinState extends State<Join> {
 
   void getData() async {
     try {
-      JOINCURRENTCHANNEL = widget.channelName;
       result = await FirebaseFirestore.instance
           .collection('channels')
           .doc(widget.channelName)
@@ -442,10 +440,12 @@ class _JoinState extends State<Join> {
   /// Helper function to get list of native views
   List<Widget> _getRenderViews() {
     final List<StatefulWidget> list = [];
-    list.add(rtc_local_view.SurfaceView(channelId: "sjdljsdl",));
+    list.add(rtc_local_view.SurfaceView(
+      channelId: "sjdljsdl",
+    ));
 
     for (var uid in _users) {
-      list.add(rtc_remote_view.SurfaceView(uid: uid,channelId:"hdhskdjks"));
+      list.add(rtc_remote_view.SurfaceView(uid: uid, channelId: "hdhskdjks"));
     }
     return list;
   }
@@ -506,7 +506,6 @@ class _JoinState extends State<Join> {
           .update({
         'viewers': viewers - 1,
       });
-      JOINCURRENTCHANNEL = '';
 
       Get.to(() => const LiveUsers());
     } catch (e) {

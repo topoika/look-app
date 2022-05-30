@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/models/user_model.dart';
 import 'package:look/constant/dailog.dart';
-import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as cf;
 
 import '../Helper/strings.dart';
@@ -338,12 +337,12 @@ class _VideoCallsState extends State<VideoCalls> {
   //   );
   // }
 
-  void connectionChecker() async {
-    bool check = await DataConnectionChecker().hasConnection;
-    if (check) {
-    } else {
-      const Dialogg().popUp(context, "No Connection",
-          "Please check your internet connection and try again later!", 0);
-    }
-  }
+  // void d() async {
+  //   bool check = await DataConnectionChecker().hasConnection;
+  //   if (check) {
+  //   } else {
+  //     const Dialogg().popUp(context, "No Connection",
+  //         "Please check your internet connection and try again later!", 0);
+  //   }
+  // }
 }

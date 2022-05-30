@@ -2,12 +2,11 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/pages/liveclass.dart';
 import 'package:look/constant/dailog.dart';
 import 'package:look/constant/theme.dart';
-import 'package:look/constant/variables.dart';
 import 'package:look/base/pages/liveusers.dart';
 
 class RandomCalling extends StatefulWidget {
@@ -51,9 +50,6 @@ class _RandomCallingState extends State<RandomCalling> {
 
   @override
   Widget build(BuildContext context) {
-    double w = MediaQuery.of(context).size.width;
-    double h = MediaQuery.of(context).size.height;
-
     return WillPopScope(
       onWillPop: _onWillPop,
       child: SafeArea(
@@ -61,8 +57,8 @@ class _RandomCallingState extends State<RandomCalling> {
           backgroundColor: const Color(0xff5EEFC9),
           body: SingleChildScrollView(
             child: SizedBox(
-                width: w * 1,
-                height: h * 1,
+                width: getHorizontal(context) * 1,
+                height: getVertical(context) * 1,
                 child: (otherUserName == '')
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -73,36 +69,37 @@ class _RandomCallingState extends State<RandomCalling> {
                               Text(
                                 '             Searching for a User   ',
                                 style: TextStyle(
-                                    fontSize: w * 0.05, fontFamily: 'PopB'),
+                                  fontSize: getHorizontal(context) * 0.05,
+                                ),
                               ),
-                              const SpinKitThreeBounce(
-                                color: Colors.red,
-                                size: 30.0,
-                              ),
+                              // const SpinKitThreeBounce(
+                              //   color: Colors.red,
+                              //   size: 30.0,
+                              // ),
                             ],
                           ),
                           Stack(
                             children: [
                               Center(
                                 child: SizedBox(
-                                  width: w * 0.35,
-                                  height: h * 0.4,
+                                  width: getHorizontal(context) * 0.35,
+                                  height: getVertical(context) * 0.4,
                                   child: CircleAvatar(
                                     backgroundImage:
                                         NetworkImage(widget.currentUserImage),
                                   ),
                                 ),
                               ),
-                              Center(
-                                child: SizedBox(
-                                  width: w * 0.4,
-                                  height: h * 0.4,
-                                  child: SpinKitSpinningLines(
-                                    color: const Color(0xffFC0A0A),
-                                    size: w * 0.8,
-                                  ),
-                                ),
-                              ),
+                              // Center(
+                              //   child: SizedBox(
+                              //     width: getHorizontal(context) * 0.4,
+                              //     height: getVertical(context) * 0.4,
+                              //     child: SpinKitSpinningLines(
+                              //       color: const Color(0xffFC0A0A),
+                              //       size: getHorizontal(context) * 0.8,
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                           Center(
@@ -111,8 +108,9 @@ class _RandomCallingState extends State<RandomCalling> {
                                 deleteUserData();
                               },
                               child: Container(
-                                  margin: EdgeInsets.only(top: h * 0.1),
-                                  width: w * 0.5,
+                                  margin: EdgeInsets.only(
+                                      top: getVertical(context) * 0.1),
+                                  width: getHorizontal(context) * 0.5,
                                   padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
@@ -122,7 +120,8 @@ class _RandomCallingState extends State<RandomCalling> {
                                       child: Text(
                                     "Discard",
                                     style: TextStyle(
-                                        fontSize: w * 0.045,
+                                        fontSize:
+                                            getHorizontal(context) * 0.045,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white,
                                         fontFamily: 'PopR'),
@@ -140,7 +139,7 @@ class _RandomCallingState extends State<RandomCalling> {
                               Text(
                                 "Join Channel With ",
                                 style: TextStyle(
-                                    fontSize: w * 0.045,
+                                    fontSize: getHorizontal(context) * 0.045,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
                                     fontFamily: 'PopR'),
@@ -148,10 +147,10 @@ class _RandomCallingState extends State<RandomCalling> {
                               Text(
                                 ' $otherUserName',
                                 style: TextStyle(
-                                    fontSize: w * 0.045,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontFamily: 'PopR'),
+                                  fontSize: getHorizontal(context) * 0.045,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
                               ),
                             ],
                           ),
@@ -164,15 +163,15 @@ class _RandomCallingState extends State<RandomCalling> {
                                     .collection("randomcalling")
                                     .doc(widget.currentUserUid)
                                     .delete();
-                                RANDOMCALL = false;
                                 Get.to(() => const LiveClass());
                                 setState(() {
                                   otherUserName = '';
                                 });
                               },
                               child: Container(
-                                  margin: EdgeInsets.only(top: h * 0.1),
-                                  width: w * 0.5,
+                                  margin: EdgeInsets.only(
+                                      top: getVertical(context) * 0.1),
+                                  width: getHorizontal(context) * 0.5,
                                   padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
@@ -182,7 +181,8 @@ class _RandomCallingState extends State<RandomCalling> {
                                       child: Text(
                                     "Join",
                                     style: TextStyle(
-                                        fontSize: w * 0.045,
+                                        fontSize:
+                                            getHorizontal(context) * 0.045,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white,
                                         fontFamily: 'PopR'),
@@ -283,7 +283,6 @@ class _RandomCallingState extends State<RandomCalling> {
           .collection("randomcalling")
           .doc(widget.currentUserUid)
           .delete();
-      RANDOMCALL = false;
       Get.to(() => const LiveUsers());
     } catch (e) {
       const Dialogg().popUp(context, 'No Network Connection',

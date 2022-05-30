@@ -109,6 +109,8 @@
     "status":"Status",
     "date_of_birth":"Date of Birth",
     "recieved_gifts":"Recieved Gifts",
-    "km_away":"km Away"
+    "km_away":"km Away",
+    "searching_for_a_user":"Searching for a User",
+    "modify_interest":"Modify Interests"
     
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:look/base/Helper/dimension.dart';
-import 'package:look/constant/variables.dart';
 import 'package:look/generated/l10n.dart';
 
 import 'drinking.dart';
@@ -17,8 +16,6 @@ class MaritalStatus extends StatefulWidget {
 class _MaritalStatusState extends State<MaritalStatus> {
   @override
   Widget build(BuildContext context) {
-    double w = MediaQuery.of(context).size.width;
-
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -50,7 +47,7 @@ class _MaritalStatusState extends State<MaritalStatus> {
                       S.of(context).skip,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: w * 0.05,
+                          fontSize: getHorizontal(context) * 0.05,
                           color: Colors.black45),
                     ),
                   )
@@ -60,18 +57,18 @@ class _MaritalStatusState extends State<MaritalStatus> {
                 S.of(context).martitual_status,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: w * 0.05,
+                    fontSize: getHorizontal(context) * 0.05,
                     color: Colors.black),
               ),
               SizedBox(height: getHorizontal(context) * 0.03),
-              choices(S.of(context).single, w),
-              choices(S.of(context).single_mom, w),
-              choices(S.of(context).single_dad, w),
-              choices(S.of(context).in_a_relationship, w),
-              choices(S.of(context).married, w),
-              choices(S.of(context).separated, w),
-              choices(S.of(context).devorced, w),
-              choices(S.of(context).widowed, w),
+              choices(S.of(context).single),
+              choices(S.of(context).single_mom),
+              choices(S.of(context).single_dad),
+              choices(S.of(context).in_a_relationship),
+              choices(S.of(context).married),
+              choices(S.of(context).separated),
+              choices(S.of(context).devorced),
+              choices(S.of(context).widowed),
             ],
           ),
         ),
@@ -79,7 +76,7 @@ class _MaritalStatusState extends State<MaritalStatus> {
     );
   }
 
-  Widget choices(String txt, double w) {
+  Widget choices(String txt) {
     return InkWell(
       onTap: () {
         setState(() {
@@ -91,7 +88,7 @@ class _MaritalStatusState extends State<MaritalStatus> {
       child: Container(
         margin: const EdgeInsets.all(15),
         padding: const EdgeInsets.all(10),
-        width: w * 0.8,
+        width: getHorizontal(context) * 0.8,
         decoration: BoxDecoration(
           border: Border.all(
               color: currentUser.value.marital != null &&

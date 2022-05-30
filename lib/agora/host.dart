@@ -7,7 +7,6 @@ import 'package:agora_rtc_engine/rtc_local_view.dart' as rtc_local_view;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
 import 'package:get/get.dart';
 import 'package:look/constant/theme.dart';
-import 'package:look/constant/variables.dart';
 import 'package:look/base/pages/liveusers.dart';
 
 class Host extends StatefulWidget {
@@ -527,7 +526,6 @@ class _HostState extends State<Host> {
             .delete(),
       );
       Timer(const Duration(seconds: 6), () => Get.to(() => const LiveUsers()));
-      HOSTCURRENTCHANNEL = '';
     } catch (e) {}
   }
 
