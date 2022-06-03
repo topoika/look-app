@@ -110,7 +110,10 @@ Widget goLiveButton(BuildContext context, Function ontap) {
 
 Widget bottomNavigation(BuildContext context) {
   return Container(
-    margin: EdgeInsets.symmetric(horizontal: getHorizontal(context) * 0.06),
+    margin: EdgeInsets.only(
+        left: getHorizontal(context) * 0.06,
+        right: getHorizontal(context) * 0.06,
+        bottom: 35),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10),
       border: Border.all(
@@ -378,4 +381,11 @@ Widget editProfileImageContainer(
           ],
         )),
   );
+}
+
+Widget bottomSheetContainer(BuildContext context) {
+  return Container(
+      child: Column(
+    children: <Widget>[const Text('text')],
+  ));
 }

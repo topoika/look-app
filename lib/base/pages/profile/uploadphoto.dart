@@ -20,6 +20,7 @@ class UploadPhoto extends StatefulWidget {
 
 class _UploadPhotoState extends State<UploadPhoto> {
   late File _image;
+  bool image = false;
   final formKey = GlobalKey<FormState>();
   String _selectedDate = "";
   int _groupValue = -1;
@@ -61,7 +62,7 @@ class _UploadPhotoState extends State<UploadPhoto> {
                   onTap: () {
                     chooseFile();
                   },
-                  child: _image != null
+                  child: !image
                       ? Container(
                           padding: const EdgeInsets.all(10),
                           width: getHorizontal(context) * 0.35,
@@ -93,6 +94,30 @@ class _UploadPhotoState extends State<UploadPhoto> {
                   child: TextFormField(
                     textAlign: TextAlign.center,
                     style: const TextStyle(fontWeight: FontWeight.bold),
+                    onSaved: (val) => currentUser.value.name = val,
+                    decoration: InputDecoration(
+                      hintText: "Name",
+                      hintStyle: const TextStyle(fontWeight: FontWeight.bold),
+                      border: const UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red, width: 3),
+                      ),
+                    ),
+                    validator: (value) {
+                      return value!.length < 5
+                          ? "Enter name of atleast 5 characters"
+                          : null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: 15,
+                      left: getHorizontal(context) * 0.13,
+                      right: getHorizontal(context) * 0.15,
+                      bottom: 15),
+                  child: TextFormField(
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                     onSaved: (val) => currentUser.value.userName = val,
                     decoration: InputDecoration(
                       hintText: S.of(context).username,
@@ -102,8 +127,8 @@ class _UploadPhotoState extends State<UploadPhoto> {
                       ),
                     ),
                     validator: (value) {
-                      return value!.length < 5
-                          ? "Enter name of atleast 5 characters"
+                      return value!.length < 3
+                          ? "Enter name of atleast 3 characters"
                           : null;
                     },
                   ),
@@ -181,6 +206,7 @@ class _UploadPhotoState extends State<UploadPhoto> {
                 SizedBox(height: getVertical(context) * 0.08),
                 buttonWidget(context, () {
                   if (formKey.currentState!.validate()) {
+                    formKey.currentState!.save();
                     currentUser.value.dob = _selectedDate;
                     registerUser(currentUser.value).then((value) {
                       setState(() {
@@ -210,6 +236,7 @@ class _UploadPhotoState extends State<UploadPhoto> {
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);
+        image = true;
       });
     } else {}
   }

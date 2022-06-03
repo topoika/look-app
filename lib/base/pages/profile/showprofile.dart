@@ -62,7 +62,7 @@ class _MyProfileState extends State<MyProfile> {
                               children: [
                                 profileText(context, _user.name ?? ""),
                                 profileText(context, _user.country ?? ""),
-                                SizedBox(height: 10 )
+                                SizedBox(height: 10)
                               ],
                             ),
                           ),
@@ -111,12 +111,15 @@ class _MyProfileState extends State<MyProfile> {
                                     color: Colors.black)),
                             SizedBox(width: getHorizontal(context) * 0.02),
                             GestureDetector(
-                                //TODO
-                                // onTap: () => Get.to(() => const EditProfile()),
+                                onTap: () => showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) {
+                                      return bottomSheetContainer(context);
+                                    }),
                                 child: Image.asset(
-                              edit,
-                              height: 30,
-                            )),
+                                  edit,
+                                  height: 30,
+                                )),
                           ],
                         ),
                       ),
@@ -154,25 +157,11 @@ class _MyProfileState extends State<MyProfile> {
                         onTap: () {},
                         child: cont(terms, S.of(context).terms_of_use),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: InkWell(
-                            onTap: () => logOut(context),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.logout,
-                                  size: getHorizontal(context) * 0.12,
-                                ),
-                                Text(
-                                  S.of(context).log_out,
-                                  style: TextStyle(
-                                      fontSize: getHorizontal(context) * 0.055,
-                                      color: Colors.black),
-                                ),
-                              ],
-                            )),
+                      InkWell(
+                        onTap: () => logOut(context),
+                        child: cont(terms, S.of(context).log_out),
                       ),
+                      SizedBox(height: 100),
                     ],
                   ),
                 ),

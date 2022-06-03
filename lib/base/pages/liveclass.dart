@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:look/base/Helper/dimension.dart';
@@ -33,8 +34,8 @@ class _LiveClassState extends State<LiveClass> {
   final bool isHost;
   final bool isInvited;
   final LiveStream liveStream;
-
   int? _remoteUid;
+  // int? _remoteUid;
   late RtcEngine _engine;
   TextEditingController _comment = TextEditingController();
 
@@ -52,21 +53,30 @@ class _LiveClassState extends State<LiveClass> {
     await _engine.enableVideo();
     _engine.setEventHandler(
       RtcEngineEventHandler(
-        joinChannelSuccess: (String channel, int uid, int elapsed) {},
+        joinChannelSuccess: (String channel, int uid, int elapsed) {
+          setState(() {
+            _remoteUid = uid;
+            log("Success in joinin");
+          });
+        },
         userJoined: (int uid, int elapsed) {
           setState(() {
             _remoteUid = uid;
+            log("Success in joinin");
           });
         },
+        error: (e) => log(e.toString()),
         userOffline: (int uid, UserOfflineReason reason) {
+          log(reason.toString());
           setState(() {
             _remoteUid = null;
           });
         },
       ),
     );
-    await _engine.joinChannel(
-        AGORA_TEST_CHANEL_TOKEN, AGORA_TEST_CHANEL_NAME, null, 0);
+    await _engine
+        .joinChannel(AGORA_TEST_CHANEL_TOKEN, AGORA_TEST_CHANEL_NAME, null, 0)
+        .then((value) => log("Joined"));
   }
 
   @override
@@ -76,7 +86,17 @@ class _LiveClassState extends State<LiveClass> {
         body: Stack(
           children: [
             Center(
-              child: isHost ? RtcLocalView.SurfaceView() : _remoteVideo(),
+              child: isHost
+                  ? RtcLocalView.SurfaceView()
+                  : _remoteUid != null
+                      ? RtcRemoteView.SurfaceView(
+                          uid: _remoteUid!,
+                          channelId: AGORA_TEST_CHANEL_NAME,
+                        )
+                      : Text(
+                          'wait ...',
+                          textAlign: TextAlign.center,
+                        ),
             ),
             Align(
               alignment: Alignment.topCenter,
@@ -88,7 +108,7 @@ class _LiveClassState extends State<LiveClass> {
                     CircleAvatar(
                       radius: 25.0,
                       backgroundImage:
-                          NetworkImage(currentUser.value.image ?? noImage),
+                          NetworkImage(liveStream.host!.image ?? noImage),
                       backgroundColor: Colors.transparent,
                     ),
                     SizedBox(
@@ -101,7 +121,7 @@ class _LiveClassState extends State<LiveClass> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            currentUser.value.name ?? "",
+                            liveStream.host!.name ?? "",
                             maxLines: 1,
                             style: TextStyle(
                               fontWeight: FontWeight.w900,
@@ -110,7 +130,7 @@ class _LiveClassState extends State<LiveClass> {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            currentUser.value.location ?? "",
+                            liveStream.host!.location ?? "",
                             maxLines: 1,
                             style: TextStyle(
                               fontWeight: FontWeight.w400,
@@ -122,7 +142,10 @@ class _LiveClassState extends State<LiveClass> {
                     ),
                     const Spacer(),
                     GestureDetector(
-                      onTap: () => _onCallEnd(context),
+                      onTap: () {
+                        _engine.destroy();
+                        Navigator.pop(context);
+                      },
                       child: Container(
                         padding: EdgeInsets.symmetric(
                             vertical: 10,
@@ -190,36 +213,5 @@ class _LiveClassState extends State<LiveClass> {
         ),
       ),
     );
-  }
-
-  // Display remote user's video
-  Widget _remoteVideo() {
-    if (_remoteUid != null) {
-      return RtcRemoteView.SurfaceView(
-        uid: _remoteUid!,
-        channelId: "dsklkdskd",
-      );
-    } else {
-      return const Text(
-        'wait ...',
-        textAlign: TextAlign.center,
-      );
-    }
-  }
-
-  Future<void> _onCallEnd(BuildContext context) async {
-    try {
-      await FirebaseFirestore.instance
-          .collection("randomcalling")
-          .doc(currentUser.value.uid)
-          .set({
-        'name': currentUser.value.userName,
-        'userid': currentUser.value.uid,
-      });
-    } catch (e) {
-      const Dialogg().popUp(context, 'Unable to Search for Users',
-          'Check your internet connection and try again later', 1);
-    }
-    Navigator.pop(context);
   }
 }
