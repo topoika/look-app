@@ -19,9 +19,10 @@ Widget buttonWidget(BuildContext context, Function ontap, String text) {
       child: Text(
         text.toUpperCase(),
         textScaleFactor: MediaQuery.of(context).textScaleFactor,
-        style: const TextStyle(
+        style: TextStyle(
           fontWeight: FontWeight.w700,
           letterSpacing: 1,
+          fontSize: getHorizontal(context) * 0.03,
           color: Colors.white,
         ),
       ),

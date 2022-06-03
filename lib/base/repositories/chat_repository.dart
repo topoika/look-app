@@ -57,20 +57,9 @@ Future<void> awards({Uid}) async {
 
 // ignore: missing_return
 Future<ChatRoom> addChatRoom(ChatRoom chatRoom) async {
-  // var exists = firebaseFirestore
-  //     .collection("chatRoom")
-  //     .where('involes', isEqualTo: chatRoom.involes)
-  //     .snapshots()
-  //     .toList();
   return firebaseFirestore
       .collection("chatRoom")
-      .add(chatRoom.toMap())
-      .then((value) {
-    chatRoom.id = value.id;
-    firebaseFirestore
-        .collection("chatRoom")
-        .doc(value.id)
-        .update({"id": value.id});
-    return chatRoom;
-  });
+      .doc(chatRoom.id)
+      .set(chatRoom.toMap())
+      .then((value) => chatRoom);
 }

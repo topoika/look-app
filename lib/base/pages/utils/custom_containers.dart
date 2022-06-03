@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:look/base/models/live_stream_model.dart';
 import 'package:look/base/pages/liveclass.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/strings.dart';
@@ -46,7 +47,9 @@ Widget countryItemWidget(BuildContext context, Country country, Function onTap,
           ),
           Text(
             country.short_name!.toUpperCase(),
-            style: const TextStyle(fontWeight: FontWeight.w800),
+            style: TextStyle(
+                fontWeight: FontWeight.w800,
+                fontSize: getHorizontal(context) * 0.03),
           ),
         ],
       ),
@@ -71,16 +74,16 @@ Widget rewardsWidget(BuildContext context) {
 
 Widget goLiveButton(BuildContext context, Function ontap) {
   return GestureDetector(
-    onTap: () => Get.to(() => const LiveClass()),
+    onTap: () => ontap(),
     child: Container(
       margin: EdgeInsets.symmetric(
           horizontal: getHorizontal(context) * 0.06, vertical: 5),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
       decoration: BoxDecoration(
+        color: theme().mC,
         borderRadius: const BorderRadius.all(
             Radius.circular(20) //                 <--- border radius here
             ),
-        color: theme().mC,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -94,7 +97,7 @@ Widget goLiveButton(BuildContext context, Function ontap) {
           Text(
             S.of(context).go_live,
             style: TextStyle(
-              fontSize: getHorizontal(context) * 0.03,
+              fontSize: getHorizontal(context) * 0.026,
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
@@ -169,7 +172,7 @@ Widget tabBarItem(BuildContext context, String text, image) {
       Text(
         text,
         style: TextStyle(
-          fontSize: getHorizontal(context) * 0.045,
+          fontSize: getHorizontal(context) * 0.035,
           color: Colors.black,
           fontWeight: FontWeight.w700,
         ),
@@ -199,9 +202,9 @@ Widget topBarItem(BuildContext context, bool videocall) {
             ),
             child: Text(
               S.of(context).live_streaming,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.black,
-                fontSize: 16,
+                fontSize: getHorizontal(context) * 0.03,
                 letterSpacing: 1,
                 fontWeight: FontWeight.w800,
               ),
@@ -223,9 +226,9 @@ Widget topBarItem(BuildContext context, bool videocall) {
                 color: videocall ? theme().mC : Colors.transparent),
             child: Text(
               S.of(context).video_call,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.black,
-                fontSize: 16,
+                fontSize: getHorizontal(context) * 0.03,
                 letterSpacing: 1,
                 fontWeight: FontWeight.w800,
               ),
@@ -271,14 +274,14 @@ Widget rechageContainer(BuildContext context) {
             Text(
               currentUser.value.points.toString(),
               style: TextStyle(
-                  fontSize: getHorizontal(context) * 0.055,
+                  fontSize: getHorizontal(context) * 0.045,
                   fontWeight: FontWeight.bold,
                   color: Colors.white),
             ),
             Text(
               "Available Points",
               style: TextStyle(
-                  fontSize: getHorizontal(context) * 0.045,
+                  fontSize: getHorizontal(context) * 0.025,
                   fontWeight: FontWeight.bold,
                   color: Colors.white),
             ),

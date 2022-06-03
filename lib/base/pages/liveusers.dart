@@ -4,11 +4,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:look/base/Helper/dimension.dart';
+import 'package:look/base/controllers/livestream_controller.dart';
 import 'package:look/base/pages/utils/custom_containers.dart';
+import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
 import '../Helper/strings.dart';
 import '../models/country_model.dart';
+import '../models/live_stream_model.dart';
 import '../models/user_model.dart' as userModel;
 import 'liveclass.dart';
 import 'utils/titles.dart';
@@ -20,7 +23,12 @@ class LiveUsers extends StatefulWidget {
   _LiveUsersState createState() => _LiveUsersState();
 }
 
-class _LiveUsersState extends State<LiveUsers> {
+class _LiveUsersState extends StateMVC<LiveUsers> {
+  late LiveStreamController _con;
+
+  _LiveUsersState() : super(LiveStreamController()) {
+    _con = controller as LiveStreamController;
+  }
   bool recharge = false;
   String activeCountry = "All";
 
@@ -80,7 +88,8 @@ class _LiveUsersState extends State<LiveUsers> {
                           margin: EdgeInsets.only(
                               right: getHorizontal(context) * 0.03),
                           padding: EdgeInsets.symmetric(
-                              horizontal: getHorizontal(context) * 0.02),
+                              horizontal: getHorizontal(context) * 0.02,
+                              vertical: 5),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             color: activeCountry == "All"
@@ -90,7 +99,7 @@ class _LiveUsersState extends State<LiveUsers> {
                           child: Text(
                             S.of(context).all.toUpperCase(),
                             style: TextStyle(
-                                fontSize: getHorizontal(context) * 0.05,
+                                fontSize: getHorizontal(context) * 0.034,
                                 color: Colors.black),
                           ),
                         ),
@@ -143,16 +152,16 @@ class _LiveUsersState extends State<LiveUsers> {
           child: StreamBuilder(
             stream: activeCountry == "All"
                 ? FirebaseFirestore.instance
-                    .collection("Users")
+                    .collection("liveStreams")
                     .where(
-                      "uid",
+                      'hostId',
                       isNotEqualTo: FirebaseAuth.instance.currentUser!.uid,
                     )
                     .snapshots()
                 : FirebaseFirestore.instance
-                    .collection("Users")
+                    .collection("liveStreams")
                     .where(
-                      "uid",
+                      'hostId',
                       isNotEqualTo: FirebaseAuth.instance.currentUser!.uid,
                     )
                     .where("country", isEqualTo: activeCountry)
@@ -174,10 +183,15 @@ class _LiveUsersState extends State<LiveUsers> {
                       shrinkWrap: true,
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (BuildContext context, int index) {
-                        var _user = userModel.User.fromMap(
+                        var liveStream = LiveStream.fromMap(
                             snapshot.data!.docs[index].data());
+                        var _user = liveStream.host;
                         return InkWell(
-                          onTap: () => Get.to(() => const LiveClass()),
+                          onTap: () => Get.to(() => LiveClass(
+                                isHost: false,
+                                isInvited: false,
+                                liveStream: liveStream,
+                              )),
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
@@ -192,7 +206,7 @@ class _LiveUsersState extends State<LiveUsers> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(5),
                                     child: Image.network(
-                                      _user.image ?? noImage,
+                                      _user!.image ?? noImage,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -208,8 +222,9 @@ class _LiveUsersState extends State<LiveUsers> {
                                   ),
                                   child: Text(
                                     (_user.country ?? " ").toUpperCase(),
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontWeight: FontWeight.w800,
+                                        fontSize: getHorizontal(context) * 0.03,
                                         color: Colors.white),
                                   ),
                                 ),
@@ -382,27 +397,7 @@ class _LiveUsersState extends State<LiveUsers> {
   //   );
   // }
 
-  void connectionChecker() async {
-    // bool check = await DataConnectionChecker().hasConnection;
-    // log("CHeck value is " '$check');
-    // if (check) {
-    //   // Scaffold.of(context).showBottomSheet(
-    //   //   (context) => Builder(
-    //   //     builder: (BuildContext context) {
-    //   //       return BottomSheet(
-    //   //           builder: (BuildContext context) {
-    //   //             return Container(
-    //   //               height: 500,
-    //   //               color: Colors.black,
-    //   //               child: Text("Please enter the title of your live stream"),
-    //   //             );
-    //   //           });
-    //   //     },
-    //   //   ),
-    //   // );
-    // } else {
-    //   const Dialogg().popUp(context, "No Connection",
-    //       "Please check your internet connection and try again later!", 0);
-    // }
+  void connectionChecker() {
+    _con.createLiveStream(context);
   }
 }

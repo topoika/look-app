@@ -37,14 +37,14 @@ class _EditProfileState extends State<EditProfile> {
   Widget build(BuildContext context) {
     TextStyle _textStyle(bool black) {
       return TextStyle(
-          fontSize: getHorizontal(context) * 0.055,
+          fontSize: getHorizontal(context) * 0.04,
           fontWeight: FontWeight.bold,
           color: black ? Colors.black : Colors.black54);
     }
 
     TextStyle _inputTextStyle() {
       return TextStyle(
-          fontSize: getHorizontal(context) * 0.045,
+          fontSize: getHorizontal(context) * 0.03,
           fontWeight: FontWeight.w700,
           color: Colors.black.withOpacity(.7));
     }
@@ -272,7 +272,7 @@ class _EditProfileState extends State<EditProfile> {
         txt,
         style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: getHorizontal(context) * 0.035,
+            fontSize: getHorizontal(context) * 0.03,
             color: Colors.black54),
       ),
     );

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/controllers/search_controller.dart';
-import 'package:look/constant/theme.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../generated/l10n.dart';
 import './../models/user_model.dart' as userModel;
@@ -52,26 +51,26 @@ class _SearchState extends StateMVC<Search> {
   @override
   Widget build(BuildContext context) {
     TextStyle textstyle = TextStyle(
-      fontSize: getHorizontal(context) * 0.041,
+      fontSize: getHorizontal(context) * 0.035,
       fontWeight: FontWeight.bold,
     );
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        leading: IconButton(
-          color: theme().mPurple,
-          icon: const Icon(Icons.arrow_back_ios_rounded),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+        leading: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: Icon(
+            Icons.arrow_back_ios_rounded,
+            color: Colors.black,
+          ),
         ),
         title: Text(
           S.of(context).search,
           style: TextStyle(
-              color: theme().mPurple,
               fontWeight: FontWeight.bold,
-              fontSize: 25),
+              color: Colors.black,
+              fontSize: getHorizontal(context) * 0.045),
         ),
         centerTitle: true,
         elevation: 0.0,
@@ -100,8 +99,7 @@ class _SearchState extends StateMVC<Search> {
                       decoration: InputDecoration(
                           hintText: S.of(context).search_username + "...",
                           hintStyle: TextStyle(
-                            color: theme().mC,
-                            fontSize: 16,
+                            fontSize: getHorizontal(context) * 0.035,
                           ),
                           border: InputBorder.none),
                     ),

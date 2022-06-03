@@ -90,4 +90,11 @@ List<Country> countries = [
     phoneCode: "+254",
     short_name: "ken",
   ),
+  Country(
+    id: 9,
+    name: "Kenya",
+    code: "ke",
+    phoneCode: "+254",
+    short_name: "ken",
+  ),
 ];

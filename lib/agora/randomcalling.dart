@@ -9,6 +9,8 @@ import 'package:look/constant/dailog.dart';
 import 'package:look/constant/theme.dart';
 import 'package:look/base/pages/liveusers.dart';
 
+import '../base/models/live_stream_model.dart';
+
 class RandomCalling extends StatefulWidget {
   final String currentUserImage;
   final String currentUserUid;
@@ -163,7 +165,11 @@ class _RandomCallingState extends State<RandomCalling> {
                                     .collection("randomcalling")
                                     .doc(widget.currentUserUid)
                                     .delete();
-                                Get.to(() => const LiveClass());
+                                Get.to(() => LiveClass(
+                                      isHost: true,
+                                      isInvited: false,
+                                      liveStream: LiveStream(),
+                                    ));
                                 setState(() {
                                   otherUserName = '';
                                 });

@@ -9,7 +9,6 @@ import 'package:look/base/pages/profile/education.dart';
 
 import '../../../generated/l10n.dart';
 import '../../Helper/dimension.dart';
-import '../../models/user_model.dart';
 import '../../repositories/user_repository.dart';
 
 class UploadPhoto extends StatefulWidget {
@@ -20,13 +19,10 @@ class UploadPhoto extends StatefulWidget {
 }
 
 class _UploadPhotoState extends State<UploadPhoto> {
-  final TextEditingController _userName = TextEditingController();
   late File _image;
   final formKey = GlobalKey<FormState>();
-  bool selImage = false;
-  int _groupValue = -1;
   String _selectedDate = "";
-  final User _user = currentUser.value;
+  int _groupValue = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +61,7 @@ class _UploadPhotoState extends State<UploadPhoto> {
                   onTap: () {
                     chooseFile();
                   },
-                  child: (selImage == false)
+                  child: _image != null
                       ? Container(
                           padding: const EdgeInsets.all(10),
                           width: getHorizontal(context) * 0.35,
@@ -97,7 +93,7 @@ class _UploadPhotoState extends State<UploadPhoto> {
                   child: TextFormField(
                     textAlign: TextAlign.center,
                     style: const TextStyle(fontWeight: FontWeight.bold),
-                    controller: _userName,
+                    onSaved: (val) => currentUser.value.userName = val,
                     decoration: InputDecoration(
                       hintText: S.of(context).username,
                       hintStyle: const TextStyle(fontWeight: FontWeight.bold),
@@ -106,9 +102,9 @@ class _UploadPhotoState extends State<UploadPhoto> {
                       ),
                     ),
                     validator: (value) {
-                      if (value!.length < 5) {
-                        return "Enter name of atleast 5 characters";
-                      }
+                      return value!.length < 5
+                          ? "Enter name of atleast 5 characters"
+                          : null;
                     },
                   ),
                 ),
@@ -120,10 +116,12 @@ class _UploadPhotoState extends State<UploadPhoto> {
                       child: RadioListTile(
                         value: 0,
                         groupValue: _groupValue,
-                        title: const Text("Man",
+                        title: Text(S.of(context).male,
                             style: TextStyle(fontWeight: FontWeight.bold)),
-                        onChanged: (newValue) =>
-                            setState(() => _groupValue = newValue as int),
+                        onChanged: (newValue) => setState(() {
+                          _groupValue = newValue as int;
+                          currentUser.value.gender = "Male";
+                        }),
                         activeColor: Colors.red,
                         selected: false,
                       ),
@@ -133,12 +131,14 @@ class _UploadPhotoState extends State<UploadPhoto> {
                       child: RadioListTile(
                         value: 1,
                         groupValue: _groupValue,
-                        title: const Text(
-                          "Women",
+                        title: Text(
+                          S.of(context).female,
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        onChanged: (newValue) =>
-                            setState(() => _groupValue = newValue as int),
+                        onChanged: (newValue) => setState(() {
+                          _groupValue = newValue as int;
+                          currentUser.value.gender = "Female";
+                        }),
                         activeColor: Colors.red,
                         selected: false,
                       ),
@@ -180,22 +180,16 @@ class _UploadPhotoState extends State<UploadPhoto> {
                 ),
                 SizedBox(height: getVertical(context) * 0.08),
                 buttonWidget(context, () {
-                  if (selImage == true) {
-                    if (formKey.currentState!.validate()) {
-                      _user.dob = _selectedDate;
-                      _user.name = _userName.text;
-                      _user.gender = _groupValue == 0 ? "Female" : "Male";
-                      registerUser(currentUser.value).then((value) {
-                        setState(() {
-                          currentUser.value = value;
-                          uploadProfilePicture(_image, value, 1);
-                          currentUser.notifyListeners();
-                        });
-                        Get.to(() => const Education());
+                  if (formKey.currentState!.validate()) {
+                    currentUser.value.dob = _selectedDate;
+                    registerUser(currentUser.value).then((value) {
+                      setState(() {
+                        currentUser.value = value;
+                        uploadProfilePicture(_image, value, 1);
+                        currentUser.notifyListeners();
                       });
-                    }
-                  } else {
-                    Scaffold.of(context).showSnackBar(getSnackBar("text"));
+                      Get.to(() => const Education());
+                    });
                   }
                 }, S.of(context).next),
               ],
@@ -215,7 +209,6 @@ class _UploadPhotoState extends State<UploadPhoto> {
         maxWidth: 500);
     if (pickedFile != null) {
       setState(() {
-        selImage = true;
         _image = File(pickedFile.path);
       });
     } else {}

@@ -89,6 +89,8 @@
     "recharge": "재충전",
     "my_info": "내 정보",
     "go_live": "라이브 시작",
+    "end_live": "라이브 종료",
+    "leave_live": "라이브 종료",
     "all": "모두",
     "type_message": "유형 메시지",
     "chats": "채팅",
@@ -118,5 +120,6 @@
     "smart_photo": "스마트 사진",
     "input_your_interests":"관심 사항을 입력하세요",
     "enter_your_current_job":"현재 직업을 입력하세요",
-    "enter_your_email":"이메일을 입력하세요."
+    "enter_your_email":"이메일을 입력하세요.",
+    "type_a_comment":"댓글을 입력하세요"
 }

@@ -94,7 +94,7 @@ class _ModifyInterestsState extends State<ModifyInterests> {
           S.of(context).modify_interest,
           style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: getHorizontal(context) * 0.05,
+              fontSize: getHorizontal(context) * 0.04,
               color: Colors.black87),
         ),
       ),
@@ -165,7 +165,7 @@ class _ModifyInterestsState extends State<ModifyInterests> {
           txt,
           style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: getHorizontal(context) * 0.035,
+              fontSize: getHorizontal(context) * 0.03,
               color: Colors.black54),
         ),
       ),

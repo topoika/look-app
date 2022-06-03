@@ -89,6 +89,8 @@
     "recharge":"Recharge",
     "my_info":"My Info",
     "go_live":"Go Live",
+    "end_live":"End Live",
+    "leave_live":"Leave Live",
     "all":"All",
     "type_message":"Type Message",
     "chats":"Chats",
@@ -122,5 +124,6 @@
     "save_text":"Save",
     "please_enter_a_valid_location":"Please enter a valid location",
     "please_enter_a_valid_job":"Please enter a valid job title",
-    "type_atleast_ten_characters":"Type atleast 10+ characters"
+    "type_atleast_ten_characters":"Type atleast 10+ characters",
+    "type_a_comment":"Type a comment"
 }

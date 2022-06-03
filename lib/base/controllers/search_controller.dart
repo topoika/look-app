@@ -32,6 +32,7 @@ class SearchController extends ControllerMVC {
   sendMessage(userModel.User otherUser) {
     ChatRoom _chatroom = ChatRoom();
     Message _message = Message();
+    _chatroom.id = currentUser.value.uid! + "===+===" + otherUser.uid!;
     _chatroom.deletedBy = [];
     _chatroom.involes = [currentUser.value.uid ?? "", otherUser.uid ?? ""];
     _chatroom.involved = [currentUser.value, otherUser];
@@ -40,4 +41,8 @@ class SearchController extends ControllerMVC {
     _chatroom.lastUpdated = DateTime.now();
     addChatRoom(_chatroom).then((value) => Get.to(() => Chat(chatRoom: value)));
   }
+
+  // String getchatRoomId(userModel.User user){
+  //   // return
+  // }
 }

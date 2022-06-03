@@ -78,7 +78,7 @@ class _VideoCallsState extends State<VideoCalls> {
                           child: Text(
                             "All".toUpperCase(),
                             style: TextStyle(
-                                fontSize: getHorizontal(context) * 0.05,
+                                fontSize: getHorizontal(context) * 0.03,
                                 color: Colors.black),
                           ),
                         ),
@@ -186,8 +186,9 @@ class _VideoCallsState extends State<VideoCalls> {
                               ),
                               child: Text(
                                 _user.country!.toUpperCase(),
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontWeight: FontWeight.w800,
+                                    fontSize: getHorizontal(context) * 0.03,
                                     color: Colors.white),
                               ),
                             ),

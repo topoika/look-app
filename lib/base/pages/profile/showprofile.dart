@@ -40,7 +40,7 @@ class _MyProfileState extends State<MyProfile> {
                   top: getVertical(context) * 0.07),
               child: Text(S.of(context).my_info,
                   style: TextStyle(
-                      fontSize: getHorizontal(context) * 0.065,
+                      fontSize: getHorizontal(context) * 0.055,
                       fontWeight: FontWeight.bold,
                       color: Colors.black87)),
             ),
@@ -62,11 +62,16 @@ class _MyProfileState extends State<MyProfile> {
                               children: [
                                 profileText(context, _user.name ?? ""),
                                 profileText(context, _user.country ?? ""),
+                                SizedBox(height: 10 )
                               ],
                             ),
                           ),
                           GestureDetector(
-                              onTap: () => Get.to(() => const EditProfile()),
+                              onTap: () => Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => EditProfile()),
+                                  (route) => true),
                               child: Image.asset(
                                 edit,
                                 height: 30,
@@ -89,7 +94,7 @@ class _MyProfileState extends State<MyProfile> {
                               child: Text(
                                 S.of(context).points_setting,
                                 style: TextStyle(
-                                    fontSize: getHorizontal(context) * 0.055,
+                                    fontSize: getHorizontal(context) * 0.045,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black),
                               ),
@@ -101,7 +106,7 @@ class _MyProfileState extends State<MyProfile> {
                             SizedBox(width: getHorizontal(context) * 0.013),
                             Text("10p/Msg  50p/Min",
                                 style: TextStyle(
-                                    fontSize: getHorizontal(context) * 0.045,
+                                    fontSize: getHorizontal(context) * 0.035,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black)),
                             SizedBox(width: getHorizontal(context) * 0.02),
