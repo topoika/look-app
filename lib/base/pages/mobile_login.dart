@@ -68,10 +68,9 @@ class _MobilePhoneLoginState extends StateMVC<MobilePhoneLogin> {
                       CountryCodePicker(
                         onChanged: (value) {
                           setState(() {
-                            _phone.text = value.dialCode.toString();
                             country = value.name!;
+                            countryCode = value.dialCode.toString();
                           });
-                          value.name;
                         },
                         initialSelection: 'KR',
                         showFlagDialog: true,
@@ -100,17 +99,20 @@ class _MobilePhoneLoginState extends StateMVC<MobilePhoneLogin> {
                           key: _phoneFormKey,
                           child: TextFormField(
                             controller: _phone,
+                            textAlign: TextAlign.center,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                               hintText: S.of(context).phone_number,
-                              hintStyle:
-                                  const TextStyle(fontWeight: FontWeight.bold),
+                              hintStyle: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
                               border: InputBorder.none,
                             ),
                             onChanged: (value) =>
                                 currentUser.value.phone = value,
                             validator: (val) {
-                              if (val!.isEmpty || val.length < 10) {
+                              if (val!.isEmpty || val.length < 9) {
                                 return S
                                     .of(context)
                                     .please_enter_a_correct_phone_number;

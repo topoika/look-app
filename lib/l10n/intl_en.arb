@@ -111,6 +111,16 @@
     "recieved_gifts":"Recieved Gifts",
     "km_away":"km Away",
     "searching_for_a_user":"Searching for a User",
-    "modify_interest":"Modify Interests"
-    
+    "modify_interest":"Modify Interests",
+    "no_data_found":"No Data Found",
+    "self_introduction":"Self Introduction",
+    "modify_interest":"My Interests",
+    "smart_photo":"Smart photo",
+    "input_your_interests":"Input your interests",
+    "enter_your_current_job":"Enter your current job",
+    "enter_your_email":"Enter you email",
+    "save_text":"Save",
+    "please_enter_a_valid_location":"Please enter a valid location",
+    "please_enter_a_valid_job":"Please enter a valid job title",
+    "type_atleast_ten_characters":"Type atleast 10+ characters"
 }

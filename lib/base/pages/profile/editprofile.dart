@@ -1,12 +1,22 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/strings.dart';
+import 'package:look/base/pages/profile/showprofile.dart';
+import 'package:look/base/pages/utils/button.dart';
+import 'package:look/base/pages/utils/decorations.dart';
 import 'package:look/constant/theme.dart';
 import 'package:look/base/pages/modifyinterests.dart';
 
+import '../../../generated/l10n.dart';
 import '../../models/user_model.dart';
 import '../../repositories/user_repository.dart';
+import 'package:dotted_border/dotted_border.dart';
+
+import '../utils/custom_containers.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({
@@ -18,278 +28,282 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  final TextEditingController _introductionController = TextEditingController();
-  final TextEditingController _jobController = TextEditingController();
-  final TextEditingController _locationController = TextEditingController();
   final User _user = currentUser.value;
   final formKey = GlobalKey<FormState>();
-
+  File? image = null;
+  File? image2 = null;
+  File? image3 = null;
   @override
   Widget build(BuildContext context) {
+    TextStyle _textStyle(bool black) {
+      return TextStyle(
+          fontSize: getHorizontal(context) * 0.055,
+          fontWeight: FontWeight.bold,
+          color: black ? Colors.black : Colors.black54);
+    }
+
+    TextStyle _inputTextStyle() {
+      return TextStyle(
+          fontSize: getHorizontal(context) * 0.045,
+          fontWeight: FontWeight.w700,
+          color: Colors.black.withOpacity(.7));
+    }
+
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
+          child: Form(
+            key: formKey,
             child: Column(
-          children: [
-            Stack(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(
-                  width: getHorizontal(context) * 1,
-                  height: getVertical(context) * 0.35,
-                  child: Image.network(
-                    _user.image ?? noImage,
-                    fit: BoxFit.cover,
-                  ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () => chooseFile(1),
+                      child: editProfileImageContainer(
+                          context, image != null ? image : null, _user.image),
+                    ),
+                    GestureDetector(
+                      onTap: () => chooseFile(2),
+                      child: editProfileImageContainer(context,
+                          image2 != null ? image2 : null, _user.image2),
+                    ),
+                    GestureDetector(
+                      onTap: () => chooseFile(3),
+                      child: editProfileImageContainer(context,
+                          image3 != null ? image3 : null, _user.image3),
+                    ),
+                  ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 5.0, top: 5),
-                  child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.arrow_back_ios_outlined,
-                        color: Colors.red,
-                        size: 25,
-                      )),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: getHorizontal(context) * 0.05,
+                      vertical: getVertical(context) * 0.02),
+                  child:
+                      buttonWidget(context, () {}, S.of(context).add_content),
                 ),
-                Container(
-                  color: Colors.white,
-                  margin: EdgeInsets.only(top: getVertical(context) * 0.36),
-                  width: getHorizontal(context) * 1,
-                  alignment: Alignment.topCenter,
-                  child: Form(
-                    key: formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Center(
-                            child: Text(
-                          _user.name ?? "",
-                          style: TextStyle(
-                              fontSize: getHorizontal(context) * 0.055,
-                              color: Colors.black),
-                        )),
-                        Center(
-                            child: Text(
-                          _user.country ?? "",
-                          style: TextStyle(
-                              fontSize: getHorizontal(context) * 0.045,
-                              color: Colors.black54),
-                        )),
-                        Text(
-                          "   Self-Introduction",
-                          style: TextStyle(
-                              fontSize: getHorizontal(context) * 0.055,
-                              color: Colors.black),
-                        ),
-                        Container(
-                          width: getHorizontal(context) * 1,
-                          height: getVertical(context) * 0.2,
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              bottom:
-                                  BorderSide(width: 2.0, color: Colors.black54),
-                              top:
-                                  BorderSide(width: 2.0, color: Colors.black54),
-                            ),
-                          ),
-                          child: TextFormField(
-                            maxLength: 500,
-                            controller: _introductionController,
-                            maxLines: 8,
-                            style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: getHorizontal(context) * 0.04),
-                            decoration: const InputDecoration(
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.transparent),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.transparent),
-                              ),
-                              contentPadding:
-                                  EdgeInsets.only(left: 15, top: 10, right: 10),
-                            ),
-                            validator: (value) {
-                              if (value!.isEmpty || value.length < 10) {
-                                return 'Type atleast 10+ characters';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        Text(
-                          "\n   Interests",
-                          style: TextStyle(
-                              fontFamily: 'PopB',
-                              fontSize: getHorizontal(context) * 0.055,
-                              color: Colors.black),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Get.to(() => const ModifyInterests());
-                          },
-                          child: Container(
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: getHorizontal(context) * 0.05,
+                      vertical: getVertical(context) * 0.01),
+                  child: Text(
+                    S.of(context).self_introduction,
+                    style: _textStyle(true),
+                  ),
+                ),
+                divider(1),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: getHorizontal(context) * 0.05,
+                      vertical: getVertical(context) * 0.01),
+                  child: TextFormField(
+                    maxLength: 500,
+                    onSaved: (val) => currentUser.value.describe = val,
+                    maxLines: 4,
+                    initialValue: currentUser.value.describe ?? "",
+                    style: _inputTextStyle(),
+                    decoration: inputDecoration(
+                      context,
+                      S.of(context).describe_yourself,
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty || value.length < 10) {
+                        return S.of(context).type_atleast_ten_characters;
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                divider(1),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: getHorizontal(context) * 0.05,
+                      vertical: getVertical(context) * 0.01),
+                  child: Text(
+                    S.of(context).interests,
+                    style: _textStyle(true),
+                  ),
+                ),
+                divider(1),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: getHorizontal(context) * 0.05,
+                      vertical: getVertical(context) * 0.01),
+                  child: InkWell(
+                    onTap: () {
+                      Get.to(() => const ModifyInterests());
+                    },
+                    child: currentUser.value.interests != null
+                        ? Container(
+                            child: Wrap(
+                                alignment: WrapAlignment.start,
+                                runAlignment: WrapAlignment.start,
+                                direction: Axis.horizontal,
+                                children: currentUser.value.interests!
+                                    .map((i) => choices1(i))
+                                    .toList()),
+                          )
+                        : Container(
                             width: getHorizontal(context) * 1,
                             height: getVertical(context) * 0.07,
                             padding: const EdgeInsets.only(top: 7),
-                            decoration: const BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                    width: 2.0, color: Colors.black54),
-                                top: BorderSide(
-                                    width: 2.0, color: Colors.black54),
-                              ),
-                            ),
                             child: Text(
-                              "   Input your interests",
+                              S.of(context).input_your_interests,
                               style: TextStyle(
-                                  fontFamily: 'PopB',
                                   fontSize: getHorizontal(context) * 0.05,
                                   color: Colors.black54),
                             ),
                           ),
-                        ),
-                        Text(
-                          "\n   Job title",
-                          style: TextStyle(
-                              fontFamily: 'PopB',
-                              fontSize: getHorizontal(context) * 0.055,
-                              color: Colors.black),
-                        ),
-                        Container(
-                          width: getHorizontal(context) * 1,
-                          height: getVertical(context) * 0.1,
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              bottom:
-                                  BorderSide(width: 2.0, color: Colors.black54),
-                              top:
-                                  BorderSide(width: 2.0, color: Colors.black54),
-                            ),
-                          ),
-                          child: TextFormField(
-                            controller: _jobController,
-                            maxLines: 2,
-                            style: TextStyle(
-                                color: Colors.black54,
-                                fontFamily: "PopB",
-                                fontSize: getHorizontal(context) * 0.04),
-                            decoration: const InputDecoration(
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.transparent),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.transparent),
-                              ),
-                              hintText: "Enter your current job",
-                              contentPadding:
-                                  EdgeInsets.only(left: 15, top: 10, right: 10),
-                            ),
-                            //  onChanged: _onChanged,
-                            validator: (value) {
-                              if (value!.isEmpty || value.length < 5) {
-                                return 'Job title cannot be less than 5';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        Text(
-                          "\n   Lives in",
-                          style: TextStyle(
-                              fontFamily: 'PopB',
-                              fontSize: getHorizontal(context) * 0.055,
-                              color: Colors.black),
-                        ),
-                        Container(
-                          width: getHorizontal(context) * 1,
-                          height: getVertical(context) * 0.1,
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              bottom:
-                                  BorderSide(width: 2.0, color: Colors.black54),
-                              top:
-                                  BorderSide(width: 2.0, color: Colors.black54),
-                            ),
-                          ),
-                          child: TextFormField(
-                            controller: _locationController,
-                            maxLines: 2,
-                            style: TextStyle(
-                                color: Colors.black54,
-                                fontFamily: "PopB",
-                                fontSize: getHorizontal(context) * 0.04),
-                            decoration: const InputDecoration(
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.transparent),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.transparent),
-                              ),
-                              hintText: "Enter your current job",
-                              contentPadding:
-                                  EdgeInsets.only(left: 15, top: 10, right: 10),
-                            ),
-                            //  onChanged: _onChanged,
-                            validator: (value) {
-                              if (value!.isEmpty || value.length < 5) {
-                                return 'Job title cannot be less than 5';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
+                ),
+                divider(1),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: getHorizontal(context) * 0.05,
+                      vertical: getVertical(context) * 0.01),
+                  child: Text(
+                    S.of(context).job_title,
+                    style: _textStyle(true),
+                  ),
+                ),
+                divider(1),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: getHorizontal(context) * 0.05,
+                      vertical: getVertical(context) * 0.01),
+                  child: TextFormField(
+                    onSaved: (val) => currentUser.value.job = val,
+                    initialValue: currentUser.value.job ?? "",
+                    style: _inputTextStyle(),
+                    decoration: inputDecoration(
+                      context,
+                      S.of(context).enter_your_current_job,
+                    ),
+                    validator: (value) {
+                      return value!.isEmpty || value.length < 3
+                          ? S.of(context).please_enter_a_valid_job
+                          : null;
+                    },
+                  ),
+                ),
+                divider(1),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: getHorizontal(context) * 0.05,
+                      vertical: getVertical(context) * 0.01),
+                  child: Text(
+                    S.of(context).lives_in,
+                    style: _textStyle(true),
+                  ),
+                ),
+                divider(1),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: getHorizontal(context) * 0.05,
+                      vertical: getVertical(context) * 0.01),
+                  child: TextFormField(
+                    onSaved: (val) => currentUser.value.location = val,
+                    initialValue: currentUser.value.location ?? "",
+                    style: _inputTextStyle(),
+                    decoration: inputDecoration(
+                      context,
+                      S.of(context).enter_current_location,
+                    ),
+                    validator: (value) {
+                      return value!.isEmpty || value.length < 3
+                          ? S.of(context).please_enter_a_valid_location
+                          : null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: getHorizontal(context) * 0.03,
+                      vertical: getVertical(context) * 0.02),
+                  child: buttonWidget(context, () {
+                    if (formKey.currentState!.validate()) {
+                      formKey.currentState!.save();
+                      currentUser.notifyListeners();
+                      if (image != null) {
+                        uploadProfilePicture(image, currentUser.value, 1);
+                      } else {
+                        updateUser(currentUser.value);
+                      }
+                      if (image2 != null) {
+                        uploadProfilePicture(image2, currentUser.value, 2);
+                      } else {
+                        updateUser(currentUser.value);
+                      }
+                      if (image3 != null) {
+                        uploadProfilePicture(image3, currentUser.value, 3);
+                      } else {
+                        updateUser(currentUser.value);
+                      }
+                      Get.to(() => MyProfile());
+                    }
+                  },
+                      S.of(context).save_text +
+                          " & " +
+                          S.of(context).continue_text),
                 ),
               ],
             ),
-            button("Save & Update"),
-          ],
-        )),
-      ),
-    );
-  }
-
-  Widget button(String txt) {
-    double w = MediaQuery.of(context).size.width;
-    return Container(
-      margin: EdgeInsets.only(
-          top: getHorizontal(context) * 0.07,
-          left: getHorizontal(context) * 0.04,
-          right: getHorizontal(context) * 0.04,
-          bottom: 20),
-      width: getHorizontal(context) * 0.94,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: theme().mC,
-      ),
-      child: TextButton(
-        onPressed: () async {
-          if (formKey.currentState!.validate()) {
-            //TODO
-            //update current user
-
-            Navigator.of(context).pop();
-          }
-        },
-        child: Text(
-          txt,
-          style: TextStyle(
-            fontSize: getHorizontal(context) * 0.045,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
           ),
         ),
       ),
     );
+  }
+
+  Widget choices1(String txt) {
+    return Container(
+      // width: 150,
+      margin: EdgeInsets.all(getHorizontal(context) * 0.01),
+      padding: EdgeInsets.symmetric(
+          horizontal: getHorizontal(context) * 0.03, vertical: 6),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black45),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        txt,
+        style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: getHorizontal(context) * 0.035,
+            color: Colors.black54),
+      ),
+    );
+  }
+
+  Future chooseFile(int option) async {
+    final pickedFile = await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 90,
+        maxHeight: 600,
+        preferredCameraDevice: CameraDevice.front,
+        maxWidth: 500);
+    if (pickedFile != null) {
+      switch (option) {
+        case 1:
+          setState(() {
+            image = File(pickedFile.path);
+          });
+          break;
+        case 2:
+          setState(() {
+            image2 = File(pickedFile.path);
+          });
+          break;
+        case 3:
+          setState(() {
+            image3 = File(pickedFile.path);
+          });
+          break;
+        default:
+      }
+    } else {}
   }
 }

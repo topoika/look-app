@@ -1,16 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_firestore/cloud_firestore.dart' as cf;
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/pages/utils/custom_containers.dart';
-import 'package:look/base/repositories/user_repository.dart';
 
 import '../../generated/l10n.dart';
 import '../Helper/strings.dart';
 import '../models/country_model.dart';
-import '../models/user_model.dart';
+import '../models/user_model.dart' as userModel;
 import 'liveclass.dart';
 import 'utils/titles.dart';
 
@@ -23,8 +22,7 @@ class LiveUsers extends StatefulWidget {
 
 class _LiveUsersState extends State<LiveUsers> {
   bool recharge = false;
-  String countryColors = 'All';
-  final _controller = ScrollController();
+  String activeCountry = "All";
 
   @override
   Widget build(BuildContext context) {
@@ -73,14 +71,24 @@ class _LiveUsersState extends State<LiveUsers> {
                   child: Row(
                     children: [
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          setState(() {
+                            activeCountry = "All";
+                          });
+                        },
                         child: Container(
                           margin: EdgeInsets.only(
                               right: getHorizontal(context) * 0.03),
                           padding: EdgeInsets.symmetric(
                               horizontal: getHorizontal(context) * 0.02),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: activeCountry == "All"
+                                ? Colors.red
+                                : Theme.of(context).accentColor,
+                          ),
                           child: Text(
-                            "All".toUpperCase(),
+                            S.of(context).all.toUpperCase(),
                             style: TextStyle(
                                 fontSize: getHorizontal(context) * 0.05,
                                 color: Colors.black),
@@ -94,7 +102,11 @@ class _LiveUsersState extends State<LiveUsers> {
                           itemCount: countries.length,
                           itemBuilder: (BuildContext context, int index) {
                             var country = countries[index];
-                            return countryItemWidget(context, country);
+                            return countryItemWidget(context, country, () {
+                              setState(() {
+                                activeCountry = country.name!;
+                              });
+                            }, activeCountry);
                           },
                         ),
                       ),
@@ -129,34 +141,29 @@ class _LiveUsersState extends State<LiveUsers> {
           width: getHorizontal(context) * 1,
           height: getVertical(context) * 0.95,
           child: StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection("Users")
-                .where(
-                  "uid",
-                  isNotEqualTo: currentUser.value.uid,
-                )
-                .snapshots(),
+            stream: activeCountry == "All"
+                ? FirebaseFirestore.instance
+                    .collection("Users")
+                    .where(
+                      "uid",
+                      isNotEqualTo: FirebaseAuth.instance.currentUser!.uid,
+                    )
+                    .snapshots()
+                : FirebaseFirestore.instance
+                    .collection("Users")
+                    .where(
+                      "uid",
+                      isNotEqualTo: FirebaseAuth.instance.currentUser!.uid,
+                    )
+                    .where("country", isEqualTo: activeCountry)
+                    .snapshots(),
             builder: (BuildContext context,
-                AsyncSnapshot<cf.QuerySnapshot> snapshot) {
-              WidgetsBinding.instance!.addPostFrameCallback((_) {
-                if (_controller.hasClients) {
-                  _controller.jumpTo(_controller.position.maxScrollExtent);
-                } else {
-                  // setState(() => null);
-                }
-              });
-              if (!snapshot.hasData) {
-                return const Center(
-                  child: Text(
-                    "No data found",
-                    style: TextStyle(color: Colors.red),
-                  ),
-                );
-              }
-              return ListView(
-                controller: _controller,
-                children: snapshot.data!.docs.map((document) {
-                  return GridView.builder(
+                AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+              return !snapshot.hasData
+                  ? Center(
+                      child: noDataFoundContainer(context),
+                    )
+                  : GridView.builder(
                       scrollDirection: Axis.vertical,
                       physics: const ScrollPhysics(),
                       gridDelegate:
@@ -167,8 +174,8 @@ class _LiveUsersState extends State<LiveUsers> {
                       shrinkWrap: true,
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (BuildContext context, int index) {
-                        var _user = User.fromMap(snapshot.data!.docs[index]
-                            .data() as Map<String, dynamic>);
+                        var _user = userModel.User.fromMap(
+                            snapshot.data!.docs[index].data());
                         return InkWell(
                           onTap: () => Get.to(() => const LiveClass()),
                           child: Container(
@@ -278,8 +285,6 @@ class _LiveUsersState extends State<LiveUsers> {
                           ),
                         );
                       });
-                }).toList(),
-              );
             },
           ),
         ),

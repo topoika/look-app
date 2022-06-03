@@ -108,6 +108,7 @@ Future<void> profilePhoto({photo, email}) async {
 
 Future phoneLogin(String mobile, BuildContext context) async {
   Overlay.of(context)!.insert(loader);
+  log(mobile);
   auth.verifyPhoneNumber(
     phoneNumber: mobile,
     timeout: const Duration(seconds: 60),
@@ -120,12 +121,6 @@ Future phoneLogin(String mobile, BuildContext context) async {
     },
     verificationFailed: (FirebaseAuthException authException) {
       Helper.hideLoader(loader);
-
-      // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      //   content: Text('Verification Fialed'),
-      //   backgroundColor: Colors.redAccent,
-      //   duration: Duration(seconds: 3),
-      // ));
     },
     codeSent: (String verificationId, int? forceResendingToken) {
       Helper.hideLoader(loader);
@@ -141,11 +136,6 @@ Future phoneLogin(String mobile, BuildContext context) async {
     codeAutoRetrievalTimeout: (String verificationId) {
       Helper.hideLoader(loader);
       verificationId = verificationId;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Verification TimeOut'),
-        backgroundColor: Colors.redAccent,
-        duration: Duration(seconds: 3),
-      ));
     },
   );
 }
@@ -182,7 +172,8 @@ void logOut(context) {
       (route) => false);
 }
 
-Future<userModel.User> uploadProfilePicture(photo, userModel.User user) async {
+Future<userModel.User> uploadProfilePicture(
+    photo, userModel.User user, int option) async {
   Reference storageReference = FirebaseStorage.instance
       .ref()
       .child('${user.uid}/${Path.basename(photo.path)}');
@@ -191,7 +182,18 @@ Future<userModel.User> uploadProfilePicture(photo, userModel.User user) async {
     res.ref.getDownloadURL();
   });
   return await storageReference.getDownloadURL().then((value) {
-    currentUser.value.image = value;
+    switch (option) {
+      case 1:
+        currentUser.value.image = value;
+        break;
+      case 2:
+        currentUser.value.image2 = value;
+        break;
+      case 3:
+        currentUser.value.image3 = value;
+        break;
+      default:
+    }
     return updateUser(currentUser.value);
   });
 }

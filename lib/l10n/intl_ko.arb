@@ -107,5 +107,16 @@
     "points_recharge": "포인트 충전",
     "accept": "수락",
     "status": "상태",
-    "date_of_birth": "생년월일"
+    "date_of_birth": "생년월일",
+    "recieved_gifts":"받은 선물",
+    "km_away":"km 떨어져",
+    "searching_for_a_user":"사용자 검색",
+    "modify_interest":"관심 사항 수정",
+    "no_data_found":"데이터를 찾을 수 없음",
+    "self_introduction": "자기 소개",
+    "modify_interest": "내 관심사",
+    "smart_photo": "스마트 사진",
+    "input_your_interests":"관심 사항을 입력하세요",
+    "enter_your_current_job":"현재 직업을 입력하세요",
+    "enter_your_email":"이메일을 입력하세요."
 }

@@ -188,7 +188,7 @@ class _UploadPhotoState extends State<UploadPhoto> {
                       registerUser(currentUser.value).then((value) {
                         setState(() {
                           currentUser.value = value;
-                          uploadProfilePicture(_image, value);
+                          uploadProfilePicture(_image, value, 1);
                           currentUser.notifyListeners();
                         });
                         Get.to(() => const Education());

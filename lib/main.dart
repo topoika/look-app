@@ -34,7 +34,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      locale: const Locale('ko'),
+      locale: const Locale('en'),
       localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,

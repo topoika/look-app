@@ -13,6 +13,8 @@ class User {
   String? gender;
   String? marital;
   String? image;
+  String? image2;
+  String? image3;
   double? points;
   String? personality;
   String? drinking;
@@ -36,6 +38,8 @@ class User {
     this.gender,
     this.marital,
     this.image,
+    this.image2,
+    this.image3,
     this.points,
     this.personality,
     this.drinking,
@@ -62,6 +66,8 @@ class User {
       'gender': gender,
       'marital': marital,
       'image': image,
+      'image2': image2,
+      'image3': image3,
       'points': points,
       'personality': personality,
       'drinking': drinking,
@@ -89,6 +95,8 @@ class User {
       gender: map['gender'],
       marital: map['marital'],
       image: map['image'],
+      image2: map['image2'],
+      image3: map['image3'],
       points: map['points']?.toDouble(),
       personality: map['personality'],
       drinking: map['drinking'],

@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/models/user_model.dart';
-import 'package:look/constant/dailog.dart';
-import 'package:cloud_firestore/cloud_firestore.dart' as cf;
 
 import '../Helper/strings.dart';
 import '../../generated/l10n.dart';
@@ -22,7 +20,7 @@ class VideoCalls extends StatefulWidget {
 }
 
 class _VideoCallsState extends State<VideoCalls> {
-  final _controller = ScrollController();
+  String activeCountry = "All";
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +90,9 @@ class _VideoCallsState extends State<VideoCalls> {
                           itemCount: countries.length,
                           itemBuilder: (BuildContext context, int index) {
                             var country = countries[index];
-                            return countryItemWidget(context, country);
+                            return countryItemWidget(context, country, () {
+                              setState(() {});
+                            }, activeCountry);
                           },
                         ),
                       ),
@@ -133,15 +133,8 @@ class _VideoCallsState extends State<VideoCalls> {
                   isNotEqualTo: currentUser.value.uid,
                 )
                 .snapshots(),
-            builder: (BuildContext context,
-                AsyncSnapshot<cf.QuerySnapshot> snapshot) {
-              WidgetsBinding.instance!.addPostFrameCallback((_) {
-                if (_controller.hasClients) {
-                  _controller.jumpTo(_controller.position.maxScrollExtent);
-                } else {
-                  // setState(() => null);
-                }
-              });
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (!snapshot.hasData) {
                 return const Center(
                   child: Text(
@@ -150,146 +143,135 @@ class _VideoCallsState extends State<VideoCalls> {
                   ),
                 );
               }
-              return ListView(
-                controller: _controller,
-                children: snapshot.data!.docs.map((document) {
-                  return GridView.builder(
-                      scrollDirection: Axis.vertical,
-                      physics: const ScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 0.8,
-                      ),
-                      shrinkWrap: true,
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        var _user = User.fromMap(snapshot.data!.docs[index]
-                            .data() as Map<String, dynamic>);
-                        return InkWell(
-                          onTap: () =>
-                              Get.to(() => OtherUsersDetails(user: _user)),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
+              return GridView.builder(
+                  scrollDirection: Axis.vertical,
+                  physics: const ScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.8,
+                  ),
+                  shrinkWrap: true,
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    var _user = User.fromMap(snapshot.data!.docs[index].data()
+                        as Map<String, dynamic>);
+                    return InkWell(
+                      onTap: () => Get.to(() => OtherUsersDetails(user: _user)),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        margin: const EdgeInsets.only(
+                            left: 3, right: 5, top: 5, bottom: 5),
+                        child: Stack(
+                          children: [
+                            SizedBox(
+                              width: getHorizontal(context) * 0.8,
+                              height: getVertical(context) * 0.9,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: Image.network(
+                                  _user.image ?? noImage,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                             ),
-                            margin: const EdgeInsets.only(
-                                left: 3, right: 5, top: 5, bottom: 5),
-                            child: Stack(
-                              children: [
-                                SizedBox(
-                                  width: getHorizontal(context) * 0.8,
-                                  height: getVertical(context) * 0.9,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(5),
-                                    child: Image.network(
-                                      _user.image ?? noImage,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
+                            Container(
+                              margin: const EdgeInsets.only(left: 5, top: 8),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 7, vertical: 5),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).accentColor,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Text(
+                                _user.country!.toUpperCase(),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    color: Colors.white),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Container(
+                                margin: const EdgeInsets.only(right: 5, top: 8),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 7, vertical: 5),
+                                decoration: BoxDecoration(
+                                  color: Colors.black12,
+                                  borderRadius: BorderRadius.circular(15),
                                 ),
-                                Container(
-                                  margin:
-                                      const EdgeInsets.only(left: 5, top: 8),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 7, vertical: 5),
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).accentColor,
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  child: Text(
-                                    _user.country!.toUpperCase(),
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w800,
-                                        color: Colors.white),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.topRight,
-                                  child: Container(
-                                    margin:
-                                        const EdgeInsets.only(right: 5, top: 8),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 7, vertical: 5),
-                                    decoration: BoxDecoration(
-                                      color: Colors.black12,
-                                      borderRadius: BorderRadius.circular(15),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      Icons.remove_red_eye,
+                                      color: Colors.white,
+                                      size: 14,
                                     ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        const Icon(
-                                          Icons.remove_red_eye,
+                                    const SizedBox(width: 5),
+                                    const Text(
+                                      "0",
+                                      style: TextStyle(
                                           color: Colors.white,
-                                          size: 14,
-                                        ),
-                                        const SizedBox(width: 5),
-                                        const Text(
-                                          "0",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                        const SizedBox(width: 3),
-                                        Icon(
-                                          Icons.brightness_1_rounded,
-                                          color: index == 3
-                                              ? Colors.amber
-                                              : index == 5
-                                                  ? Colors.black
-                                                  : Colors.green,
-                                          size: 16,
-                                        ),
-                                      ],
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w700),
                                     ),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 5, bottom: 5),
-                                    child: channelName(_user.name),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: Container(
-                                    margin: const EdgeInsets.only(
-                                        right: 5, bottom: 5),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 5),
-                                    decoration: BoxDecoration(
-                                      color:
-                                          const Color.fromARGB(255, 1, 6, 36),
-                                      borderRadius: BorderRadius.circular(15),
+                                    const SizedBox(width: 3),
+                                    Icon(
+                                      Icons.brightness_1_rounded,
+                                      color: index == 3
+                                          ? Colors.amber
+                                          : index == 5
+                                              ? Colors.black
+                                              : Colors.green,
+                                      size: 16,
                                     ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: const [
-                                        Text(
-                                          "👏  0",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                        );
-                      });
-                }).toList(),
-              );
+                            Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 5, bottom: 5),
+                                child: channelName(_user.name),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.only(right: 5, bottom: 5),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                decoration: BoxDecoration(
+                                  color: const Color.fromARGB(255, 1, 6, 36),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: const [
+                                    Text(
+                                      "👏  0",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  });
             },
           ),
         ),

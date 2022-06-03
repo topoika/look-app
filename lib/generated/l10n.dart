@@ -1010,10 +1010,10 @@ class S {
     );
   }
 
-  /// `Self-Introduction`
+  /// `Self Introduction`
   String get self_introduction {
     return Intl.message(
-      'Self-Introduction',
+      'Self Introduction',
       name: 'self_introduction',
       desc: '',
       args: [],
@@ -1135,6 +1135,136 @@ class S {
     return Intl.message(
       'Date of Birth',
       name: 'date_of_birth',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recieved Gifts`
+  String get recieved_gifts {
+    return Intl.message(
+      'Recieved Gifts',
+      name: 'recieved_gifts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `km Away`
+  String get km_away {
+    return Intl.message(
+      'km Away',
+      name: 'km_away',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Searching for a User`
+  String get searching_for_a_user {
+    return Intl.message(
+      'Searching for a User',
+      name: 'searching_for_a_user',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My Interests`
+  String get modify_interest {
+    return Intl.message(
+      'My Interests',
+      name: 'modify_interest',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No Data Found`
+  String get no_data_found {
+    return Intl.message(
+      'No Data Found',
+      name: 'no_data_found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Smart photo`
+  String get smart_photo {
+    return Intl.message(
+      'Smart photo',
+      name: 'smart_photo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Input your interests`
+  String get input_your_interests {
+    return Intl.message(
+      'Input your interests',
+      name: 'input_your_interests',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your current job`
+  String get enter_your_current_job {
+    return Intl.message(
+      'Enter your current job',
+      name: 'enter_your_current_job',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter you email`
+  String get enter_your_email {
+    return Intl.message(
+      'Enter you email',
+      name: 'enter_your_email',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get save_text {
+    return Intl.message(
+      'Save',
+      name: 'save_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a valid location`
+  String get please_enter_a_valid_location {
+    return Intl.message(
+      'Please enter a valid location',
+      name: 'please_enter_a_valid_location',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a valid job title`
+  String get please_enter_a_valid_job {
+    return Intl.message(
+      'Please enter a valid job title',
+      name: 'please_enter_a_valid_job',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Type atleast 10+ characters`
+  String get type_atleast_ten_characters {
+    return Intl.message(
+      'Type atleast 10+ characters',
+      name: 'type_atleast_ten_characters',
       desc: '',
       args: [],
     );

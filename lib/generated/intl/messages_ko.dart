@@ -47,6 +47,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "enter_current_location":
             MessageLookupByLibrary.simpleMessage("현재 위치 입력"),
         "enter_your_code": MessageLookupByLibrary.simpleMessage("코드 입력"),
+        "enter_your_current_job":
+            MessageLookupByLibrary.simpleMessage("현재 직업을 입력하세요"),
+        "enter_your_email": MessageLookupByLibrary.simpleMessage("이메일을 입력하세요."),
         "enter_your_phone_number":
             MessageLookupByLibrary.simpleMessage("전화번호 입력"),
         "female": MessageLookupByLibrary.simpleMessage("여성"),
@@ -69,10 +72,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "improve_your_profile_to_get_more_attention":
             MessageLookupByLibrary.simpleMessage("더 많은 관심을 끌기 위해 프로필을 개선하세요"),
         "in_a_relationship": MessageLookupByLibrary.simpleMessage("관계에서"),
+        "input_your_interests":
+            MessageLookupByLibrary.simpleMessage("관심 사항을 입력하세요"),
         "input_your_job": MessageLookupByLibrary.simpleMessage("직업을 입력하십시오"),
         "inquiry": MessageLookupByLibrary.simpleMessage("문의"),
         "interests": MessageLookupByLibrary.simpleMessage("관심"),
         "job_title": MessageLookupByLibrary.simpleMessage("직위"),
+        "km_away": MessageLookupByLibrary.simpleMessage("km 떨어져"),
         "lighter_smoker": MessageLookupByLibrary.simpleMessage("라이터 흡연자"),
         "list": MessageLookupByLibrary.simpleMessage("목록"),
         "live_streaming": MessageLookupByLibrary.simpleMessage("라이브 스트리밍"),
@@ -85,12 +91,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "martitual_status": MessageLookupByLibrary.simpleMessage("결혼 상태"),
         "masters": MessageLookupByLibrary.simpleMessage("마스터"),
         "men": MessageLookupByLibrary.simpleMessage("남자"),
+        "modify_interest": MessageLookupByLibrary.simpleMessage("내 관심사"),
         "movie": MessageLookupByLibrary.simpleMessage("영화"),
         "music": MessageLookupByLibrary.simpleMessage("음악"),
         "my_info": MessageLookupByLibrary.simpleMessage("내 정보"),
         "my_invitee": MessageLookupByLibrary.simpleMessage("내 초대자"),
         "my_points": MessageLookupByLibrary.simpleMessage("내 포인트"),
         "next": MessageLookupByLibrary.simpleMessage("다음"),
+        "no_data_found": MessageLookupByLibrary.simpleMessage("데이터를 찾을 수 없음"),
         "non_drinker": MessageLookupByLibrary.simpleMessage("비 음주자"),
         "non_smoker": MessageLookupByLibrary.simpleMessage("비흡연자"),
         "none": MessageLookupByLibrary.simpleMessage("없음"),
@@ -111,6 +119,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "public_notice": MessageLookupByLibrary.simpleMessage("공시"),
         "reading": MessageLookupByLibrary.simpleMessage("독서"),
         "recharge": MessageLookupByLibrary.simpleMessage("재충전"),
+        "recieved_gifts": MessageLookupByLibrary.simpleMessage("받은 선물"),
         "redeem_points": MessageLookupByLibrary.simpleMessage("포인트 사용"),
         "register_the_correct_birthday_to_enjoy_more_and_more_fun":
             MessageLookupByLibrary.simpleMessage("정확한 생일을 등록하여 더 재미있게 즐기세요"),
@@ -118,6 +127,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "romantic": MessageLookupByLibrary.simpleMessage("낭만적인"),
         "search": MessageLookupByLibrary.simpleMessage("검색"),
         "search_username": MessageLookupByLibrary.simpleMessage("사용자 이름 검색"),
+        "searching_for_a_user": MessageLookupByLibrary.simpleMessage("사용자 검색"),
         "self_introduction": MessageLookupByLibrary.simpleMessage("자기 소개"),
         "separated": MessageLookupByLibrary.simpleMessage("분리된"),
         "singing": MessageLookupByLibrary.simpleMessage("노래하다"),
@@ -125,6 +135,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "single_dad": MessageLookupByLibrary.simpleMessage("싱글 아빠"),
         "single_mom": MessageLookupByLibrary.simpleMessage("싱글맘"),
         "skip": MessageLookupByLibrary.simpleMessage("건너뛰기"),
+        "smart_photo": MessageLookupByLibrary.simpleMessage("스마트 사진"),
         "smoking": MessageLookupByLibrary.simpleMessage("흡연"),
         "social_drinker": MessageLookupByLibrary.simpleMessage("소셜 음주자"),
         "sports": MessageLookupByLibrary.simpleMessage("스포츠"),

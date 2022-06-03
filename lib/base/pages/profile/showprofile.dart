@@ -4,7 +4,6 @@ import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/pages/utils/custom_containers.dart';
 import 'package:look/base/repositories/user_repository.dart';
 import 'package:look/base/pages/recharge.dart';
-import '../chatrooms.dart';
 import './../../models/user_model.dart' as userModel;
 import './../utils/titles.dart';
 

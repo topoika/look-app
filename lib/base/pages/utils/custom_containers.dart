@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,7 +6,6 @@ import 'package:look/base/pages/liveclass.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/models/country_model.dart';
-import 'package:look/base/pages/call.dart';
 import 'package:look/base/pages/liveusers.dart';
 import 'package:look/base/repositories/user_repository.dart';
 import 'package:look/base/pages/recharge.dart';
@@ -20,31 +19,37 @@ import '../profile/showprofile.dart';
 import '../videocall.dart';
 import 'titles.dart';
 
-Widget countryItemWidget(BuildContext context, Country country) {
-  return Container(
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(8),
-      color: Theme.of(context).accentColor,
-    ),
-    margin: EdgeInsets.only(right: getHorizontal(context) * 0.03),
-    padding: EdgeInsets.symmetric(horizontal: getHorizontal(context) * 0.02),
-    child: Row(
-      children: <Widget>[
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
+Widget countryItemWidget(BuildContext context, Country country, Function onTap,
+    String activeCountry) {
+  return GestureDetector(
+    onTap: () => onTap(),
+    child: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: activeCountry == country.name
+            ? Colors.red
+            : Theme.of(context).accentColor,
+      ),
+      margin: EdgeInsets.only(right: getHorizontal(context) * 0.03),
+      padding: EdgeInsets.symmetric(horizontal: getHorizontal(context) * 0.02),
+      child: Row(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+            ),
+            padding: const EdgeInsets.all(5),
+            child: Image.network(
+              "https://flagcdn.com/w160/${country.code!.toLowerCase()}.png",
+              fit: BoxFit.cover,
+            ),
           ),
-          padding: const EdgeInsets.all(5),
-          child: Image.network(
-            "https://flagcdn.com/w160/${country.code!.toLowerCase()}.png",
-            fit: BoxFit.cover,
+          Text(
+            country.short_name!.toUpperCase(),
+            style: const TextStyle(fontWeight: FontWeight.w800),
           ),
-        ),
-        Text(
-          country.short_name!.toUpperCase(),
-          style: const TextStyle(fontWeight: FontWeight.w800),
-        ),
-      ],
+        ],
+      ),
     ),
   );
 }
@@ -290,5 +295,84 @@ Widget rechageContainer(BuildContext context) {
         ),
       ],
     ),
+  );
+}
+
+Widget noDataFoundContainer(BuildContext context) {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Container(
+        child: Image.asset(
+          nodatafound,
+          height: 50,
+        ),
+      ),
+      SizedBox(height: getVertical(context) * 0.02),
+      Text(
+        S.of(context).no_data_found,
+        style: TextStyle(color: Colors.red),
+      ),
+    ],
+  );
+}
+
+Widget divider(double thickness) {
+  return Divider(
+    color: Colors.black.withOpacity(.5),
+    height: 2,
+    thickness: thickness,
+  );
+}
+
+Widget editProfileImageContainer(
+    BuildContext context, File? image, String? img) {
+  return Padding(
+    padding: const EdgeInsets.all(8),
+    child: Container(
+        width: getHorizontal(context) / 3 - 27,
+        height: getVertical(context) * 0.18,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: img != null ? Colors.transparent : Colors.black26,
+        ),
+        child: Stack(
+          children: [
+            image != null
+                ? Image.file(
+                    image,
+                    height: getVertical(context) * 0.18,
+                    width: getHorizontal(context) / 3 - 27,
+                    fit: BoxFit.cover,
+                  )
+                : img != null
+                    ? Image.network(
+                        img,
+                        height: getVertical(context) * 0.18,
+                        width: getHorizontal(context) / 3 - 27,
+                        fit: BoxFit.cover,
+                      )
+                    : SizedBox(),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Container(
+                padding: EdgeInsets.all(5),
+                transform: Matrix4.translationValues(8.0, 8.0, 0.0),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: LinearGradient(colors: [
+                      Color(0xFFf62459),
+                      Color.fromARGB(255, 214, 37, 81),
+                      Theme.of(context).accentColor,
+                    ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
+                child: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 15,
+                ),
+              ),
+            )
+          ],
+        )),
   );
 }

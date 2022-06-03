@@ -142,7 +142,8 @@ class _MobileVerificationState extends StateMVC<MobileVerification> {
                   ),
                 ),
                 InkWell(
-                    onTap: () {},
+                    onTap: () =>
+                        phoneLogin(currentUser.value.phone ?? "", context),
                     child: Text(
                       "  " + S.of(context).resend,
                       style: TextStyle(
