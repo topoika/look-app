@@ -3,14 +3,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
-import 'package:look/base/pages/liveusers.dart';
-import 'base/pages/mobile_login.dart';
+import 'package:look/base/pages/splash_screen.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'base/repositories/user_repository.dart';
 import 'generated/l10n.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await [Permission.microphone, Permission.camera, Permission.notification]
+      .request();
   runApp(const MyApp());
 }
 
@@ -59,9 +61,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           ),
         ),
       ),
-      home: FirebaseAuth.instance.currentUser == null
-          ? const MobilePhoneLogin()
-          : const LiveUsers(),
+      home: SplashScreen(),
     );
   }
 }

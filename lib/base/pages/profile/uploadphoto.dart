@@ -95,6 +95,7 @@ class _UploadPhotoState extends State<UploadPhoto> {
                     textAlign: TextAlign.center,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                     onSaved: (val) => currentUser.value.name = val,
+                    initialValue: currentUser.value.name ?? "",
                     decoration: InputDecoration(
                       hintText: "Name",
                       hintStyle: const TextStyle(fontWeight: FontWeight.bold),
@@ -119,6 +120,7 @@ class _UploadPhotoState extends State<UploadPhoto> {
                     textAlign: TextAlign.center,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                     onSaved: (val) => currentUser.value.userName = val,
+                    initialValue: currentUser.value.userName ?? "",
                     decoration: InputDecoration(
                       hintText: S.of(context).username,
                       hintStyle: const TextStyle(fontWeight: FontWeight.bold),
@@ -214,7 +216,10 @@ class _UploadPhotoState extends State<UploadPhoto> {
                         uploadProfilePicture(_image, value, 1);
                         currentUser.notifyListeners();
                       });
-                      Get.to(() => const Education());
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Education()));
                     });
                   }
                 }, S.of(context).next),

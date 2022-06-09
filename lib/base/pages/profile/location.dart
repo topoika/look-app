@@ -45,7 +45,10 @@ class _GetUserLocationState extends State<GetUserLocation> {
                         try {
                           _locationForm.currentState!.save();
                           updateUser(currentUser.value);
-                          Get.to(() => const LiveUsers());
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const LiveUsers()));
                         } catch (e) {
                           showSnackBar(context,
                               S.of(context).check_internet_connection, true);

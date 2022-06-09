@@ -11,12 +11,35 @@ import './../models/user_model.dart' as userModel;
 class SearchController extends ControllerMVC {
   List<userModel.User> searchResult = <userModel.User>[];
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  @override
+  void initState() {
+    initialSearch();
+    super.initState();
+  }
 
   void initiateSearch(String searchText) async {
-    setState(() => searchResult.clear());
+    // setState(() => searchResult.clear());
+
     firebaseFirestore
         .collection('Users')
         .where('userName', isEqualTo: searchText)
+        .where("uid", isNotEqualTo: currentUser.value.uid)
+        .snapshots()
+        .listen((result) {
+      for (var user in result.docs) {
+        userModel.User _user = userModel.User.fromMap(user.data());
+        if (!searchResult.contains(_user)) {
+          setState(() => searchResult.add(_user));
+        }
+      }
+    });
+  }
+
+  void initialSearch() async {
+    setState(() => searchResult.clear());
+    firebaseFirestore
+        .collection('Users')
+        .limit(15)
         .where("uid", isNotEqualTo: currentUser.value.uid)
         .snapshots()
         .listen((result) {

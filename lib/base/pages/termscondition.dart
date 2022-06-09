@@ -77,7 +77,7 @@ class _TermsAndConditionState extends State<TermsAndCondition> {
                     },
                   ),
                   SizedBox(
-                    width: getHorizontal(context) * 0.5,
+                    width: getHorizontal(context) * 0.7,
                     child: Text(
                       S
                           .of(context)
@@ -114,8 +114,14 @@ class _TermsAndConditionState extends State<TermsAndCondition> {
                 : buttonWidget(
                     context,
                     () => currentUser.value.dob != null
-                        ? Get.to(() => const LiveUsers())
-                        : Get.to(() => const UploadPhoto()),
+                        ? Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LiveUsers()))
+                        : Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const UploadPhoto())),
                     S.of(context).next)
           ],
         ),

@@ -39,22 +39,25 @@ OverlayEntry loader = OverlayEntry(
   },
 );
 
-Future<userModel.User> getUser(String id) async {
+Future<userModel.User?> getUser(String id) async {
+  userModel.User? _user;
   return await _firestore
       .collection(userCollection)
       .doc(id)
       .get()
       .then((value) {
-    currentUser.value = userModel.User.fromMap(value.data());
-    currentUser.notifyListeners();
-    log(currentUser.value.toMap().toString());
-    return currentUser.value;
+    if (value.exists) {
+      _user = userModel.User.fromMap(value.data());
+      currentUser.value = userModel.User.fromMap(value.data());
+      currentUser.notifyListeners();
+    } else {
+      _user = null;
+    }
+    return _user;
   });
 }
 
 Future<userModel.User> registerUser(userModel.User user) async {
-  // var contained =
-  //     await _firestore.collection(userCollection).doc(user.uid).get();
   await _firestore
       .collection(userCollection)
       .doc(user.uid)
@@ -145,7 +148,7 @@ Future verifyPhone(
   Overlay.of(context)!.insert(loader);
   var _credential = PhoneAuthProvider.credential(
       verificationId: verificationCode, smsCode: smscode.trim());
-  await auth.signInWithCredential(_credential).then((value) {
+  await auth.signInWithCredential(_credential).then((value) async {
     if (value.user != null) {
       Helper.hideLoader(loader);
       Navigator.push(
@@ -157,8 +160,15 @@ Future verifyPhone(
       Scaffold.of(context)
           .showSnackBar(const SnackBar(content: Text("Verification Failer")));
     }
-    currentUser.value.uid = value.user!.uid;
-    registerUser(currentUser.value);
+    var newUser = await getUser(value.user!.uid);
+    if (newUser != null) {
+      currentUser.value = newUser;
+      currentUser.notifyListeners();
+      registerUser(currentUser.value);
+    } else {
+      currentUser.value.uid = value.user!.uid;
+      registerUser(currentUser.value);
+    }
   });
 }
 

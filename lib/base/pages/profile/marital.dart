@@ -28,7 +28,7 @@ class _MaritalStatusState extends State<MaritalStatus> {
                     padding: const EdgeInsets.only(left: 20),
                     child: IconButton(
                         onPressed: () {
-                          Navigator.of(context);
+                          Navigator.pop(context);
                         },
                         icon: const Icon(
                           Icons.arrow_back_ios_outlined,
@@ -41,7 +41,10 @@ class _MaritalStatusState extends State<MaritalStatus> {
                         currentUser.value.marital = "";
                       });
                       currentUser.notifyListeners();
-                      Get.to(() => const Drinking());
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Drinking()));
                     },
                     child: Text(
                       S.of(context).skip,

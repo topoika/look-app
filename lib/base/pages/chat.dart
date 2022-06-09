@@ -5,12 +5,14 @@ import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/controllers/chat_controller.dart';
 import 'package:look/base/models/chat_room_model.dart';
 import 'package:look/base/pages/call.dart';
+import 'package:look/base/pages/videocall.dart';
 import 'package:look/base/repositories/user_repository.dart';
 import 'package:look/constant/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as cf;
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../Helper/strings.dart';
+import '../models/videocall.dart';
 
 class Chat extends StatefulWidget {
   final ChatRoom chatRoom;
@@ -129,7 +131,9 @@ class _ChatState extends StateMVC<Chat> {
           ),
           actions: [
             GestureDetector(
-              onTap: () => Get.to(() => const CallPage()),
+              onTap: () => Get.to(() => CallPage(
+                    videoCall: VideoCall(),
+                  )),
               child: Icon(Icons.video_call,
                   color: theme().mPurple, size: getHorizontal(context) * 0.09),
             ),

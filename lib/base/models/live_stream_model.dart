@@ -6,6 +6,7 @@ class LiveStream {
   String? title;
   int? reactions;
   int? viewers;
+  String? token;
   user.User? host;
   String? country;
   String? hostId;
@@ -15,6 +16,7 @@ class LiveStream {
     this.title,
     this.reactions,
     this.viewers,
+    this.token,
     this.host,
     this.country,
     this.hostId,
@@ -27,6 +29,7 @@ class LiveStream {
       'title': title,
       'reactions': reactions,
       'viewers': viewers,
+      'token': token,
       'country': country,
       'hostId': hostId,
       'host': host?.toMap(),
@@ -40,6 +43,7 @@ class LiveStream {
       title: map['title'] != null ? map['title'] as String : null,
       country: map['country'] != null ? map['country'] as String : null,
       hostId: map['hostId'] != null ? map['hostId'] as String : null,
+      token: map['token'] != null ? map['token'] as String : null,
       reactions: map['reactions'] != null ? map['reactions'] as int : null,
       viewers: map['viewers'] != null ? map['viewers'] as int : null,
       host: map['host'] != null

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/controllers/livestream_controller.dart';
+import 'package:look/base/pages/utils/add_title_bottom_sheet.dart';
 import 'package:look/base/pages/utils/custom_containers.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -37,6 +38,7 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: SafeArea(
             child: SingleChildScrollView(
           child: Column(
@@ -187,11 +189,16 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
                             snapshot.data!.docs[index].data());
                         var _user = liveStream.host;
                         return InkWell(
-                          onTap: () => Get.to(() => LiveClass(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LiveClass(
                                 isHost: false,
                                 isInvited: false,
                                 liveStream: liveStream,
-                              )),
+                              ),
+                            ),
+                          ),
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
@@ -398,6 +405,14 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
   // }
 
   void connectionChecker() {
-    _con.createLiveStream(context);
+    showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        enableDrag: true,
+        isScrollControlled: true,
+        builder: (context) {
+          return AddTitleBottomSheet(scaffoldKey: _con.scaffoldKey);
+        });
+    // _con.createLiveStream(context);
   }
 }

@@ -33,7 +33,10 @@ class _EducationState extends State<Education> {
                   ),
                   TextButton(
                       onPressed: () {
-                        Get.to(() => const MaritalStatus());
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const MaritalStatus()));
                       },
                       child: skiptText(context))
                 ],

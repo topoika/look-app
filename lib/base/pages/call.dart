@@ -5,221 +5,215 @@ import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 import 'package:flutter/material.dart';
+import 'package:look/base/Helper/dimension.dart';
+import 'package:look/base/Helper/strings.dart';
+import 'package:look/base/models/videocall.dart';
 
 import '../../env.dart';
 
 class CallPage extends StatefulWidget {
-  const CallPage({Key? key}) : super(key: key);
+  final VideoCall videoCall;
+  CallPage({Key? key, required this.videoCall}) : super(key: key);
   @override
   _CallPageState createState() => _CallPageState();
 }
 
 class _CallPageState extends State<CallPage> {
-  final _users = <int>[];
-  final _infoStrings = <String>[];
   bool muted = false;
-  late RtcEngine _engine;
+  bool videoMuted = false;
+  RtcEngine? _engine;
+  int? _remoteId;
 
   @override
   void initState() {
+    initForAgora();
     super.initState();
-    initialize();
   }
 
-  Future<void> initialize() async {
-    await _initAgoraRtcEngine();
-    _addAgoraEventHandlers();
-    VideoEncoderConfiguration configuration = VideoEncoderConfiguration();
-    configuration.dimensions = VideoDimensions(width: 1920, height: 1080);
-    await _engine.setVideoEncoderConfiguration(configuration);
-    await _engine.joinChannel(
-        AGORA_TEST_CHANEL_TOKEN, AGORA_TEST_CHANEL_NAME, null, 0);
-  }
-
-  Future<void> _initAgoraRtcEngine() async {
-    _engine = await RtcEngine.create(AGORA_APP_ID).then((value) {
-      log(value.toString());
-      return value;
-    });
-    await _engine.enableVideo();
-    await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
-    await _engine.setClientRole(ClientRole.Broadcaster);
-  }
-
-  void _addAgoraEventHandlers() {
-    _engine.setEventHandler(RtcEngineEventHandler(error: (code) {
-      setState(() {
-        final info = 'onError: $code';
-        _infoStrings.add(info);
-      });
-    }, joinChannelSuccess: (channel, uid, elapsed) {
-      setState(() {
-        final info = 'onJoinChannel: $channel, uid: $uid';
-        _infoStrings.add(info);
-      });
-    }, leaveChannel: (stats) {
-      setState(() {
-        _infoStrings.add('onLeaveChannel');
-        _users.clear();
-      });
-    }, userJoined: (uid, elapsed) {
-      setState(() {
-        final info = 'userJoined: $uid';
-        _infoStrings.add(info);
-        _users.add(uid);
-      });
-    }, userOffline: (uid, elapsed) {
-      setState(() {
-        final info = 'userOffline: $uid';
-        _infoStrings.add(info);
-        _users.remove(uid);
-      });
-    }, firstRemoteVideoFrame: (uid, width, height, elapsed) {
-      setState(() {
-        final info = 'firstRemoteVideo: $uid ${width}x $height';
-        _infoStrings.add(info);
-      });
-    }));
-  }
-
-  List<Widget> _getRenderViews() {
-    final List<StatefulWidget> list = [];
-    if (ClientRole.Broadcaster == ClientRole.Broadcaster) {
-      list.add(const RtcLocalView.SurfaceView());
-    }
-    for (var uid in _users) {
-      list.add(RtcRemoteView.SurfaceView(
-        uid: uid,
-        channelId: AGORA_TEST_CHANEL_NAME,
-      ));
-    }
-    return list;
-  }
-
-  Widget _videoView(view) {
-    return Expanded(child: Container(child: view));
-  }
-
-  Widget _expandedVideoRow(List<Widget> views) {
-    final wrappedViews = views.map<Widget>(_videoView).toList();
-    return Expanded(
-      child: Row(
-        children: wrappedViews,
-      ),
-    );
-  }
-
-  Widget _viewRows() {
-    final views = _getRenderViews();
-    switch (views.length) {
-      case 1:
-        return Container(
-            child: Column(
-          children: <Widget>[_videoView(views[0])],
-        ));
-      case 2:
-        return Container(
-            child: Column(
-          children: <Widget>[
-            _expandedVideoRow([views[0]]),
-            _expandedVideoRow([views[1]])
-          ],
-        ));
-      case 3:
-        return Container(
-            child: Column(
-          children: <Widget>[
-            _expandedVideoRow(views.sublist(0, 2)),
-            _expandedVideoRow(views.sublist(2, 3))
-          ],
-        ));
-      case 4:
-        return Container(
-            child: Column(
-          children: <Widget>[
-            _expandedVideoRow(views.sublist(0, 2)),
-            _expandedVideoRow(views.sublist(2, 4))
-          ],
-        ));
-      default:
-    }
-    return Container();
-  }
-
-  Widget _toolbar() {
-    if (ClientRole.Broadcaster == ClientRole.Audience) return Container();
-    return Container(
-      alignment: Alignment.bottomCenter,
-      padding: const EdgeInsets.symmetric(vertical: 48),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          RawMaterialButton(
-            onPressed: _onToggleMute,
-            child: Icon(
-              muted ? Icons.mic_off : Icons.mic,
-              color: muted ? Colors.white : Colors.blueAccent,
-              size: 20.0,
-            ),
-            shape: const CircleBorder(),
-            elevation: 2.0,
-            fillColor: muted ? Colors.blueAccent : Colors.white,
-            padding: const EdgeInsets.all(12.0),
-          ),
-          RawMaterialButton(
-            onPressed: () => _onCallEnd(context),
-            child: const Icon(
-              Icons.call_end,
-              color: Colors.white,
-              size: 35.0,
-            ),
-            shape: const CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.redAccent,
-            padding: const EdgeInsets.all(15.0),
-          ),
-          RawMaterialButton(
-            onPressed: _onSwitchCamera,
-            child: const Icon(
-              Icons.switch_camera,
-              color: Colors.blueAccent,
-              size: 20.0,
-            ),
-            shape: const CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.white,
-            padding: const EdgeInsets.all(12.0),
-          )
-        ],
-      ),
-    );
-  }
-
-  void _onCallEnd(BuildContext context) {
-    Navigator.pop(context);
-  }
-
-  void _onToggleMute() {
-    setState(() {
-      muted = !muted;
-    });
-    _engine.muteLocalAudioStream(muted);
-  }
-
-  void _onSwitchCamera() {
-    _engine.switchCamera();
+  Future<void> initForAgora() async {
+    _engine = await RtcEngine.createWithConfig(RtcEngineConfig(AGORA_APP_ID));
+    await _engine!.enableVideo();
+    _engine!.setEventHandler(RtcEngineEventHandler(
+        joinChannelSuccess: ((channel, uid, elapsed) {}),
+        userJoined: (uid, elapsed) {
+          setState(() => _remoteId = uid);
+        },
+        userOffline: (uid, reason) {
+          Navigator.pop(context);
+          _engine!.destroy();
+          _engine!.leaveChannel();
+        }));
+    await _engine!
+        .joinChannel(
+            widget.videoCall.token, widget.videoCall.name ?? "", null, 0)
+        .then((value) => log("Joined successfully"))
+        .onError((error, stackTrace) => log(error.toString()));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       body: Center(
         child: Stack(
           children: <Widget>[
-            _viewRows(),
-            _toolbar(),
+            _remoteId != null
+                ? RtcRemoteView.SurfaceView(uid: _remoteId ?? 0, channelId: "")
+                : RtcLocalView.SurfaceView(),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                width: getHorizontal(context),
+                height: getVertical(context) * 0.2,
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(colors: [
+                  Colors.transparent,
+                  Colors.black12,
+                  Colors.black26,
+                  Colors.black38,
+                  Colors.black45,
+                  Colors.black54,
+                  Colors.black87,
+                  Colors.black,
+                ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+              ),
+            ),
+            Container(
+              alignment: Alignment.bottomCenter,
+              padding: EdgeInsets.symmetric(
+                  vertical: 20, horizontal: getHorizontal(context) * 0.09),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () => _engine!.switchCamera(),
+                        child: Icon(
+                          Icons.mode_standby_rounded,
+                          color: Colors.white,
+                          size: getHorizontal(context) * 0.09,
+                        ),
+                      ),
+                      SizedBox(width: getHorizontal(context) * 0.11),
+                      GestureDetector(
+                        onTap: () => _engine!.switchCamera(),
+                        child: Icon(
+                          Icons.change_circle_outlined,
+                          color: Colors.white,
+                          size: getHorizontal(context) * 0.12,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Spacer(),
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            muted = !muted;
+                          });
+                          _engine!.muteLocalAudioStream(muted);
+                        },
+                        child: Icon(
+                          muted ? Icons.mic_off_outlined : Icons.mic,
+                          color: Colors.white,
+                          size: getHorizontal(context) * 0.12,
+                        ),
+                      ),
+                      SizedBox(width: getHorizontal(context) * 0.11),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            videoMuted = !videoMuted;
+                          });
+                          _engine!.muteLocalVideoStream(videoMuted);
+                        },
+                        child: Icon(
+                          videoMuted
+                              ? Icons.videocam_off_outlined
+                              : Icons.videocam_rounded,
+                          color: Colors.white,
+                          size: getHorizontal(context) * 0.09,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Align(
+              alignment: Alignment.topCenter,
+              child: _remoteId != null
+                  ? SizedBox()
+                  : Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: getVertical(context) * 0.15),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          CircleAvatar(
+                            radius: 40,
+                            backgroundColor: Theme.of(context).accentColor,
+                            foregroundImage: NetworkImage(
+                                widget.videoCall.reciever!.image ?? noImage),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            widget.videoCall.reciever!.name ?? "",
+                            style: TextStyle(color: Colors.black87),
+                          ),
+                          Text(
+                            "Calling...",
+                            style: TextStyle(
+                                color: Colors.black54,
+                                fontWeight: FontWeight.w500),
+                          )
+                        ],
+                      ),
+                    ),
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: _remoteId != null
+                  ? Container(
+                      margin: EdgeInsets.only(top: 40, left: 20),
+                      height: getVertical(context) * 0.20,
+                      width: getHorizontal(context) * 0.28,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.black26,
+                      ),
+                      child: RtcLocalView.SurfaceView(),
+                    )
+                  : SizedBox(),
+            )
           ],
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Container(
+        margin: EdgeInsets.symmetric(vertical: 40),
+        padding: EdgeInsets.all(5),
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.white60, width: 1.2),
+            shape: BoxShape.circle),
+        child: RawMaterialButton(
+          onPressed: () {
+            Navigator.pop(context);
+            _engine!.leaveChannel();
+            _engine!.destroy();
+          },
+          child: const Icon(
+            Icons.call_end,
+            color: Colors.white,
+            size: 35.0,
+          ),
+          shape: const CircleBorder(),
+          elevation: 2.0,
+          fillColor: Colors.redAccent,
+          padding: const EdgeInsets.all(15.0),
         ),
       ),
     );
@@ -227,9 +221,8 @@ class _CallPageState extends State<CallPage> {
 
   @override
   void dispose() {
-    _users.clear();
-    _engine.leaveChannel();
-    _engine.destroy();
+    _engine!.leaveChannel();
+    _engine!.destroy();
     super.dispose();
   }
 }

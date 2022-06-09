@@ -67,11 +67,11 @@ class _MyProfileState extends State<MyProfile> {
                             ),
                           ),
                           GestureDetector(
-                              onTap: () => Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => EditProfile()),
-                                  (route) => true),
+                              onTap: () => Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => EditProfile()),
+                                  ),
                               child: Image.asset(
                                 edit,
                                 height: 30,

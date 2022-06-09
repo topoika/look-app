@@ -39,7 +39,10 @@ class _PersonalityState extends State<Personality> {
                   ),
                   TextButton(
                       onPressed: () {
-                        Get.to(() => const GetUserLocation());
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const GetUserLocation()));
                       },
                       child: Text(
                         S.of(context).skip,

@@ -33,7 +33,10 @@ class _DrinkingState extends State<Drinking> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Get.to(() => const Personality());
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Personality()));
                     },
                     child: Text(
                       S.of(context).skip,

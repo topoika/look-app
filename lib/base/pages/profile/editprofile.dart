@@ -243,7 +243,10 @@ class _EditProfileState extends State<EditProfile> {
                       } else {
                         updateUser(currentUser.value);
                       }
-                      Get.to(() => MyProfile());
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MyProfile()));
                     }
                   },
                       S.of(context).save_text +

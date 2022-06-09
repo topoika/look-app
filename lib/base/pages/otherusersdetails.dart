@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:look/base/models/videocall.dart';
 import 'package:look/base/pages/call.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/models/user_model.dart';
 import 'package:look/base/pages/utils/titles.dart';
+import 'package:look/base/repositories/calls_repository.dart';
+import 'package:look/base/repositories/user_repository.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../generated/l10n.dart';
+import 'utils/snackbar.dart';
 
 class OtherUsersDetails extends StatefulWidget {
   final User user;
@@ -76,7 +80,7 @@ class _OtherUsersDetailsState extends State<OtherUsersDetails> {
                       ),
                       InkWell(
                         onTap: () {
-                          onJoin(_user.uid);
+                          onJoin(_user.uid, context);
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(
@@ -227,14 +231,29 @@ class _OtherUsersDetailsState extends State<OtherUsersDetails> {
     );
   }
 
-  Future<void> onJoin(chennal) async {
+  Future<void> onJoin(chennal, BuildContext context) async {
     await _handleCameraAndMic(Permission.camera);
     await _handleCameraAndMic(Permission.microphone);
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const CallPage(),
-      ),
+    await getChannelToken("Test Channel").then(
+      (value) {
+        if (value.length > 0) {
+          VideoCall _videoCall = VideoCall();
+          _videoCall.token = value;
+          _videoCall.name = "Test Channel";
+          _videoCall.caller = currentUser.value;
+          _videoCall.reciever = _user;
+          _videoCall.minutes = 0;
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CallPage(videoCall: _videoCall),
+            ),
+          );
+        } else {
+          showSnackBar(
+              context, "Error while generating token, Please try again", true);
+        }
+      },
     );
   }
 

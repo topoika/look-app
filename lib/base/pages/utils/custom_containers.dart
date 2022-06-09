@@ -2,12 +2,16 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:look/base/pages/randomcalling.dart';
+import 'package:look/base/controllers/livestream_controller.dart';
 import 'package:look/base/models/live_stream_model.dart';
 import 'package:look/base/pages/liveclass.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/models/country_model.dart';
 import 'package:look/base/pages/liveusers.dart';
+import 'package:look/base/pages/utils/button.dart';
+import 'package:look/base/pages/utils/snackbar.dart';
 import 'package:look/base/repositories/user_repository.dart';
 import 'package:look/base/pages/recharge.dart';
 
@@ -126,9 +130,8 @@ Widget bottomNavigation(BuildContext context) {
       mainAxisSize: MainAxisSize.max,
       children: [
         IconButton(
-          onPressed: () {
-            Get.to(() => const Search());
-          },
+          onPressed: () => Navigator.push(
+              context, MaterialPageRoute(builder: (context) => const Search())),
           icon: Icon(
             Icons.search,
             color: theme().mC,
@@ -136,16 +139,16 @@ Widget bottomNavigation(BuildContext context) {
           ),
         ),
         InkWell(
-            onTap: () {},
+            onTap: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const RandomCalling())),
             child: Icon(
               Icons.radar_rounded,
               color: theme().mC,
               size: getHorizontal(context) * 0.075,
             )),
         IconButton(
-          onPressed: () {
-            Get.to(() => const ChatRooms());
-          },
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const ChatRooms())),
           icon: Icon(
             Icons.message,
             color: theme().mC,
@@ -153,7 +156,8 @@ Widget bottomNavigation(BuildContext context) {
           ),
         ),
         IconButton(
-          onPressed: () => Get.to(() => const MyProfile()),
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const MyProfile())),
           icon: Icon(
             Icons.person,
             color: theme().mC,
@@ -192,7 +196,10 @@ Widget topBarItem(BuildContext context, bool videocall) {
       children: [
         GestureDetector(
           onTap: () {
-            videocall ? Get.to(() => const LiveUsers()) : null;
+            videocall
+                ? Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => const LiveUsers()))
+                : null;
           },
           child: Container(
             margin: const EdgeInsets.only(left: 10),
@@ -216,7 +223,10 @@ Widget topBarItem(BuildContext context, bool videocall) {
         ),
         GestureDetector(
           onTap: () {
-            !videocall ? Get.to(() => const VideoCalls()) : null;
+            !videocall
+                ? Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const VideoCalls()))
+                : null;
           },
           child: Container(
             margin: EdgeInsets.only(left: getHorizontal(context) * 0.027),
@@ -388,4 +398,68 @@ Widget bottomSheetContainer(BuildContext context) {
       child: Column(
     children: <Widget>[const Text('text')],
   ));
+}
+
+Widget addStreamTitleBottomSheet(BuildContext context) {
+  TextEditingController _liveTitle = TextEditingController();
+  LiveStream _liveStream = LiveStream();
+  _liveStream.title = '';
+  return Padding(
+    padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+    child: Container(
+      margin: EdgeInsets.symmetric(horizontal: getHorizontal(context) * 0.03),
+      padding: EdgeInsets.symmetric(
+          horizontal: getHorizontal(context) * 0.04, vertical: 20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+        color: Colors.white,
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(
+              'Enter the title of your liveStream',
+              style: TextStyle(
+                fontWeight: FontWeight.w800,
+                fontSize: getHorizontal(context) * 0.04,
+              ),
+            ),
+            SizedBox(height: 20),
+            TextField(
+              textAlign: TextAlign.center,
+              onChanged: (val) => _liveStream.title = val,
+              controller: _liveTitle,
+              decoration: InputDecoration(
+                hintText: "your-name livestream",
+                labelStyle: TextStyle(color: Colors.black.withOpacity(.5)),
+                contentPadding: const EdgeInsets.all(12),
+                hintStyle: TextStyle(color: Colors.black.withOpacity(0.7)),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Theme.of(context).focusColor.withOpacity(0.2))),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Theme.of(context).focusColor.withOpacity(0.5))),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Theme.of(context).focusColor.withOpacity(0.2))),
+              ),
+            ),
+            buttonWidget(context, () {
+              if (_liveTitle.text.length < 3) {
+                Navigator.pop(context);
+                showSnackBar(context, "Enter 3+ char for the title", true);
+              } else {
+                FocusManager.instance.primaryFocus?.unfocus();
+                _liveStream.title = _liveTitle.text;
+                LiveStreamController().createLiveStream(context, _liveStream);
+              }
+            }, S.of(context).continue_text)
+          ],
+        ),
+      ),
+    ),
+  );
 }

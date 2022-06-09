@@ -27,6 +27,7 @@ dependencies:
   get: ^4.3.8
   google_maps_flutter: ^2.1.1
   google_sign_in: ^5.2.1
+  http: ^0.13.4
   image_picker: ^0.8.4+4
   intl_utils: ^2.6.1
   location: ^4.2.0

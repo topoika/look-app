@@ -55,12 +55,12 @@ class _CallGoing extends State<CallGoing> {
   Future<void> onJoin(chennal) async {
     await _handleCameraAndMic(Permission.camera);
     await _handleCameraAndMic(Permission.microphone);
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const CallPage(),
-      ),
-    );
+    // await Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => const CallPage(),
+    //   ),
+    // );
   }
 
   Future<void> _handleCameraAndMic(Permission permission) async {

@@ -39,6 +39,7 @@ class _SearchState extends StateMVC<Search> {
         backgroundImage: NetworkImage(user.image ?? noImage),
         backgroundColor: Colors.transparent,
       ),
+      contentPadding: EdgeInsets.all(0),
       title: Text(user.name ?? ""),
       subtitle: Text(user.location ?? ""),
       trailing: TextButton(
@@ -79,7 +80,7 @@ class _SearchState extends StateMVC<Search> {
         width: double.infinity,
         padding:
             EdgeInsets.symmetric(horizontal: getHorizontal(context) * 0.05),
-        child: Column(
+        child: ListView(
           children: [
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
