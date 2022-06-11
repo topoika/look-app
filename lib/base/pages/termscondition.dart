@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/get_core.dart';
 import 'package:look/base/Helper/dimension.dart';
+import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/repositories/user_repository.dart';
 import 'package:look/base/pages/liveusers.dart';
 
@@ -55,8 +54,7 @@ class _TermsAndConditionState extends State<TermsAndCondition> {
               onTap: () {
                 popUp(context);
               },
-              child: _termsPageItem(
-                  S.of(context).terms_of_use, 'assets/terms.PNG'),
+              child: _termsPageItem(S.of(context).terms_of_use, terms),
             ),
             _termsPageItem(S.of(context).location_based_service_terms,
                 'assets/personal.PNG'),
@@ -135,14 +133,14 @@ class _TermsAndConditionState extends State<TermsAndCondition> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Center(child: Text('Terms and Conditions')),
+          title: Center(child: Text(S.of(context).terms_and_contitions)),
           content: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: const <Widget>[
+            children: <Widget>[
               Expanded(
                 child: Text(
-                  "These are the terms and Conditions or our app",
+                  S.of(context).these_are_the_terms_and_conditions_or_our_app,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.red,
@@ -153,12 +151,12 @@ class _TermsAndConditionState extends State<TermsAndCondition> {
           ),
           actions: <Widget>[
             TextButton(
-                child: const Text('Cancel'),
+                child: Text(S.of(context).cancel_text),
                 onPressed: () {
                   Navigator.of(context).pop();
                 }),
             TextButton(
-                child: const Text('Ok'),
+                child: Text(S.of(context).ok_text),
                 onPressed: () {
                   Navigator.of(context).pop();
                 })

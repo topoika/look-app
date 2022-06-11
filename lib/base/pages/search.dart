@@ -43,7 +43,7 @@ class _SearchState extends StateMVC<Search> {
       title: Text(user.name ?? ""),
       subtitle: Text(user.location ?? ""),
       trailing: TextButton(
-        child: const Text('Message'),
+        child: Text(S.of(context).message_text),
         onPressed: () => _con.sendMessage(user),
       ),
     );

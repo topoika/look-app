@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/models/user_model.dart';
+import 'package:look/base/pages/utils/button.dart';
 import 'package:look/base/repositories/user_repository.dart';
 import 'package:look/constant/theme.dart';
 import 'package:look/base/pages/recharge.dart';
@@ -20,6 +20,12 @@ class Award extends StatefulWidget {
 
 class _AwardState extends State<Award> {
   final User _user = currentUser.value;
+  int day = DateTime.now().day;
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -63,98 +69,31 @@ class _AwardState extends State<Award> {
               ),
               child: Text(
                 S.of(context).free_recharge + "\n" + S.of(context).daily_task,
+                textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: getHorizontal(context) * 0.05,
                     color: Colors.black),
               ),
             ),
-            Row(
+            Wrap(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              alignment: WrapAlignment.center,
               children: [
-                InkWell(
-                  onTap: () async {
-                    // await FirebaseFirestore.instance
-                    //     .collection('Users')
-                    //     .doc(widget.uid)
-                    //     .update({
-                    //   'points': widget.coins + 10,
-                    // });
-                    // await FirebaseFirestore.instance
-                    //     .collection('award')
-                    //     .doc(widget.uid)
-                    //     .update({
-                    //   'awardNumber': 1,
-                    //   'time':
-                    //       FieldValue.serverTimestamp(),
-                    // });
-                    // snack(10);
-                    // Navigator.of(context).pop();
-                  },
-                  child: cont(10),
-                ),
+                cont(10),
                 cont(20),
-                cont(20),
-                cont(20),
-                InkWell(
-                    onTap: () async {
-                      // await FirebaseFirestore.instance
-                      //     .collection('Users')
-                      //     .doc(widget.uid)
-                      //     .update({
-                      //   'points': widget.coins + 20,
-                      // });
-                      // await FirebaseFirestore.instance
-                      //     .collection('award')
-                      //     .doc(widget.uid)
-                      //     .update({
-                      //   'awardNumber': 2,
-                      //   'time':
-                      //       FieldValue.serverTimestamp(),
-                      // });
-                      // snack(20);
-                      // Navigator.of(context).pop();
-                    },
-                    child: cont(20)),
-                InkWell(
-                    onTap: () async {
-                      // await FirebaseFirestore.instance
-                      //     .collection('Users')
-                      //     .doc(widget.uid)
-                      //     .update({
-                      //   'points': widget.coins + 30,
-                      // });
-                      // await FirebaseFirestore.instance
-                      //     .collection('award')
-                      //     .doc(widget.uid)
-                      //     .update({
-                      //   'awardNumber': 3,
-                      //   'time':
-                      //       FieldValue.serverTimestamp(),
-                      // });
-                      // snack(30);
-                      // Navigator.of(context).pop();
-                    },
-                    child: cont(30)),
+                cont(30),
+                cont(30),
+                cont(50),
+                cont(60),
+                cont(70),
+                cont(80),
               ],
             ),
-            InkWell(
-              onTap: () async {
-                Get.to(() => const Recharge());
-              },
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                margin: const EdgeInsets.only(top: 10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: theme().mC,
-                ),
-                child: Text(
-                  S.of(context).points_recharge,
-                  style: TextStyle(
-                      fontSize: getHorizontal(context) * 0.05,
-                      color: Colors.black),
-                ),
-              ),
-            ),
+            buttonWidget(
+                context,
+                () => Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => const Recharge())),
+                S.of(context).recharge),
           ]),
         ),
       ),
@@ -162,42 +101,43 @@ class _AwardState extends State<Award> {
   }
 
   Widget cont(int number) {
-    return Column(
+    return Stack(
       children: [
-        Text(
-          '$number',
-          style: const TextStyle(fontWeight: FontWeight.bold),
+        GestureDetector(
+          onTap: () {},
+          child: Container(
+            margin: EdgeInsets.all(getHorizontal(context) * 0.01),
+            width: getHorizontal(context) * 0.23,
+            height: getVertical(context) * 0.15,
+            padding: EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Image.asset(
+              award,
+              fit: BoxFit.fill,
+            ),
+          ),
         ),
         Container(
           margin: EdgeInsets.all(getHorizontal(context) * 0.01),
-          width: getHorizontal(context) * 0.179,
-          height: getVertical(context) * 0.2,
-          child: Image.asset(
-            award,
-            fit: BoxFit.cover,
+          width: getHorizontal(context) * 0.23,
+          height: getVertical(context) * 0.15,
+          alignment: Alignment.center,
+          padding: EdgeInsets.all(2),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(.4),
+            borderRadius: BorderRadius.circular(5),
           ),
-        ),
-      ],
-    );
-  }
-
-  Widget cont2(int number) {
-    return Column(
-      children: [
-        Text(
-          '$number',
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        Container(
-          color: Colors.black,
-          margin: EdgeInsets.all(getHorizontal(context) * 0.01),
-          width: getHorizontal(context) * 0.179,
-          height: getVertical(context) * 0.2,
-          child: Image.asset(
-            award,
-            fit: BoxFit.cover,
+          child: Text(
+            number.toString(),
+            style: TextStyle(
+              fontWeight: FontWeight.w800,
+              fontSize: getHorizontal(context) * 0.045,
+            ),
           ),
-        ),
+        )
       ],
     );
   }
@@ -206,11 +146,12 @@ class _AwardState extends State<Award> {
     final snackBar = SnackBar(
       margin: const EdgeInsets.all(20),
       behavior: SnackBarBehavior.floating,
-      content: Text('$p points Collected, visit tomorrow to have more'),
+      content: Text(
+          '$p ${S.of(context).points_collected_visit_tomorrow_to_have_more}'),
       backgroundColor: (Colors.blueAccent),
       action: SnackBarAction(
-        label: 'okay',
-        onPressed: () {},
+        label: S.of(context).ok_text,
+        onPressed: () => Navigator.pop(context),
       ),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);

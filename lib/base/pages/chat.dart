@@ -11,6 +11,7 @@ import 'package:look/constant/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as cf;
 import 'package:mvc_pattern/mvc_pattern.dart';
 
+import '../../generated/l10n.dart';
 import '../Helper/strings.dart';
 import '../models/videocall.dart';
 
@@ -50,9 +51,9 @@ class _ChatState extends StateMVC<Chat> {
             }
           });
           if (!snapshot.hasData) {
-            return const Center(
+            return Center(
               child: Text(
-                "No data found",
+                S.of(context).no_data_found,
                 style: TextStyle(color: Colors.red),
               ),
             );
@@ -160,7 +161,7 @@ class _ChatState extends StateMVC<Chat> {
                   controller: messageText,
                   style: textstyle,
                   decoration: InputDecoration(
-                      hintText: "Type Message ...",
+                      hintText: "${S.of(context).type_message} ...",
                       hintStyle: TextStyle(
                         color: Colors.grey[700],
                         fontSize: 16,

@@ -10,6 +10,7 @@ import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/models/videocall.dart';
 
 import '../../env.dart';
+import '../../generated/l10n.dart';
 
 class CallPage extends StatefulWidget {
   final VideoCall videoCall;
@@ -165,7 +166,7 @@ class _CallPageState extends State<CallPage> {
                             style: TextStyle(color: Colors.black87),
                           ),
                           Text(
-                            "Calling...",
+                            "${S.of(context).calling_text}...",
                             style: TextStyle(
                                 color: Colors.black54,
                                 fontWeight: FontWeight.w500),

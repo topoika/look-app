@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/controllers/livestream_controller.dart';
 import 'package:look/base/pages/utils/add_title_bottom_sheet.dart';
@@ -13,7 +12,7 @@ import '../../generated/l10n.dart';
 import '../Helper/strings.dart';
 import '../models/country_model.dart';
 import '../models/live_stream_model.dart';
-import '../models/user_model.dart' as userModel;
+import '../repositories/user_repository.dart';
 import 'liveclass.dart';
 import 'utils/titles.dart';
 
@@ -62,14 +61,6 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
                         ],
                       ),
                     ),
-                    const SizedBox(
-                        height: 28,
-                        width: 28,
-                        child: Icon(
-                          Icons.refresh,
-                          color: Colors.black,
-                          size: 28,
-                        )),
                   ],
                 ),
               ),
@@ -114,9 +105,7 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
                           itemBuilder: (BuildContext context, int index) {
                             var country = countries[index];
                             return countryItemWidget(context, country, () {
-                              setState(() {
-                                activeCountry = country.name!;
-                              });
+                              setState(() => activeCountry = country.name!);
                             }, activeCountry);
                           },
                         ),
@@ -132,9 +121,7 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
                 child: TabBarView(
                   children: [
                     gridView(),
-                    Center(
-                      child: Text(S.of(context).list),
-                    )
+                    listView(),
                   ],
                 ),
               ),
@@ -249,7 +236,7 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       mainAxisSize: MainAxisSize.min,
-                                      children: const [
+                                      children: [
                                         Icon(
                                           Icons.remove_red_eye,
                                           color: Colors.white,
@@ -257,7 +244,7 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
                                         ),
                                         SizedBox(width: 5),
                                         Text(
-                                          "0",
+                                          liveStream.viewers.toString(),
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 15,
@@ -269,10 +256,31 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
                                 ),
                                 Align(
                                   alignment: Alignment.bottomLeft,
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: 15,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                          bottomLeft: Radius.circular(5),
+                                          bottomRight: Radius.circular(5)),
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Colors.transparent,
+                                          Colors.black26,
+                                          Colors.black,
+                                        ],
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.bottomLeft,
                                   child: Padding(
                                     padding: const EdgeInsets.only(
                                         left: 5, bottom: 5),
-                                    child: channelName("Alan Walker Mix"),
+                                    child: channelName(liveStream.title ?? ""),
                                   ),
                                 ),
                                 Align(
@@ -332,77 +340,121 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
     );
   }
 
-  // Widget listView() {
-  //   return SizedBox(
-  //     width: getHorizontal(context) * 0.98,
-  //     height: getVertical(context) * 0.9,
-  //     child: StreamBuilder(
-  //       stream: FirebaseFirestore.instance
-  //           .collection("Users")
-  //           .where(
-  //             "uid",
-  //             isNotEqualTo: currentUser.value.uid,
-  //           )
-  //           .snapshots(),
-  //       builder:
-  //           (BuildContext context, AsyncSnapshot<cf.QuerySnapshot> snapshot) {
-  //         if (!snapshot.hasData) {
-  //           return const Center(
-  //             child: Text(
-  //               "No data found",
-  //               style: TextStyle(color: Colors.red),
-  //             ),
-  //           );
-  //         }
-  //         return ListView(
-  //           children: snapshot.data!.docs.map((document) {
-  //             return ListView.builder(
-  //                 itemCount: snapshot.data!.docs.length,
-  //                 itemBuilder: (BuildContext context, int index) {
-  //                   var _user = User.fromMap(snapshot.data!.docs[index].data()
-  //                       as Map<String, dynamic>);
-  //                   return ListTile(
-  //                     leading: CircleAvatar(
-  //                       backgroundImage: NetworkImage(
-  //                         _user.image ?? noImage,
-  //                       ),
-  //                     ),
-  //                     subtitle: Text(
-  //                       _user.country!.toUpperCase(),
-  //                       style: TextStyle(
-  //                           fontSize: getHorizontal(context) * 0.03,
-  //                           color: Colors.black),
-  //                     ),
-  //                     title: Text(
-  //                       _user.name ?? "",
-  //                       style: TextStyle(
-  //                           fontSize: getHorizontal(context) * 0.05,
-  //                           color: Colors.black),
-  //                     ),
-  //                     trailing: SizedBox(
-  //                       width: getHorizontal(context) * 0.13,
-  //                       child: Row(
-  //                         children: const [
-  //                           Text(
-  //                             "0",
-  //                             style: TextStyle(color: Colors.black),
-  //                           ),
-  //                           Icon(
-  //                             Icons.remove_red_eye,
-  //                             color: Colors.black,
-  //                           ),
-  //                         ],
-  //                       ),
-  //                     ),
-  //                     onTap: () {},
-  //                   );
-  //                 });
-  //           }).toList(),
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
+  Widget listView() {
+    return SizedBox(
+      width: getHorizontal(context) * 0.98,
+      height: getVertical(context) * 0.9,
+      child: StreamBuilder(
+          stream: activeCountry == "All"
+              ? FirebaseFirestore.instance
+                  .collection("liveStreams")
+                  .where(
+                    'hostId',
+                    isNotEqualTo: FirebaseAuth.instance.currentUser!.uid,
+                  )
+                  .snapshots()
+              : FirebaseFirestore.instance
+                  .collection("liveStreams")
+                  .where(
+                    'hostId',
+                    isNotEqualTo: FirebaseAuth.instance.currentUser!.uid,
+                  )
+                  .where("country", isEqualTo: activeCountry)
+                  .snapshots(),
+          builder: (BuildContext context,
+              AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+            return !snapshot.hasData
+                ? Center(
+                    child: noDataFoundContainer(context),
+                  )
+                : ListView.builder(
+                    itemCount: snapshot
+                        .data!.docs.length, // snapshot.data!.docs.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      var liveStream =
+                          LiveStream.fromMap(snapshot.data!.docs[index].data());
+                      var _user = liveStream.host;
+                      return InkWell(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LiveClass(
+                              isHost: false,
+                              isInvited: false,
+                              liveStream: liveStream,
+                            ),
+                          ),
+                        ),
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          width: getHorizontal(context),
+                          height: 60,
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                height: double.infinity,
+                                width: getHorizontal(context) * 0.15,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
+                                      _user!.image ?? noImage,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: getHorizontal(context) * 0.03),
+                              SizedBox(
+                                width: getHorizontal(context) * 0.62,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text(
+                                      liveStream.title ?? "",
+                                      maxLines: 1,
+                                      style: mainStyle(Colors.black, 0.031),
+                                    ),
+                                    Text(
+                                      "Hi? I am free today, I want to meet a good guy!!",
+                                      maxLines: 1,
+                                      style: mainStyle(Colors.black45, 0.028),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Spacer(),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    "1hr",
+                                    style: mainStyle(Colors.black45, 0.029),
+                                  ),
+                                  Text(
+                                    "5Km",
+                                    style: mainStyle(Colors.redAccent, 0.029),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    });
+          }),
+    );
+  }
+
+  TextStyle mainStyle(Color color, double size) {
+    return TextStyle(
+      fontSize: getHorizontal(context) * size,
+      color: color,
+      fontWeight: FontWeight.w700,
+    );
+  }
 
   void connectionChecker() {
     showModalBottomSheet(

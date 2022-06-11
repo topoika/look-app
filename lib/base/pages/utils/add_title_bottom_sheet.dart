@@ -49,7 +49,7 @@ class _AddTitleBottomSheetState extends StateMVC<AddTitleBottomSheet> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(
-                'Enter the title of your liveStream',
+                S.of(context).enter_the_title_of_your_liveStream,
                 style: TextStyle(
                   fontWeight: FontWeight.w800,
                   fontSize: getHorizontal(context) * 0.04,
@@ -61,7 +61,7 @@ class _AddTitleBottomSheetState extends StateMVC<AddTitleBottomSheet> {
                 onChanged: (val) => _liveStream.title = val,
                 controller: _liveTitle,
                 decoration: InputDecoration(
-                  hintText: "your-name livestream",
+                  hintText: S.of(context).your_name_livestream,
                   labelStyle: TextStyle(color: Colors.black.withOpacity(.5)),
                   contentPadding: const EdgeInsets.all(12),
                   hintStyle: TextStyle(color: Colors.black.withOpacity(0.7)),
@@ -82,11 +82,12 @@ class _AddTitleBottomSheetState extends StateMVC<AddTitleBottomSheet> {
               buttonWidget(context, () {
                 if (_liveTitle.text.length < 3) {
                   Navigator.pop(context);
-                  showSnackBar(context, "Enter 3+ char for the title", true);
+                  showSnackBar(context, S.of(context).enter_three_plus_char_for_the_title,true);
                 } else {
                   FocusManager.instance.primaryFocus?.unfocus();
                   _liveStream.title = _liveTitle.text;
                   _con.createLiveStream(context, _liveStream);
+                  // Navigator.pop(context);
                 }
               }, S.of(context).continue_text)
             ],

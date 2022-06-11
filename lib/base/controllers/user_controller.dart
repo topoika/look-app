@@ -1,6 +1,8 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:look/base/models/user_model.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 class UserController extends ControllerMVC {
@@ -28,5 +30,12 @@ class UserController extends ControllerMVC {
     setState(() {});
     // ScaffoldMessenger.of(scaffoldKey.currentState!.context)
     //     .showSnackBar(snackBar);
+  }
+
+  void updateUserVideoRate(User user) async {
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(user.uid)
+        .update({"videoRate": user.videoRate, "smsRate": user.smsRate});
   }
 }

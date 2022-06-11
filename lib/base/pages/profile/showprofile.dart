@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/pages/utils/custom_containers.dart';
+import 'package:look/base/pages/utils/edit_video_rate.dart';
 import 'package:look/base/repositories/user_repository.dart';
 import 'package:look/base/pages/recharge.dart';
+import '../utils/edit_language.dart';
 import './../../models/user_model.dart' as userModel;
 import './../utils/titles.dart';
 
@@ -94,7 +96,7 @@ class _MyProfileState extends State<MyProfile> {
                               child: Text(
                                 S.of(context).points_setting,
                                 style: TextStyle(
-                                    fontSize: getHorizontal(context) * 0.045,
+                                    fontSize: getHorizontal(context) * 0.04,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black),
                               ),
@@ -104,17 +106,21 @@ class _MyProfileState extends State<MyProfile> {
                               height: getVertical(context) * 0.024,
                             ),
                             SizedBox(width: getHorizontal(context) * 0.013),
-                            Text("10p/Msg  50p/Min",
+                            Text(
+                                "${_user.smsRate}/Msg ${_user.videoRate} ${S.of(context).points}/${S.of(context).min_text}",
+                                // "10p/Msg  50p/Min",
                                 style: TextStyle(
-                                    fontSize: getHorizontal(context) * 0.035,
+                                    fontSize: getHorizontal(context) * 0.031,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black)),
                             SizedBox(width: getHorizontal(context) * 0.02),
                             GestureDetector(
                                 onTap: () => showModalBottomSheet(
                                     context: context,
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
                                     builder: (context) {
-                                      return bottomSheetContainer(context);
+                                      return EditVideoRate();
                                     }),
                                 child: Image.asset(
                                   edit,
@@ -143,8 +149,14 @@ class _MyProfileState extends State<MyProfile> {
                         child: cont(invitee, S.of(context).transaction_history),
                       ),
                       InkWell(
-                        onTap: () {},
-                        child: cont(invitee, S.of(context).transaction_history),
+                        onTap: () => showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (context) {
+                              return EditLanguage();
+                            }),
+                        child: cont(invitee, S.of(context).language_text),
                       ),
                       InkWell(
                         onTap: () {},

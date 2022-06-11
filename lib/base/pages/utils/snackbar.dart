@@ -5,7 +5,7 @@ void showSnackBar(BuildContext context, String txt, bool danger) {
     margin: const EdgeInsets.all(20),
     behavior: SnackBarBehavior.floating,
     content: Text(txt),
-    backgroundColor: (Colors.redAccent),
+    backgroundColor: (danger ? Colors.redAccent : Colors.greenAccent),
     // action: SnackBarAction(
     //   label: 'dismiss',
     //   onPressed: () {},

@@ -110,9 +110,9 @@ class LiveStreamController extends ControllerMVC {
     await firebaseFirestore
         .collection("liveStreams")
         .doc(currentUser.value.uid)
-        .delete()
-        .then((value) => Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const LiveUsers())));
+        .delete();
+    Navigator.push(
+        context, MaterialPageRoute(builder: ((context) => LiveUsers())));
     firebaseFirestore
         .collection("liveStreams")
         .doc(currentUser.value.uid)
@@ -130,6 +130,13 @@ class LiveStreamController extends ControllerMVC {
         .collection("liveStreams")
         .doc(liveStream.id)
         .update({"viewers": 3});
+  }
+
+  updateStreamHostUid(LiveStream liveStream, int uid) async {
+    await firebaseFirestore
+        .collection("liveStreams")
+        .doc(liveStream.id)
+        .update({"hostUid": uid});
   }
 
   addComment(Comment comment, LiveStream liveStream) async {

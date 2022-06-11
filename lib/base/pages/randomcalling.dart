@@ -8,6 +8,8 @@ import 'package:look/base/repositories/user_repository.dart';
 import 'package:look/constant/theme.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
+import '../../generated/l10n.dart';
+
 class RandomCalling extends StatefulWidget {
   const RandomCalling({
     Key? key,
@@ -57,7 +59,7 @@ class _RandomCallingState extends StateMVC<RandomCalling> {
                         Row(
                           children: [
                             Text(
-                              "Searching for a User",
+                              S.of(context).searching_for_user,
                               style: TextStyle(
                                 fontSize: getHorizontal(context) * 0.05,
                               ),
@@ -94,12 +96,12 @@ class _RandomCallingState extends StateMVC<RandomCalling> {
                                 ),
                                 child: Center(
                                     child: Text(
-                                  "Discard",
+                                  S.of(context).discard,
                                   style: TextStyle(
-                                      fontSize: getHorizontal(context) * 0.045,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                      fontFamily: 'PopR'),
+                                    fontSize: getHorizontal(context) * 0.045,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
                                 ))),
                           ),
                         ),
@@ -112,12 +114,12 @@ class _RandomCallingState extends StateMVC<RandomCalling> {
                         Row(
                           children: [
                             Text(
-                              "Join Channel With ",
+                              S.of(context).make_video_call_with,
                               style: TextStyle(
-                                  fontSize: getHorizontal(context) * 0.045,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                  fontFamily: 'PopR'),
+                                fontSize: getHorizontal(context) * 0.045,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
                             Text(
                               ' $otherUserName',
@@ -145,12 +147,12 @@ class _RandomCallingState extends StateMVC<RandomCalling> {
                               ),
                               child: Center(
                                 child: Text(
-                                  "Join",
+                                  S.of(context).join,
                                   style: TextStyle(
-                                      fontSize: getHorizontal(context) * 0.045,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                      fontFamily: 'PopR'),
+                                    fontSize: getHorizontal(context) * 0.045,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
@@ -169,18 +171,18 @@ class _RandomCallingState extends StateMVC<RandomCalling> {
     return (await showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Are you sure?'),
-            content: const Text('Do you want to exit'),
+            title: Text(S.of(context).are_you_sure + "?"),
+            content: Text(S.of(context).do_you_want_to_exit),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.of(context).pop(false),
-                child: const Text('No'),
+                child: Text(S.of(context).no_text),
               ),
               TextButton(
                 onPressed: () {
                   _con.removeFromRandomCalls(context);
                 },
-                child: const Text('Yes'),
+                child: Text(S.of(context).yes_text),
               ),
             ],
           ),

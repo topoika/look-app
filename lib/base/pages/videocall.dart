@@ -50,14 +50,6 @@ class _VideoCallsState extends State<VideoCalls> {
                         ],
                       ),
                     ),
-                    const SizedBox(
-                        height: 28,
-                        width: 28,
-                        child: Icon(
-                          Icons.refresh,
-                          color: Colors.black,
-                          size: 28,
-                        )),
                   ],
                 ),
               ),
@@ -69,16 +61,27 @@ class _VideoCallsState extends State<VideoCalls> {
                   child: Row(
                     children: [
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          setState(() {
+                            activeCountry = "All";
+                          });
+                        },
                         child: Container(
                           margin: EdgeInsets.only(
                               right: getHorizontal(context) * 0.03),
                           padding: EdgeInsets.symmetric(
-                              horizontal: getHorizontal(context) * 0.02),
+                              horizontal: getHorizontal(context) * 0.02,
+                              vertical: 5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: activeCountry == "All"
+                                ? Colors.red
+                                : Theme.of(context).accentColor,
+                          ),
                           child: Text(
-                            "All".toUpperCase(),
+                            S.of(context).all.toUpperCase(),
                             style: TextStyle(
-                                fontSize: getHorizontal(context) * 0.03,
+                                fontSize: getHorizontal(context) * 0.034,
                                 color: Colors.black),
                           ),
                         ),
@@ -91,7 +94,7 @@ class _VideoCallsState extends State<VideoCalls> {
                           itemBuilder: (BuildContext context, int index) {
                             var country = countries[index];
                             return countryItemWidget(context, country, () {
-                              setState(() {});
+                              setState(() => activeCountry = country.name!);
                             }, activeCountry);
                           },
                         ),
@@ -106,9 +109,7 @@ class _VideoCallsState extends State<VideoCalls> {
                 child: TabBarView(
                   children: [
                     gridView(),
-                    Center(
-                      child: Text(S.of(context).list),
-                    )
+                    listView(),
                   ],
                 ),
               ),
@@ -126,153 +127,156 @@ class _VideoCallsState extends State<VideoCalls> {
           width: getHorizontal(context) * 1,
           height: getVertical(context) * 0.95,
           child: StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection("Users")
-                .where(
-                  "uid",
-                  isNotEqualTo: currentUser.value.uid,
-                )
-                .snapshots(),
+            stream: activeCountry == "All"
+                ? FirebaseFirestore.instance
+                    .collection("Users")
+                    .where(
+                      "uid",
+                      isNotEqualTo: currentUser.value.uid,
+                    )
+                    .snapshots()
+                : FirebaseFirestore.instance
+                    .collection("Users")
+                    .where(
+                      "uid",
+                      isNotEqualTo: currentUser.value.uid,
+                    )
+                    .where("country", isEqualTo: activeCountry)
+                    .snapshots(),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (!snapshot.hasData) {
-                return const Center(
-                  child: Text(
-                    "No data found",
-                    style: TextStyle(color: Colors.red),
-                  ),
-                );
-              }
-              return GridView.builder(
-                  scrollDirection: Axis.vertical,
-                  physics: const ScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 0.8,
-                  ),
-                  shrinkWrap: true,
-                  itemCount: snapshot.data!.docs.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    var _user = User.fromMap(snapshot.data!.docs[index].data()
-                        as Map<String, dynamic>);
-                    return InkWell(
-                      onTap: () => Get.to(() => OtherUsersDetails(user: _user)),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        margin: const EdgeInsets.only(
-                            left: 3, right: 5, top: 5, bottom: 5),
-                        child: Stack(
-                          children: [
-                            SizedBox(
-                              width: getHorizontal(context) * 0.8,
-                              height: getVertical(context) * 0.9,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(5),
-                                child: Image.network(
-                                  _user.image ?? noImage,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(left: 5, top: 8),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 7, vertical: 5),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).accentColor,
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Text(
-                                _user.country!.toUpperCase(),
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w800,
-                                    fontSize: getHorizontal(context) * 0.03,
-                                    color: Colors.white),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: Container(
-                                margin: const EdgeInsets.only(right: 5, top: 8),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 7, vertical: 5),
-                                decoration: BoxDecoration(
-                                  color: Colors.black12,
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      Icons.remove_red_eye,
-                                      color: Colors.white,
-                                      size: 14,
-                                    ),
-                                    const SizedBox(width: 5),
-                                    const Text(
-                                      "0",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                    const SizedBox(width: 3),
-                                    Icon(
-                                      Icons.brightness_1_rounded,
-                                      color: index == 3
-                                          ? Colors.amber
-                                          : index == 5
-                                              ? Colors.black
-                                              : Colors.green,
-                                      size: 16,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.bottomLeft,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 5, bottom: 5),
-                                child: channelName(_user.name),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.bottomRight,
-                              child: Container(
-                                margin:
-                                    const EdgeInsets.only(right: 5, bottom: 5),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                decoration: BoxDecoration(
-                                  color: const Color.fromARGB(255, 1, 6, 36),
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: const [
-                                    Text(
-                                      "👏  0",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+              return !snapshot.hasData
+                  ? Center(
+                      child: noDataFoundContainer(context),
+                    )
+                  : GridView.builder(
+                      scrollDirection: Axis.vertical,
+                      physics: const ScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 0.8,
                       ),
-                    );
-                  });
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        var _user = User.fromMap(snapshot.data!.docs[index]
+                            .data() as Map<String, dynamic>);
+                        return InkWell(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  OtherUsersDetails(user: _user),
+                            ),
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            margin: const EdgeInsets.only(
+                                left: 3, right: 5, top: 5, bottom: 5),
+                            child: Stack(
+                              children: [
+                                SizedBox(
+                                  width: getHorizontal(context) * 0.8,
+                                  height: getVertical(context) * 0.9,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(5),
+                                    child: Image.network(
+                                      _user.image ?? noImage,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  margin:
+                                      const EdgeInsets.only(left: 5, top: 8),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 7, vertical: 5),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).accentColor,
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: Text(
+                                    _user.country!.toUpperCase(),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: getHorizontal(context) * 0.03,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Container(
+                                    margin:
+                                        const EdgeInsets.only(right: 5, top: 8),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 7, vertical: 5),
+                                    decoration: BoxDecoration(
+                                      color: Colors.black12,
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        const Icon(
+                                          Icons.remove_red_eye,
+                                          color: Colors.white,
+                                          size: 14,
+                                        ),
+                                        const SizedBox(width: 5),
+                                        Text(
+                                          "0",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                        const SizedBox(width: 3),
+                                        Icon(
+                                          Icons.brightness_1_rounded,
+                                          color: index == 3
+                                              ? Colors.amber
+                                              : index == 5
+                                                  ? Colors.black
+                                                  : Colors.green,
+                                          size: 16,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: Container(
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(5),
+                                            bottomRight: Radius.circular(5)),
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Colors.transparent,
+                                            Colors.black26,
+                                            Colors.black,
+                                          ],
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                        )),
+                                    padding: const EdgeInsets.only(
+                                        left: 5, bottom: 3, top: 9),
+                                    child: channelName(_user.name),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      });
             },
           ),
         ),
@@ -288,44 +292,114 @@ class _VideoCallsState extends State<VideoCalls> {
     );
   }
 
-  // Widget listView() {
-  //   return SizedBox(
-  //     width: getHorizontal(context) * 0.98,
-  //     height: getVertical(context) * 0.9,
-  //     child: ListView.builder(
-  //         itemCount: name.length,
-  //         itemBuilder: (BuildContext context, int index) {
-  //           return ListTile(
-  //             leading: CircleAvatar(
-  //               backgroundImage: NetworkImage(images[index]),
-  //             ),
-  //             subtitle: Text(
-  //               country[index],
-  //               style: TextStyle(
-  //                   fontSize: getHorizontal(context) * 0.03,
-  //                   color: Colors.black),
-  //             ),
-  //             title: Text(
-  //               name[index],
-  //               style: TextStyle(
-  //                   fontFamily: 'PopB',
-  //                   fontSize: getHorizontal(context) * 0.05,
-  //                   color: Colors.black),
-  //             ),
-  //             onTap: () {
-  //               Get.to(() => OtherUsersDetails(otherUserUid: uids[index]));
-  //             },
-  //           );
-  //         }),
-  //   );
-  // }
+  Widget listView() {
+    return SizedBox(
+      width: getHorizontal(context) * 0.98,
+      height: getVertical(context) * 0.9,
+      child: StreamBuilder(
+          stream: activeCountry == "All"
+              ? FirebaseFirestore.instance
+                  .collection("Users")
+                  .where(
+                    "uid",
+                    isNotEqualTo: currentUser.value.uid,
+                  )
+                  .snapshots()
+              : FirebaseFirestore.instance
+                  .collection("Users")
+                  .where(
+                    "uid",
+                    isNotEqualTo: currentUser.value.uid,
+                  )
+                  .where("country", isEqualTo: activeCountry)
+                  .snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            return !snapshot.hasData
+                ? Center(
+                    child: noDataFoundContainer(context),
+                  )
+                : ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      var _user = User.fromMap(snapshot.data!.docs[index].data()
+                          as Map<String, dynamic>);
+                      return InkWell(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                OtherUsersDetails(user: _user),
+                          ),
+                        ),
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          width: getHorizontal(context),
+                          height: 60,
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                height: double.infinity,
+                                width: getHorizontal(context) * 0.15,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
+                                      _user.image ?? noImage,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: getHorizontal(context) * 0.03),
+                              SizedBox(
+                                width: getHorizontal(context) * 0.62,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text(
+                                      "${_user.name ?? ""} 23 ${_user.location}",
+                                      maxLines: 1,
+                                      style: mainStyle(Colors.black, 0.031),
+                                    ),
+                                    Text(
+                                      _user.describe ?? "",
+                                      maxLines: 1,
+                                      style: mainStyle(Colors.black45, 0.028),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Spacer(),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    "1hr",
+                                    style: mainStyle(Colors.black45, 0.029),
+                                  ),
+                                  Text(
+                                    "5Km",
+                                    style: mainStyle(Colors.redAccent, 0.029),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    });
+          }),
+    );
+  }
 
-  // void d() async {
-  //   bool check = await DataConnectionChecker().hasConnection;
-  //   if (check) {
-  //   } else {
-  //     const Dialogg().popUp(context, "No Connection",
-  //         "Please check your internet connection and try again later!", 0);
-  //   }
-  // }
+  TextStyle mainStyle(Color color, double size) {
+    return TextStyle(
+      fontSize: getHorizontal(context) * size,
+      color: color,
+      fontWeight: FontWeight.w700,
+    );
+  }
 }

@@ -1,27 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:look/base/Helper/dimension.dart';
+import 'package:look/base/Helper/strings.dart';
+import 'package:look/base/pages/payment_success.dart';
 import 'package:look/base/repositories/user_repository.dart';
 import 'package:look/constant/theme.dart';
 import 'package:look/base/pages/bigevent.dart';
+import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../generated/l10n.dart';
+import '../controllers/payement_controller.dart';
 
 class BankAccountDeposit extends StatefulWidget {
   final int bigEventPoints;
-  const BankAccountDeposit({Key? key, required this.bigEventPoints})
+  final double price;
+
+  const BankAccountDeposit(
+      {Key? key, required this.bigEventPoints, required this.price})
       : super(key: key);
 
   @override
   _BankAccountDepositState createState() => _BankAccountDepositState();
 }
 
-class _BankAccountDepositState extends State<BankAccountDeposit> {
-  final formKey = GlobalKey<FormState>();
-  final TextEditingController _depositorController = TextEditingController();
+class _BankAccountDepositState extends StateMVC<BankAccountDeposit> {
+  late PaymentController _con;
+  _BankAccountDepositState() : super(PaymentController()) {
+    _con = controller as PaymentController;
+  }
+  TextEditingController _depositorController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    double w = MediaQuery.of(context).size.width;
-    double h = MediaQuery.of(context).size.height;
-
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -39,27 +48,27 @@ class _BankAccountDepositState extends State<BankAccountDeposit> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Point Recharge',
-                    style: TextStyle(fontSize: w * 0.065, fontFamily: 'PopB'),
+                    S.of(context).points_recharge,
+                    style: TextStyle(
+                      fontSize: getHorizontal(context) * 0.046,
+                    ),
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'My Points   \n',
+                        S.of(context).my_points,
                         style: TextStyle(
-                            fontFamily: 'PopZ',
                             fontWeight: FontWeight.bold,
-                            fontSize: w * 0.06),
+                            fontSize: getHorizontal(context) * 0.04),
                       ),
                       Text(
-                        currentUser.value.points.toString(),
+                        ": ${currentUser.value.points.toString()}",
                         style: TextStyle(
                             color: Colors.red,
-                            fontFamily: 'PopZ',
                             fontWeight: FontWeight.bold,
-                            fontSize: w * 0.06),
+                            fontSize: getHorizontal(context) * 0.04),
                       )
                     ],
                   ),
@@ -73,36 +82,44 @@ class _BankAccountDepositState extends State<BankAccountDeposit> {
                     ),
                     child: Column(
                       children: [
-                        Row(
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               '\n${widget.bigEventPoints}P\n',
-                              style: TextStyle(fontSize: w * 0.06),
+                              style: TextStyle(
+                                  fontSize: getHorizontal(context) * 0.06),
                             ),
-                            price(widget.bigEventPoints, w),
+                            Text("$currency ${widget.price.toString()}",
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: getHorizontal(context) * 0.06)),
                           ],
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           child: Form(
-                            key: formKey,
+                            key: _con.formKey,
                             child: TextFormField(
                               textAlign: TextAlign.center,
                               controller: _depositorController,
                               style: const TextStyle(
                                   fontSize: 15, fontWeight: FontWeight.bold),
-                              decoration: const InputDecoration(
-                                hintText:
-                                    "      Please enter the depositor name",
+                              decoration: InputDecoration(
+                                hintText: S
+                                    .of(context)
+                                    .please_enter_the_depositor_name,
                                 hintStyle: TextStyle(
                                     fontSize: 15, fontWeight: FontWeight.bold),
                               ),
                               validator: (val) {
                                 return val!.length > 5
                                     ? null
-                                    : "Enter name of 5+ characters";
+                                    : S
+                                        .of(context)
+                                        .enter_name_of_five_plus_characters;
                               },
                             ),
                           ),
@@ -110,34 +127,42 @@ class _BankAccountDepositState extends State<BankAccountDeposit> {
                         Padding(
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           child: Text(
-                            '\nPlease Enter the depositor name. If you do not deposit the correct amount or if the '
+                            'Please Enter the depositor name. If you do not deposit the correct amount or if the '
                             'depositor name is different, the point charging may be delayed',
+                            textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontFamily: 'PopB', fontSize: w * 0.04),
+                                fontSize: getHorizontal(context) * 0.04),
                           ),
                         ),
                         Center(
                           child: Container(
-                            margin: EdgeInsets.only(top: h * 0.1, bottom: 20),
+                            margin: EdgeInsets.only(
+                                top: getVertical(context) * 0.1, bottom: 20),
                             padding: const EdgeInsets.all(10),
-                            width: w * 0.5,
+                            width: getHorizontal(context) * 0.5,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(40),
                               color: theme().mC,
                             ),
                             child: InkWell(
                                 onTap: () {
-                                  if (formKey.currentState!.validate()) {
-                                    _makeSocialMediaRequest();
+                                  if (_con.formKey.currentState!.validate()) {
+                                    _con.creditUserPoints(
+                                        widget.bigEventPoints.toDouble());
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                PaymentSuccess()));
                                   }
                                 },
                                 child: Text(
-                                  "   Confirm   ",
+                                  S.of(context).confirm_text,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: w * 0.05),
+                                      fontSize: getHorizontal(context) * 0.05),
                                 )),
                           ),
                         ),
@@ -146,24 +171,25 @@ class _BankAccountDepositState extends State<BankAccountDeposit> {
                   ),
                   Center(
                     child: Container(
-                      margin: EdgeInsets.only(top: h * 0.05),
+                      margin: EdgeInsets.only(top: getVertical(context) * 0.05),
                       padding: const EdgeInsets.all(10),
-                      width: w * 0.5,
+                      width: getHorizontal(context) * 0.5,
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.red, width: 3),
                         borderRadius: BorderRadius.circular(40),
                       ),
                       child: InkWell(
-                          onTap: () {
-                            Get.to(() => const BigEvent());
-                          },
+                          onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const BigEvent())),
                           child: Text(
-                            "   Big Event   ",
+                            S.of(context).big_event,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Colors.red,
                                 fontWeight: FontWeight.bold,
-                                fontSize: w * 0.05),
+                                fontSize: getHorizontal(context) * 0.05),
                           )),
                     ),
                   )
@@ -174,115 +200,6 @@ class _BankAccountDepositState extends State<BankAccountDeposit> {
         ),
       ),
     );
-  }
-
-  Widget price(int p, double w) {
-    switch (p) {
-      case 300:
-        return Text(
-          '\n (\$4.9)\n',
-          style: TextStyle(
-              color: Colors.red,
-              fontWeight: FontWeight.bold,
-              fontSize: w * 0.06),
-        );
-      case 450:
-        return Text(
-          '\n (\$4.9)\n',
-          style: TextStyle(
-              color: Colors.red,
-              fontWeight: FontWeight.bold,
-              fontSize: w * 0.06),
-        );
-      case 600:
-        return Text(
-          '\n (\$9.1)\n',
-          style: TextStyle(
-              color: Colors.red,
-              fontWeight: FontWeight.bold,
-              fontSize: w * 0.06),
-        );
-      case 900:
-        return Text(
-          '\n (\$9.1)\n',
-          style: TextStyle(
-              color: Colors.red,
-              fontWeight: FontWeight.bold,
-              fontSize: w * 0.06),
-        );
-      case 1200:
-        return Text(
-          '\n (\$14.1)\n',
-          style: TextStyle(
-              color: Colors.red,
-              fontWeight: FontWeight.bold,
-              fontSize: w * 0.06),
-        );
-      case 1800:
-        return Text(
-          '\n (\$14.1)\n',
-          style: TextStyle(
-              color: Colors.red,
-              fontWeight: FontWeight.bold,
-              fontSize: w * 0.06),
-        );
-      case 2700:
-        return Text(
-          '\n (\$25.8)\n',
-          style: TextStyle(
-              color: Colors.red,
-              fontWeight: FontWeight.bold,
-              fontSize: w * 0.06),
-        );
-      case 9000:
-        return Text(
-          '\n (\$74.1)\n',
-          style: TextStyle(
-              color: Colors.red,
-              fontWeight: FontWeight.bold,
-              fontSize: w * 0.06),
-        );
-      case 4050:
-        return Text(
-          '\n (\$25.8)\n',
-          style: TextStyle(
-              color: Colors.red,
-              fontWeight: FontWeight.bold,
-              fontSize: w * 0.06),
-        );
-      case 20000:
-        return Text(
-          '\n (\$150)\n',
-          style: TextStyle(
-              color: Colors.red,
-              fontWeight: FontWeight.bold,
-              fontSize: w * 0.06),
-        );
-      case 13500:
-        return Text(
-          '\n (\$74.1)\n',
-          style: TextStyle(
-              color: Colors.red,
-              fontWeight: FontWeight.bold,
-              fontSize: w * 0.06),
-        );
-      case 30000:
-        return Text(
-          '\n (\$150)\n',
-          style: TextStyle(
-              color: Colors.red,
-              fontWeight: FontWeight.bold,
-              fontSize: w * 0.06),
-        );
-      default:
-        return Text(
-          currentUser.value.toString(),
-          style: TextStyle(
-              color: Colors.red,
-              fontWeight: FontWeight.bold,
-              fontSize: w * 0.06),
-        );
-    }
   }
 
   Future<void> _makeSocialMediaRequest() async {

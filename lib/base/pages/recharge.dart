@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:look/base/Helper/dimension.dart';
+import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/pages/bigevent.dart';
 
 import '../../generated/l10n.dart';
@@ -36,7 +37,7 @@ class _RechargeState extends State<Recharge> {
                   Text(
                     S.of(context).points_recharge,
                     style: TextStyle(
-                      fontSize: getHorizontal(context) * 0.065,
+                      fontSize: getHorizontal(context) * 0.046,
                     ),
                   ),
                   Row(
@@ -47,62 +48,48 @@ class _RechargeState extends State<Recharge> {
                         S.of(context).my_points,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: getHorizontal(context) * 0.06),
+                            fontSize: getHorizontal(context) * 0.04),
                       ),
                       Text(
-                        currentUser.value.points.toString(),
+                        ": ${currentUser.value.points.toString()}",
                         style: TextStyle(
                             color: Colors.red,
                             fontWeight: FontWeight.bold,
-                            fontSize: getHorizontal(context) * 0.06),
+                            fontSize: getHorizontal(context) * 0.04),
                       )
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      box(300),
-                      box(600),
+                      box(300, 4.9),
+                      box(600, 9.1),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      bottomText('\$4.9'),
-                      bottomText('\$9.1'),
+                      box(1200, 14.1),
+                      box(2700, 25.8),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      box(1200),
-                      box(2700),
+                      box(9000, 74.1),
+                      box(20000, 150.0),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      bottomText('\$14.1'),
-                      bottomText('\$25.8'),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      box(9000),
-                      box(20000),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      bottomText('\$74.1'),
-                      bottomText('\$150'),
+                      box(25000, 170.1),
+                      box(40000, 189.0),
                     ],
                   ),
                   Center(
                     child: Container(
-                      margin: EdgeInsets.only(top: getVertical(context) * 0.16),
+                      margin: EdgeInsets.only(top: getVertical(context) * 0.1),
                       padding: const EdgeInsets.all(10),
                       width: getHorizontal(context) * 0.5,
                       decoration: BoxDecoration(
@@ -110,11 +97,12 @@ class _RechargeState extends State<Recharge> {
                         borderRadius: BorderRadius.circular(40),
                       ),
                       child: InkWell(
-                          onTap: () {
-                            Get.to(() => BigEvent());
-                          },
+                          onTap: () => Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BigEvent())),
                           child: Text(
-                            "   Big Event   ",
+                            S.of(context).big_event,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Colors.red,
@@ -132,41 +120,42 @@ class _RechargeState extends State<Recharge> {
     );
   }
 
-  Widget box(int txt) {
+  Widget box(int txt, double price) {
     return InkWell(
-      onTap: () {
-        Get.to(() => BankAccountDeposit(bigEventPoints: txt));
-      },
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 5, top: 20),
-        width: getHorizontal(context) * 0.24,
-        height: MediaQuery.of(context).size.height * 0.08,
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.black26,
+      onTap: () => Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  BankAccountDeposit(bigEventPoints: txt, price: price))),
+      child: Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.only(bottom: 5, top: 20),
+            padding: EdgeInsets.symmetric(
+                horizontal: getHorizontal(context) * 0.06, vertical: 12),
+            decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black26,
+                ),
+                borderRadius: BorderRadius.circular(10)),
+            child: Center(
+              child: Text(
+                '${txt}P',
+                style: TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold,
+                    fontSize: getHorizontal(context) * 0.051),
+              ),
+            ),
           ),
-        ),
-        child: Center(
-            child: Text(
-          '${txt}P',
-          style: TextStyle(
-              color: Colors.black87,
-              fontWeight: FontWeight.bold,
-              fontSize: getHorizontal(context) * 0.06),
-        )),
-      ),
-    );
-  }
-
-  Widget bottomText(String txt) {
-    return Container(
-      width: getHorizontal(context) * 0.2,
-      child: Text(
-        '  $txt',
-        style: TextStyle(
-            color: Colors.black54,
-            fontWeight: FontWeight.bold,
-            fontSize: getHorizontal(context) * 0.06),
+          Text(
+            '$currency$price',
+            style: TextStyle(
+                color: Colors.black54,
+                fontWeight: FontWeight.bold,
+                fontSize: getHorizontal(context) * 0.045),
+          ),
+        ],
       ),
     );
   }

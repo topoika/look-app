@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/controllers/livestream_controller.dart';
@@ -16,6 +15,7 @@ import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 
+import '../../generated/l10n.dart';
 import '../Helper/strings.dart';
 
 class LiveClass extends StatefulWidget {
@@ -66,9 +66,13 @@ class _LiveClassState extends StateMVC<LiveClass> {
       RtcEngineEventHandler(
           joinChannelSuccess: (String channel, int uid, int elapsed) {
             log("onchanneljoin : $channel , uid: $uid");
+            isHost ? _con.updateStreamHostUid(liveStream, uid) : null;
           },
           userJoined: (int uid, int elapsed) {
-            setState(() => users.add(uid));
+            setState(() {
+              users.add(uid);
+              _remoteUid = uid;
+            });
             _con.updateStreamViewers(liveStream);
           },
           error: (e) => log(e.toString()),
@@ -77,17 +81,43 @@ class _LiveClassState extends StateMVC<LiveClass> {
             showSnackBar(context, reason.name, true);
           },
           leaveChannel: (stats) {
-            setState(() => users.clear());
+            if (isHost) {
+              setState(() => users.clear());
+              _engine!.destroy();
+              _con.deleteLiveStream(liveStream, context);
+              Navigator.pop(context);
+              _engine!.destroy();
+              _engine!.leaveChannel();
+            } else {
+              _engine!.destroy();
+              Navigator.pop(context);
+              _engine!.leaveChannel();
+            }
           }),
     );
     await _engine!
         .joinChannel(liveStream.token, liveStream.title ?? "", null, 0)
-        .then((value) => log("Joined"));
+        .then((value) => log("Joined"))
+        .onError((error, stackTrace) {
+      Navigator.pop(context);
+      showSnackBar(
+          context, "Unable to create livestream, Please try again", true);
+    });
   }
 
   @override
   void dispose() {
-    users.clear();
+    if (isHost) {
+      users.clear();
+      _engine!.destroy();
+      _con.deleteLiveStream(liveStream, context);
+      _engine!.destroy();
+      _engine!.leaveChannel();
+    } else {
+      _engine!.destroy();
+      Navigator.pop(context);
+      _engine!.leaveChannel();
+    }
     _engine!.destroy();
     super.dispose();
   }
@@ -101,13 +131,13 @@ class _LiveClassState extends StateMVC<LiveClass> {
             Center(
               child: isHost
                   ? RtcLocalView.SurfaceView(channelId: liveStream.title)
-                  : _remoteUid != null
+                  : liveStream.hostUid != null
                       ? RtcRemoteView.SurfaceView(
-                          uid: _remoteUid!,
+                          uid: liveStream.hostUid ?? 0,
                           channelId: liveStream.title ?? "",
                         )
                       : Text(
-                          'wait ...',
+                          S.of(context).connecting,
                           textAlign: TextAlign.center,
                         ),
             ),
@@ -188,10 +218,15 @@ class _LiveClassState extends StateMVC<LiveClass> {
                     const Spacer(),
                     isHost
                         ? GestureDetector(
-                            onTap: () {
-                              _engine!.destroy();
-                              _con.deleteLiveStream(liveStream, context);
-                            },
+                            onTap: isHost
+                                ? () {
+                                    _engine!.destroy();
+                                    _con.deleteLiveStream(liveStream, context);
+                                  }
+                                : () {
+                                    Navigator.pop(context);
+                                    _engine!.leaveChannel();
+                                  },
                             child: Container(
                               padding: EdgeInsets.symmetric(
                                   vertical: 10,
@@ -200,7 +235,9 @@ class _LiveClassState extends StateMVC<LiveClass> {
                                   color: Colors.redAccent,
                                   borderRadius: BorderRadius.circular(10)),
                               child: Text(
-                                'End Live',
+                                isHost
+                                    ? S.of(context).end_live
+                                    : S.of(context).leave_live,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w800,
                                     fontSize: getHorizontal(context) * 0.029),
@@ -221,7 +258,7 @@ class _LiveClassState extends StateMVC<LiveClass> {
                   foregroundDecoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        Colors.white10.withOpacity(.1),
+                        Colors.transparent,
                         Colors.transparent,
                         Colors.transparent
                       ],
@@ -234,6 +271,7 @@ class _LiveClassState extends StateMVC<LiveClass> {
                           .collection("liveStreams")
                           .doc(liveStream.id)
                           .collection("comments")
+                          .orderBy("time", descending: true)
                           .snapshots(),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
@@ -336,7 +374,7 @@ class _LiveClassState extends StateMVC<LiveClass> {
                         fontWeight: FontWeight.bold,
                       ),
                       decoration: InputDecoration(
-                          hintText: "Type a comment ...",
+                          hintText: S.of(context).type_a_comment + "...",
                           hintStyle: TextStyle(
                             color: Colors.grey[700],
                             fontSize: 16,

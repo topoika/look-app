@@ -63,7 +63,8 @@ Widget countryItemWidget(BuildContext context, Country country, Function onTap,
 
 Widget rewardsWidget(BuildContext context) {
   return GestureDetector(
-    onTap: () => Get.to(() => const Award()),
+    onTap: () => Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const Award())),
     child: Container(
       margin: EdgeInsets.only(right: getHorizontal(context) * 0.02, bottom: 5),
       width: 70,
@@ -139,8 +140,10 @@ Widget bottomNavigation(BuildContext context) {
           ),
         ),
         InkWell(
-            onTap: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const RandomCalling())),
+            onTap: () => showSnackBar(
+                context, "//Todo add the random calling link", true),
+            // Navigator.push(context,
+            //     MaterialPageRoute(builder: (context) => const RandomCalling())),
             child: Icon(
               Icons.radar_rounded,
               color: theme().mC,
@@ -292,7 +295,7 @@ Widget rechageContainer(BuildContext context) {
                   color: Colors.white),
             ),
             Text(
-              "Available Points",
+              S.of(context).available_points,
               style: TextStyle(
                   fontSize: getHorizontal(context) * 0.025,
                   fontWeight: FontWeight.bold,
@@ -301,7 +304,8 @@ Widget rechageContainer(BuildContext context) {
           ],
         ),
         GestureDetector(
-          onTap: () => Get.to(() => const Recharge()),
+          onTap: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const Recharge())),
           child: Container(
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(10)),

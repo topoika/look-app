@@ -109,7 +109,8 @@ class _OtherUsersDetailsState extends State<OtherUsersDetails> {
                               const SizedBox(width: 3),
                               Column(
                                 children: [
-                                  Text("50ponits/min",
+                                  Text(
+                                      "${_user.videoRate} ${S.of(context).points}/ ${S.of(context).min_text}",
                                       style: TextStyle(
                                           fontSize:
                                               getHorizontal(context) * 0.03,
@@ -141,7 +142,7 @@ class _OtherUsersDetailsState extends State<OtherUsersDetails> {
                       ),
                       const SizedBox(width: 15),
                       Text(
-                        "15km Away",
+                        "15 ${S.of(context).km_away}",
                         style: TextStyle(
                             fontSize: getHorizontal(context) * 0.048,
                             fontWeight: FontWeight.bold,
@@ -201,7 +202,7 @@ class _OtherUsersDetailsState extends State<OtherUsersDetails> {
                     thickness: 2,
                     color: Colors.black38,
                   ),
-                  profileText(context, "Recieved Gifts"),
+                  profileText(context, S.of(context).recieved_gifts),
                   const SizedBox(height: 30),
                   SizedBox(
                     height: 80,
@@ -217,7 +218,7 @@ class _OtherUsersDetailsState extends State<OtherUsersDetails> {
                                 color: Colors.purpleAccent,
                                 borderRadius: BorderRadius.circular(10)),
                             alignment: Alignment.center,
-                            child: const Text("Gift"),
+                            child: Text(S.of(context).gift_text),
                           );
                         }),
                   ),
@@ -251,7 +252,9 @@ class _OtherUsersDetailsState extends State<OtherUsersDetails> {
           );
         } else {
           showSnackBar(
-              context, "Error while generating token, Please try again", true);
+              context,
+              S.of(context).error_while_generating_token_please_try_again,
+              true);
         }
       },
     );

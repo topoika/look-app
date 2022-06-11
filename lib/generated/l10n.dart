@@ -950,6 +950,26 @@ class S {
     );
   }
 
+  /// `End Live`
+  String get end_live {
+    return Intl.message(
+      'End Live',
+      name: 'end_live',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Leave Live`
+  String get leave_live {
+    return Intl.message(
+      'Leave Live',
+      name: 'leave_live',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `All`
   String get all {
     return Intl.message(
@@ -1265,6 +1285,386 @@ class S {
     return Intl.message(
       'Type atleast 10+ characters',
       name: 'type_atleast_ten_characters',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Type a comment`
+  String get type_a_comment {
+    return Intl.message(
+      'Type a comment',
+      name: 'type_a_comment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Connecting`
+  String get connecting {
+    return Intl.message(
+      'Connecting',
+      name: 'connecting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hours`
+  String get hours {
+    return Intl.message(
+      'Hours',
+      name: 'hours',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Big Event`
+  String get big_event {
+    return Intl.message(
+      'Big Event',
+      name: 'big_event',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `points Collected, visit tomorrow to have more`
+  String get points_collected_visit_tomorrow_to_have_more {
+    return Intl.message(
+      'points Collected, visit tomorrow to have more',
+      name: 'points_collected_visit_tomorrow_to_have_more',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Make video call with`
+  String get make_video_call_with {
+    return Intl.message(
+      'Make video call with',
+      name: 'make_video_call_with',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Join`
+  String get join {
+    return Intl.message(
+      'Join',
+      name: 'join',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you want to exit`
+  String get do_you_want_to_exit {
+    return Intl.message(
+      'Do you want to exit',
+      name: 'do_you_want_to_exit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure`
+  String get are_you_sure {
+    return Intl.message(
+      'Are you sure',
+      name: 'are_you_sure',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes`
+  String get yes_text {
+    return Intl.message(
+      'Yes',
+      name: 'yes_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No`
+  String get no_text {
+    return Intl.message(
+      'No',
+      name: 'no_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Discard`
+  String get discard {
+    return Intl.message(
+      'Discard',
+      name: 'discard',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Searching for a User`
+  String get searching_for_user {
+    return Intl.message(
+      'Searching for a User',
+      name: 'searching_for_user',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Error while generating token, Please try again`
+  String get error_while_generating_token_please_try_again {
+    return Intl.message(
+      'Error while generating token, Please try again',
+      name: 'error_while_generating_token_please_try_again',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `min`
+  String get min_text {
+    return Intl.message(
+      'min',
+      name: 'min_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `sms`
+  String get sns_text {
+    return Intl.message(
+      'sms',
+      name: 'sns_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Gift`
+  String get gift_text {
+    return Intl.message(
+      'Gift',
+      name: 'gift_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Calling`
+  String get calling_text {
+    return Intl.message(
+      'Calling',
+      name: 'calling_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Terms and Conditions`
+  String get terms_and_contitions {
+    return Intl.message(
+      'Terms and Conditions',
+      name: 'terms_and_contitions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `These are the Terms and Conditions or our app`
+  String get these_are_the_terms_and_conditions_or_our_app {
+    return Intl.message(
+      'These are the Terms and Conditions or our app',
+      name: 'these_are_the_terms_and_conditions_or_our_app',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel_text {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ok`
+  String get ok_text {
+    return Intl.message(
+      'Ok',
+      name: 'ok_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm`
+  String get confirm_text {
+    return Intl.message(
+      'Confirm',
+      name: 'confirm_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter name of 5+ characters`
+  String get enter_name_of_five_plus_characters {
+    return Intl.message(
+      'Enter name of 5+ characters',
+      name: 'enter_name_of_five_plus_characters',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter the depositor name`
+  String get please_enter_the_depositor_name {
+    return Intl.message(
+      'Please enter the depositor name',
+      name: 'please_enter_the_depositor_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Done`
+  String get done_text {
+    return Intl.message(
+      'Done',
+      name: 'done_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Processing`
+  String get processing_text {
+    return Intl.message(
+      'Processing',
+      name: 'processing_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Payment successful`
+  String get payment_successful {
+    return Intl.message(
+      'Payment successful',
+      name: 'payment_successful',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Points credited`
+  String get points_credited {
+    return Intl.message(
+      'Points credited',
+      name: 'points_credited',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your name livestream`
+  String get your_name_livestream {
+    return Intl.message(
+      'Your name livestream',
+      name: 'your_name_livestream',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit your video and sms rate`
+  String get edit_your_video_and_sms_rate {
+    return Intl.message(
+      'Edit your video and sms rate',
+      name: 'edit_your_video_and_sms_rate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter the title of your liveStream`
+  String get enter_the_title_of_your_liveStream {
+    return Intl.message(
+      'Enter the title of your liveStream',
+      name: 'enter_the_title_of_your_liveStream',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter 3+ char for the title`
+  String get enter_three_plus_char_for_the_title {
+    return Intl.message(
+      'Enter 3+ char for the title',
+      name: 'enter_three_plus_char_for_the_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Video rate`
+  String get video_rate {
+    return Intl.message(
+      'Video rate',
+      name: 'video_rate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sms rate`
+  String get sms_rate {
+    return Intl.message(
+      'Sms rate',
+      name: 'sms_rate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Language`
+  String get language_text {
+    return Intl.message(
+      'Language',
+      name: 'language_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Language`
+  String get select_language {
+    return Intl.message(
+      'Select Language',
+      name: 'select_language',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Message`
+  String get message_text {
+    return Intl.message(
+      'Message',
+      name: 'message_text',
       desc: '',
       args: [],
     );
