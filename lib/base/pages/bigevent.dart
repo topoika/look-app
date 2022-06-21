@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:look/base/repositories/user_repository.dart';
 import 'package:look/base/pages/bankaccountdeposit.dart';
 
@@ -98,7 +97,11 @@ class _BigEventState extends State<BigEvent> {
   Widget box(int txt, double price) {
     return InkWell(
       onTap: () {
-        Get.to(() => BankAccountDeposit(bigEventPoints: txt, price: price));
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    BankAccountDeposit(bigEventPoints: txt, price: price)));
       },
       child: Column(
         children: [

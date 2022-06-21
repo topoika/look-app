@@ -12,7 +12,7 @@ class SettingController extends ControllerMVC {
         brightness: ValueNotifier(Brightness.light),
         mobileLanguage: ValueNotifier(Locale("en")));
     _settings.brightness.value = Brightness.light;
-    _settings.mobileLanguage.value = Locale("ko");
+    _settings.mobileLanguage.value = Locale("en");
     setting.value = _settings;
     setting.notifyListeners();
   }

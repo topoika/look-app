@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/pages/utils/custom_containers.dart';
 import 'package:look/base/pages/utils/edit_video_rate.dart';
@@ -145,10 +144,6 @@ class _MyProfileState extends State<MyProfile> {
                         child: cont(invitee, S.of(context).my_invitee),
                       ),
                       InkWell(
-                        onTap: () {},
-                        child: cont(invitee, S.of(context).transaction_history),
-                      ),
-                      InkWell(
                         onTap: () => showModalBottomSheet(
                             context: context,
                             isScrollControlled: true,
@@ -156,17 +151,21 @@ class _MyProfileState extends State<MyProfile> {
                             builder: (context) {
                               return EditLanguage();
                             }),
-                        child: cont(invitee, S.of(context).language_text),
+                        child: cont(settings, S.of(context).language_text),
                       ),
                       InkWell(
                         onTap: () {},
-                        child: cont(invitee, S.of(context).transaction_history),
+                        child: cont(
+                            transhistory, S.of(context).transaction_history),
                       ),
                       InkWell(
-                          onTap: () => Get.to(() => const Recharge()),
+                          onTap: () => Navigator.pushReplacementNamed(
+                              context, "/Recharge"),
                           child: cont(coinstore, S.of(context).coin_store)),
                       InkWell(
-                        onTap: () {},
+                        onTap: () => Navigator.pushNamed(
+                            context, "/TermsAndCondition",
+                            arguments: true),
                         child: cont(terms, S.of(context).terms_of_use),
                       ),
                       InkWell(
@@ -182,7 +181,7 @@ class _MyProfileState extends State<MyProfile> {
             Align(
               alignment: Alignment.bottomCenter,
               widthFactor: getHorizontal(context),
-              child: bottomNavigation(context),
+              child: bottomNavigation(context, "profile"),
             )
           ],
         ),
@@ -205,10 +204,11 @@ class _MyProfileState extends State<MyProfile> {
             height: 40,
             width: 40,
             margin: EdgeInsets.only(right: getHorizontal(context) * 0.05),
+            padding: EdgeInsets.all(getHorizontal(context) * 0.01),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                image: DecorationImage(
-                    image: AssetImage(txt1), fit: BoxFit.cover)),
+                color: Color.fromARGB(255, 241, 185, 185),
+                borderRadius: BorderRadius.circular(10)),
+            child: Image.asset(txt1),
           ),
           profileText(context, txt2)
         ],

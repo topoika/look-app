@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
@@ -47,8 +46,8 @@ class _CallPageState extends State<CallPage> {
     await _engine!
         .joinChannel(
             widget.videoCall.token, widget.videoCall.name ?? "", null, 0)
-        .then((value) => log("Joined successfully"))
-        .onError((error, stackTrace) => log(error.toString()));
+        .then((value) => print("Joined successfully"))
+        .onError((error, stackTrace) => print(error.toString()));
   }
 
   @override

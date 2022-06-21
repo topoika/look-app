@@ -35,7 +35,7 @@ class _TermsAndConditionState extends State<TermsAndCondition> {
                   top: getVertical(context) * 0.15,
                   bottom: getHorizontal(context) * 0.1),
               child: Image.asset(
-                'assets/look8.png',
+                logo,
                 scale: 5,
               ),
             ),
@@ -56,10 +56,10 @@ class _TermsAndConditionState extends State<TermsAndCondition> {
               },
               child: _termsPageItem(S.of(context).terms_of_use, terms),
             ),
-            _termsPageItem(S.of(context).location_based_service_terms,
-                'assets/personal.PNG'),
-            _termsPageItem(S.of(context).personal_information_handling_methods,
-                'assets/location.PNG'),
+            _termsPageItem(
+                S.of(context).location_based_service_terms, personal),
+            _termsPageItem(
+                S.of(context).personal_information_handling_methods, location),
             Padding(
               padding: EdgeInsets.only(
                   top: getVertical(context) * 0.1,
@@ -112,10 +112,10 @@ class _TermsAndConditionState extends State<TermsAndCondition> {
                 : buttonWidget(
                     context,
                     () => currentUser.value.dob != null
-                        ? Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LiveUsers()))
+                        ? !widget.val
+                            ? Navigator.pushReplacementNamed(
+                                context, "/LiveUsers")
+                            : Navigator.pop(context)
                         : Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
@@ -176,10 +176,12 @@ class _TermsAndConditionState extends State<TermsAndCondition> {
         children: [
           Padding(
             padding: EdgeInsets.only(
-              left: getHorizontal(context) * 0.165,
+              left: getHorizontal(context) * 0.08,
+              right: getHorizontal(context) * 0.02,
             ),
             child: Image.asset(
               image,
+              height: getVertical(context) * 0.035,
             ),
           ),
           Container(

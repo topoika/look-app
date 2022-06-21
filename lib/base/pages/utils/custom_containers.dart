@@ -1,11 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:look/base/pages/randomcalling.dart';
 import 'package:look/base/controllers/livestream_controller.dart';
 import 'package:look/base/models/live_stream_model.dart';
-import 'package:look/base/pages/liveclass.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/models/country_model.dart';
@@ -113,12 +110,14 @@ Widget goLiveButton(BuildContext context, Function ontap) {
   );
 }
 
-Widget bottomNavigation(BuildContext context) {
+Widget bottomNavigation(BuildContext context, String home) {
   return Container(
     margin: EdgeInsets.only(
         left: getHorizontal(context) * 0.06,
         right: getHorizontal(context) * 0.06,
         bottom: 35),
+    padding: EdgeInsets.symmetric(
+        horizontal: getHorizontal(context) * 0.03, vertical: 7),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10),
       border: Border.all(
@@ -130,13 +129,11 @@ Widget bottomNavigation(BuildContext context) {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       mainAxisSize: MainAxisSize.max,
       children: [
-        IconButton(
-          onPressed: () => Navigator.push(
-              context, MaterialPageRoute(builder: (context) => const Search())),
-          icon: Icon(
-            Icons.search,
-            color: theme().mC,
-            size: getHorizontal(context) * 0.075,
+        InkWell(
+          onTap: () => Navigator.pushNamed(context, "/Search"),
+          child: Image.asset(
+            search,
+            height: getHorizontal(context) * 0.065,
           ),
         ),
         InkWell(
@@ -144,27 +141,23 @@ Widget bottomNavigation(BuildContext context) {
                 context, "//Todo add the random calling link", true),
             // Navigator.push(context,
             //     MaterialPageRoute(builder: (context) => const RandomCalling())),
-            child: Icon(
-              Icons.radar_rounded,
-              color: theme().mC,
-              size: getHorizontal(context) * 0.075,
+            child: Image.asset(
+              random,
+              height: getHorizontal(context) * 0.065,
             )),
-        IconButton(
-          onPressed: () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const ChatRooms())),
-          icon: Icon(
-            Icons.message,
-            color: theme().mC,
-            size: getHorizontal(context) * 0.075,
-          ),
-        ),
-        IconButton(
-          onPressed: () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const MyProfile())),
-          icon: Icon(
-            Icons.person,
-            color: theme().mC,
-            size: getHorizontal(context) * 0.075,
+        InkWell(
+            onTap: () => Navigator.pushNamed(context, "/ChatRooms"),
+            child: Image.asset(
+              chats,
+              height: getHorizontal(context) * 0.065,
+            )),
+        InkWell(
+          onTap: home == "home"
+              ? () => Navigator.pushNamed(context, "/MyProfile")
+              : null,
+          child: Image.asset(
+            user,
+            height: getHorizontal(context) * 0.065,
           ),
         ),
       ],
@@ -178,7 +171,9 @@ Widget tabBarItem(BuildContext context, String text, image) {
     children: [
       Image.asset(
         image,
+        height: getHorizontal(context) * 0.075,
       ),
+      SizedBox(width: getHorizontal(context) * 0.01),
       Text(
         text,
         style: TextStyle(
@@ -200,8 +195,7 @@ Widget topBarItem(BuildContext context, bool videocall) {
         GestureDetector(
           onTap: () {
             videocall
-                ? Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => const LiveUsers()))
+                ? Navigator.pushReplacementNamed(context, '/LiveUsers')
                 : null;
           },
           child: Container(
@@ -227,8 +221,7 @@ Widget topBarItem(BuildContext context, bool videocall) {
         GestureDetector(
           onTap: () {
             !videocall
-                ? Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const VideoCalls()))
+                ? Navigator.pushReplacementNamed(context, '/VideoCalls')
                 : null;
           },
           child: Container(

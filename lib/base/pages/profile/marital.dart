@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/generated/l10n.dart';
 
@@ -86,7 +85,8 @@ class _MaritalStatusState extends State<MaritalStatus> {
           currentUser.value.marital = txt;
         });
         currentUser.notifyListeners();
-        Get.to(() => const Drinking());
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => const Drinking()));
       },
       child: Container(
         margin: const EdgeInsets.all(15),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:look/base/pages/utils/titles.dart';
 import 'package:look/base/repositories/user_repository.dart';
 import 'package:look/base/pages/profile/location.dart';
@@ -115,7 +114,10 @@ class _PersonalityState extends State<Personality> {
 
   Widget choices(String txt) {
     return InkWell(
-      onTap: () => setState(() => currentUser.value.personality = txt),
+      onTap: () {
+        setState(() => currentUser.value.personality = txt);
+        currentUser.notifyListeners();
+      },
       child: Container(
         margin: const EdgeInsets.all(10),
         padding: const EdgeInsets.all(10),
@@ -151,6 +153,7 @@ class _PersonalityState extends State<Personality> {
             currentUser.value.interests!.add(txt);
           });
         }
+        currentUser.notifyListeners();
       },
       child: Container(
         margin: const EdgeInsets.all(5),

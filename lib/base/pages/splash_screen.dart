@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 
 import '../Helper/dimension.dart';
 import '../Helper/strings.dart';
-import 'liveusers.dart';
-import 'mobile_login.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -21,13 +19,12 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void navigate() async {
-    await Future.delayed(const Duration(seconds: 4));
-    Navigator.pushReplacement(
+    await Future.delayed(const Duration(seconds: 2));
+    Navigator.pushReplacementNamed(
         context,
-        MaterialPageRoute(
-            builder: ((context) => FirebaseAuth.instance.currentUser == null
-                ? MobilePhoneLogin()
-                : LiveUsers())));
+        FirebaseAuth.instance.currentUser == null
+            ? '/MobilePhoneLogin'
+            : '/LiveUsers');
   }
 
   @override

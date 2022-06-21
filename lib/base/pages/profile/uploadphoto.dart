@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:look/base/pages/utils/button.dart';
 import 'package:look/constant/theme.dart';
@@ -209,7 +208,11 @@ class _UploadPhotoState extends State<UploadPhoto> {
                 buttonWidget(context, () {
                   if (formKey.currentState!.validate()) {
                     formKey.currentState!.save();
+                    DateTime dob = DateTime.parse(_selectedDate);
+                    Duration dur = DateTime.now().difference(dob);
                     currentUser.value.dob = _selectedDate;
+                    currentUser.value.age =
+                        int.parse((dur.inDays / 365).floor().toString());
                     registerUser(currentUser.value).then((value) {
                       setState(() {
                         currentUser.value = value;

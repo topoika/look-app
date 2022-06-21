@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/repositories/user_repository.dart';
 import 'package:look/base/pages/profile/personality.dart';

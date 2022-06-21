@@ -1,20 +1,16 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:look/base/Helper/dimension.dart';
-import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/pages/profile/showprofile.dart';
 import 'package:look/base/pages/utils/button.dart';
 import 'package:look/base/pages/utils/decorations.dart';
-import 'package:look/constant/theme.dart';
 import 'package:look/base/pages/modifyinterests.dart';
 
 import '../../../generated/l10n.dart';
 import '../../models/user_model.dart';
 import '../../repositories/user_repository.dart';
-import 'package:dotted_border/dotted_border.dart';
 
 import '../utils/custom_containers.dart';
 
@@ -135,7 +131,10 @@ class _EditProfileState extends State<EditProfile> {
                       vertical: getVertical(context) * 0.01),
                   child: InkWell(
                     onTap: () {
-                      Get.to(() => const ModifyInterests());
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ModifyInterests()));
                     },
                     child: currentUser.value.interests != null
                         ? Container(

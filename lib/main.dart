@@ -1,18 +1,26 @@
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:get/get.dart';
 import 'package:look/base/controllers/settings_controller.dart';
 import 'package:look/base/models/settings_model.dart';
 import 'package:look/base/pages/splash_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'base/repositories/user_repository.dart';
+import 'firebase_options.dart';
 import 'generated/l10n.dart';
+import 'route_generator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+    name: "out-app",
+  );
+  await FirebaseAppCheck.instance.activate(
+    webRecaptchaSiteKey: 'recaptcha-v3-site-key',
+  );
   await [Permission.microphone, Permission.camera, Permission.notification]
       .request();
   runApp(const MyApp());
@@ -43,6 +51,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             locale: _setting.mobileLanguage.value,
+            onGenerateRoute: RouteGenerator.generateRoute,
             localizationsDelegates: const [
               S.delegate,
               GlobalMaterialLocalizations.delegate,

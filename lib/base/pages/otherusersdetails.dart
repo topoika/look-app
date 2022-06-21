@@ -68,7 +68,7 @@ class _OtherUsersDetailsState extends State<OtherUsersDetails> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            _user.name! + "," + " 21",
+                            "${_user.name ?? ""} ${_user.age.toString()}",
                             style: TextStyle(
                                 fontSize: getHorizontal(context) * 0.058,
                                 fontWeight: FontWeight.bold,
@@ -174,14 +174,17 @@ class _OtherUsersDetailsState extends State<OtherUsersDetails> {
                     thickness: 2,
                     color: Colors.black38,
                   ),
-                  otherProfileItem(S.of(context).lives_in, _user.location),
-                  otherProfileItem(S.of(context).status, _user.marital),
                   otherProfileItem(
-                      S.of(context).personality, _user.personality),
-                  otherProfileItem(S.of(context).drinking, _user.drinking),
-                  otherProfileItem(S.of(context).smoking, _user.smoking),
-                  otherProfileItem(S.of(context).eating, _user.eating),
-                  otherProfileItem(S.of(context).date_of_birth, _user.dob),
+                      S.of(context).lives_in, _user.location ?? ""),
+                  otherProfileItem(S.of(context).status, _user.marital ?? ""),
+                  otherProfileItem(
+                      S.of(context).personality, _user.personality ?? ""),
+                  otherProfileItem(
+                      S.of(context).drinking, _user.drinking ?? ""),
+                  otherProfileItem(S.of(context).smoking, _user.smoking ?? ""),
+                  otherProfileItem(S.of(context).eating, _user.eating ?? ""),
+                  otherProfileItem(
+                      S.of(context).date_of_birth, _user.dob ?? ""),
                   const SizedBox(height: 10),
                   const Divider(
                     height: 5,

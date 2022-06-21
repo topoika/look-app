@@ -22,6 +22,7 @@ class User {
   String? eating;
   int? videoRate;
   int? smsRate;
+  int? age;
   List<String>? interests;
   User({
     this.uid,
@@ -47,35 +48,37 @@ class User {
     this.eating,
     this.videoRate,
     this.smsRate,
+    this.age,
     this.interests,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,
-      'name': name,
-      'email': email,
+      'name': name ?? "",
+      'email': email ?? "",
       'userName': userName,
-      'country': country,
-      'job': job,
-      'location': location,
-      'dob': dob,
-      'describe': describe,
-      'education': education,
+      'country': country ?? "",
+      'job': job ?? "",
+      'location': location ?? "",
+      'dob': dob ?? "",
+      'describe': describe ?? "",
+      'education': education ?? "",
       'phone': phone,
-      'gender': gender,
-      'marital': marital,
-      'image': image,
-      'image2': image2,
-      'image3': image3,
-      'points': points,
-      'personality': personality,
-      'drinking': drinking,
-      'smoking': smoking,
-      'eating': eating,
-      'videoRate': videoRate,
-      'smsRate': smsRate,
-      'interests': interests,
+      'gender': gender ?? "",
+      'marital': marital ?? "",
+      'image': image ?? "",
+      'image2': image2 ?? "",
+      'image3': image3 ?? "",
+      'points': points ?? 0,
+      'personality': personality ?? "",
+      'drinking': drinking ?? "",
+      'smoking': smoking ?? "",
+      'eating': eating ?? "",
+      'videoRate': videoRate ?? 0,
+      'smsRate': smsRate ?? 0,
+      'age': age ?? 0,
+      'interests': interests ?? [],
     };
   }
 
@@ -104,6 +107,7 @@ class User {
       eating: map['eating'],
       videoRate: map['videoRate'],
       smsRate: map['smsRate'],
+      age: map['age'],
       interests:
           map['interests'] != null ? List<String>.from(map['interests']) : null,
     );

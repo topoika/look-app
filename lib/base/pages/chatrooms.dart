@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/controllers/chat_controller.dart';
@@ -47,7 +46,10 @@ class _ChatRoomsState extends StateMVC<ChatRooms> {
             var _otherUser = _chatRoom.involved!
                 .firstWhere((value) => value.uid != currentUser.value.uid);
             return GestureDetector(
-              onTap: (() => Get.to(() => Chat(chatRoom: _chatRoom))),
+              onTap: (() => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Chat(chatRoom: _chatRoom)))),
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 5),
                 margin: EdgeInsets.symmetric(

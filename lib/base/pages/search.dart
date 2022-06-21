@@ -44,7 +44,7 @@ class _SearchState extends StateMVC<Search> {
       subtitle: Text(user.location ?? ""),
       trailing: TextButton(
         child: Text(S.of(context).message_text),
-        onPressed: () => _con.sendMessage(user),
+        onPressed: () => _con.sendMessage(context, user),
       ),
     );
   }

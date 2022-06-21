@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/models/user_model.dart';
 
@@ -44,6 +43,10 @@ class _VideoCallsState extends State<VideoCalls> {
                       child: TabBar(
                         indicatorColor: Colors.black,
                         indicatorSize: TabBarIndicatorSize.tab,
+                        padding: EdgeInsets.all(0),
+                        indicatorPadding: EdgeInsets.only(
+                            left: getHorizontal(context) * 0.13,
+                            right: getHorizontal(context) * 0.03),
                         tabs: [
                           tabBarItem(context, S.of(context).grid, grid),
                           tabBarItem(context, S.of(context).list, list),
@@ -159,6 +162,8 @@ class _VideoCallsState extends State<VideoCalls> {
                       ),
                       shrinkWrap: true,
                       itemCount: snapshot.data!.docs.length,
+                      padding:
+                          EdgeInsets.only(bottom: getVertical(context) * 0.09),
                       itemBuilder: (BuildContext context, int index) {
                         var _user = User.fromMap(snapshot.data!.docs[index]
                             .data() as Map<String, dynamic>);
@@ -262,14 +267,16 @@ class _VideoCallsState extends State<VideoCalls> {
                                           colors: [
                                             Colors.transparent,
                                             Colors.black26,
+                                            Colors.black54,
+                                            Colors.black,
                                             Colors.black,
                                           ],
                                           begin: Alignment.topCenter,
                                           end: Alignment.bottomCenter,
                                         )),
                                     padding: const EdgeInsets.only(
-                                        left: 5, bottom: 3, top: 9),
-                                    child: channelName(_user.name),
+                                        left: 5, bottom: 3, top: 15),
+                                    child: channelName(_user.name ?? ""),
                                   ),
                                 )
                               ],
@@ -285,7 +292,7 @@ class _VideoCallsState extends State<VideoCalls> {
           widthFactor: getHorizontal(context),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
-            children: [bottomNavigation(context)],
+            children: [bottomNavigation(context, "home")],
           ),
         )
       ],
@@ -359,7 +366,7 @@ class _VideoCallsState extends State<VideoCalls> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     Text(
-                                      "${_user.name ?? ""} 23 ${_user.location}",
+                                      "${_user.name ?? ""} ${_user.age.toString()} ${_user.location}",
                                       maxLines: 1,
                                       style: mainStyle(Colors.black, 0.031),
                                     ),

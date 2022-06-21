@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/controllers/chat_controller.dart';
 import 'package:look/base/models/chat_room_model.dart';
 import 'package:look/base/pages/call.dart';
-import 'package:look/base/pages/videocall.dart';
 import 'package:look/base/repositories/user_repository.dart';
 import 'package:look/constant/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as cf;
@@ -132,9 +130,12 @@ class _ChatState extends StateMVC<Chat> {
           ),
           actions: [
             GestureDetector(
-              onTap: () => Get.to(() => CallPage(
-                    videoCall: VideoCall(),
-                  )),
+              onTap: () => Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CallPage(
+                            videoCall: VideoCall(),
+                          ))),
               child: Icon(Icons.video_call,
                   color: theme().mPurple, size: getHorizontal(context) * 0.09),
             ),

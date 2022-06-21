@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get/get.dart';
+import 'package:flutter/material.dart';
 import 'package:look/base/models/chat_room_model.dart';
 import 'package:look/base/models/message_model.dart';
 import 'package:look/base/repositories/user_repository.dart';
@@ -52,7 +52,7 @@ class SearchController extends ControllerMVC {
 
   /// 1.create a chatroom, send user to the chatroom, other userdetails
 
-  sendMessage(userModel.User otherUser) {
+  sendMessage(BuildContext context, userModel.User otherUser) {
     ChatRoom _chatroom = ChatRoom();
     Message _message = Message();
     _chatroom.id = currentUser.value.uid! + "===+===" + otherUser.uid!;
@@ -62,7 +62,8 @@ class SearchController extends ControllerMVC {
     _chatroom.lastMessage = _message;
     _message.message = "This is a new conversation";
     _chatroom.lastUpdated = DateTime.now();
-    addChatRoom(_chatroom).then((value) => Get.to(() => Chat(chatRoom: value)));
+    addChatRoom(_chatroom).then((value) => Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (context) => Chat(chatRoom: value))));
   }
 
   // String getchatRoomId(userModel.User user){

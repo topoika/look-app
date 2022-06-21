@@ -12,7 +12,6 @@ import '../../generated/l10n.dart';
 import '../Helper/strings.dart';
 import '../models/country_model.dart';
 import '../models/live_stream_model.dart';
-import '../repositories/user_repository.dart';
 import 'liveclass.dart';
 import 'utils/titles.dart';
 
@@ -48,13 +47,19 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
                     horizontal: getHorizontal(context) * 0.06,
                     vertical: getVertical(context) * 0.02),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  // mainAxisSize: MainAxisSize.min,
                   children: [
-                    SizedBox(
-                      width: getHorizontal(context) * 0.55,
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      width: getHorizontal(context) * 0.5,
                       child: TabBar(
+                        padding: EdgeInsets.all(0),
                         indicatorColor: Colors.black,
                         indicatorSize: TabBarIndicatorSize.tab,
+                        indicatorPadding: EdgeInsets.only(
+                            left: getHorizontal(context) * 0.13,
+                            right: getHorizontal(context) * 0.03),
                         tabs: [
                           tabBarItem(context, S.of(context).grid, grid),
                           tabBarItem(context, S.of(context).list, list),
@@ -258,7 +263,7 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
                                   alignment: Alignment.bottomLeft,
                                   child: Container(
                                     width: double.infinity,
-                                    height: 15,
+                                    height: 25,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.only(
                                           bottomLeft: Radius.circular(5),
@@ -332,7 +337,7 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
                 alignment: Alignment.centerRight,
                 child: goLiveButton(context, connectionChecker),
               ),
-              bottomNavigation(context)
+              bottomNavigation(context, "home")
             ],
           ),
         )
@@ -412,7 +417,7 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     Text(
-                                      liveStream.title ?? "",
+                                      "${liveStream.title ?? ""} ${_user.age.toString()} ${_user.location}",
                                       maxLines: 1,
                                       style: mainStyle(Colors.black, 0.031),
                                     ),

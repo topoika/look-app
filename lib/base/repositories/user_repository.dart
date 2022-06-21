@@ -18,12 +18,8 @@ final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final FirebaseAuth auth = FirebaseAuth.instance;
 
 ValueNotifier<userModel.User> currentUser = ValueNotifier(userModel.User());
-// const liveCollection = 'liveuser';
 const userCollection = 'Users';
-// const emailCollection = 'emails_to_approve';
-// const emailCollectionStudents = 'students_emails_to_approve';
-// const approvedCollection = 'Approved_users';
-// const approvedCollectionStudents = 'students_Approved_users';
+
 OverlayEntry loader = OverlayEntry(
   builder: (BuildContext context) {
     return SafeArea(
@@ -127,14 +123,8 @@ Future phoneLogin(String mobile, BuildContext context) async {
     },
     codeSent: (String verificationId, int? forceResendingToken) {
       Helper.hideLoader(loader);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => MobileVerification(
-            verificationId: verificationId,
-          ),
-        ),
-      );
+      Navigator.pushReplacementNamed(context, "/MobileVerification",
+          arguments: verificationId);
     },
     codeAutoRetrievalTimeout: (String verificationId) {
       Helper.hideLoader(loader);
@@ -151,10 +141,8 @@ Future verifyPhone(
   await auth.signInWithCredential(_credential).then((value) async {
     if (value.user != null) {
       Helper.hideLoader(loader);
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => const TermsAndCondition(val: true)));
+      Navigator.pushReplacementNamed(context, "/TermsAndCondition",
+          arguments: false);
     } else {
       Helper.hideLoader(loader);
       Scaffold.of(context)
@@ -164,7 +152,7 @@ Future verifyPhone(
     if (newUser != null) {
       currentUser.value = newUser;
       currentUser.notifyListeners();
-      registerUser(currentUser.value);
+      // registerUser(currentUser.value);
     } else {
       currentUser.value.uid = value.user!.uid;
       registerUser(currentUser.value);
@@ -175,6 +163,7 @@ Future verifyPhone(
 void logOut(context) {
   Overlay.of(context)!.insert(loader);
   auth.signOut();
+  currentUser.value = userModel.User();
   Helper.hideLoader(loader);
   Navigator.pushAndRemoveUntil(
       context,
