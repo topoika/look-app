@@ -6,19 +6,14 @@ import 'package:look/base/models/live_stream_model.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/models/country_model.dart';
-import 'package:look/base/pages/liveusers.dart';
 import 'package:look/base/pages/utils/button.dart';
 import 'package:look/base/pages/utils/snackbar.dart';
 import 'package:look/base/repositories/user_repository.dart';
 import 'package:look/base/pages/recharge.dart';
 
 import '../awards.dart';
-import '../chatrooms.dart';
-import '../search.dart';
 import '../../../constant/theme.dart';
 import '../../../generated/l10n.dart';
-import '../profile/showprofile.dart';
-import '../videocall.dart';
 import 'titles.dart';
 
 Widget countryItemWidget(BuildContext context, Country country, Function onTap,
@@ -137,20 +132,18 @@ Widget bottomNavigation(BuildContext context, String home) {
           ),
         ),
         InkWell(
-            onTap: () => showSnackBar(
-                context, "//Todo add the random calling link", true),
-            // Navigator.push(context,
-            //     MaterialPageRoute(builder: (context) => const RandomCalling())),
+            onTap: () => Navigator.pushNamed(context, "/RandomCalling"),
             child: Image.asset(
               random,
               height: getHorizontal(context) * 0.065,
             )),
         InkWell(
-            onTap: () => Navigator.pushNamed(context, "/ChatRooms"),
-            child: Image.asset(
-              chats,
-              height: getHorizontal(context) * 0.065,
-            )),
+          onTap: () => Navigator.pushNamed(context, "/ChatRooms"),
+          child: Image.asset(
+            chats,
+            height: getHorizontal(context) * 0.065,
+          ),
+        ),
         InkWell(
           onTap: home == "home"
               ? () => Navigator.pushNamed(context, "/MyProfile")

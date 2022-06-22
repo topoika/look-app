@@ -11,7 +11,6 @@ class UserController extends ControllerMVC {
 
   @override
   void initState() {
-    signMobileNumber();
     super.initState();
   }
 

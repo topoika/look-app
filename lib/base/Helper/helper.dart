@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 
 class Helper {
@@ -27,4 +28,17 @@ class Helper {
       } catch (e) {}
     });
   }
+}
+
+Future<bool> isConnection() async {
+  bool active = false;
+  var connectivityResult = await (Connectivity().checkConnectivity());
+  if (connectivityResult == ConnectivityResult.mobile) {
+    active = true;
+  } else if (connectivityResult == ConnectivityResult.wifi) {
+    active = true;
+  } else {
+    active = false;
+  }
+  return active;
 }

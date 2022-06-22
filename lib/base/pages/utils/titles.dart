@@ -29,10 +29,12 @@ Widget skiptText(BuildContext context) {
 Widget channelName(text) {
   return Text(
     text,
+    maxLines: 2,
+    overflow: TextOverflow.ellipsis,
     style: const TextStyle(
-      fontWeight: FontWeight.w900,
+      fontWeight: FontWeight.w700,
       color: Colors.white,
-      fontSize: 16,
+      fontSize: 13,
     ),
   );
 }

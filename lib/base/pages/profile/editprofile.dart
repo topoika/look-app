@@ -131,10 +131,7 @@ class _EditProfileState extends State<EditProfile> {
                       vertical: getVertical(context) * 0.01),
                   child: InkWell(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ModifyInterests()));
+                      Navigator.pushNamed(context, "/ModifyInterests");
                     },
                     child: currentUser.value.interests != null
                         ? Container(
@@ -242,10 +239,7 @@ class _EditProfileState extends State<EditProfile> {
                       } else {
                         updateUser(currentUser.value);
                       }
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const MyProfile()));
+                      Navigator.pushReplacementNamed(context, "/MyProfile");
                     }
                   },
                       S.of(context).save_text +

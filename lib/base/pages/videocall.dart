@@ -234,21 +234,22 @@ class _VideoCallsState extends State<VideoCalls> {
                                           size: 14,
                                         ),
                                         const SizedBox(width: 5),
-                                        Text(
-                                          "0",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w700),
-                                        ),
+                                        // Text(
+                                        //   "0",
+                                        //   style: TextStyle(
+                                        //       color: Colors.white,
+                                        //       fontSize: 14,
+                                        //       fontWeight: FontWeight.w700),
+                                        // ),
                                         const SizedBox(width: 3),
                                         Icon(
                                           Icons.brightness_1_rounded,
-                                          color: index == 3
-                                              ? Colors.amber
-                                              : index == 5
-                                                  ? Colors.black
-                                                  : Colors.green,
+                                          color: _user.active == "active"
+                                              ? Colors.green
+                                              : _user.active == "domant"
+                                                  ? Colors.yellow
+                                                  : Colors.black
+                                                      .withOpacity(.8),
                                           size: 16,
                                         ),
                                       ],

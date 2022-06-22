@@ -193,7 +193,7 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
                           ),
                           child: Container(
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(15),
                             ),
                             margin: const EdgeInsets.only(
                                 left: 3, right: 5, top: 5, bottom: 5),
@@ -210,50 +210,70 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  margin:
-                                      const EdgeInsets.only(left: 5, top: 8),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 5),
-                                  decoration: BoxDecoration(
-                                    color: Colors.amber,
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  child: Text(
-                                    (_user.country ?? " ").toUpperCase(),
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w800,
-                                        fontSize: getHorizontal(context) * 0.03,
-                                        color: Colors.white),
-                                  ),
-                                ),
+
                                 Align(
-                                  alignment: Alignment.topRight,
-                                  child: Container(
-                                    margin:
-                                        const EdgeInsets.only(right: 5, top: 8),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 5),
-                                    decoration: BoxDecoration(
-                                      color: Colors.black12,
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
+                                  alignment: Alignment.topCenter,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(2.0),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Icon(
-                                          Icons.remove_red_eye,
-                                          color: Colors.white,
-                                          size: 18,
+                                        Flexible(
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 5, vertical: 3),
+                                            decoration: BoxDecoration(
+                                              color: Colors.amber,
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                            ),
+                                            child: Text(
+                                              (_user.country ?? " ")
+                                                  .toUpperCase(),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize:
+                                                      getHorizontal(context) *
+                                                          0.03,
+                                                  color: Colors.white),
+                                            ),
+                                          ),
                                         ),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          liveStream.viewers.toString(),
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w700),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5, vertical: 3),
+                                          decoration: BoxDecoration(
+                                            color: Colors.black45,
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Icon(
+                                                Icons.remove_red_eye,
+                                                color: Colors.white,
+                                                size: 17,
+                                              ),
+                                              SizedBox(width: 3),
+                                              Text(
+                                                liveStream.viewers.toString(),
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 13,
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -263,7 +283,7 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
                                   alignment: Alignment.bottomLeft,
                                   child: Container(
                                     width: double.infinity,
-                                    height: 25,
+                                    height: getVertical(context) * 0.06,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.only(
                                           bottomLeft: Radius.circular(5),
@@ -271,7 +291,8 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
                                       gradient: LinearGradient(
                                         colors: [
                                           Colors.transparent,
-                                          Colors.black26,
+                                          Colors.black54,
+                                          Colors.black87,
                                           Colors.black,
                                         ],
                                         begin: Alignment.topCenter,
@@ -283,38 +304,40 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
                                 Align(
                                   alignment: Alignment.bottomLeft,
                                   child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 5, bottom: 5),
-                                    child: channelName(liveStream.title ?? ""),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: Container(
-                                    margin: const EdgeInsets.only(
-                                        right: 5, bottom: 5),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 5),
-                                    decoration: BoxDecoration(
-                                      color:
-                                          const Color.fromARGB(255, 1, 6, 36),
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
+                                    padding: EdgeInsets.only(
+                                        left: 5, bottom: 5, right: 5),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
                                       mainAxisSize: MainAxisSize.min,
-                                      children: const [
-                                        Text(
-                                          "👏  0",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w700),
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                            child: channelName(
+                                                liveStream.title ?? "")),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5, vertical: 3),
+                                          decoration: BoxDecoration(
+                                            color: Colors.black,
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                          ),
+                                          child: Text(
+                                            "👏  ${liveStream.reactions.toString()}",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w700),
+                                          ),
                                         ),
                                       ],
                                     ),
                                   ),
                                 ),
+                                // Align(
+                                //   alignment: Alignment.bottomRight,
+                                //   child:
+                                // ),
                               ],
                             ),
                           ),

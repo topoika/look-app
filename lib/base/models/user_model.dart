@@ -23,6 +23,7 @@ class User {
   int? videoRate;
   int? smsRate;
   int? age;
+  String? active;
   List<String>? interests;
   User({
     this.uid,
@@ -50,6 +51,7 @@ class User {
     this.smsRate,
     this.age,
     this.interests,
+    this.active,
   });
 
   Map<String, dynamic> toMap() {
@@ -79,6 +81,7 @@ class User {
       'smsRate': smsRate ?? 0,
       'age': age ?? 0,
       'interests': interests ?? [],
+      'active': active ?? "online",
     };
   }
 
@@ -110,6 +113,7 @@ class User {
       age: map['age'],
       interests:
           map['interests'] != null ? List<String>.from(map['interests']) : null,
+      active: map['active'],
     );
   }
 }

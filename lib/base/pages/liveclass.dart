@@ -126,286 +126,325 @@ class _LiveClassState extends StateMVC<LiveClass> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Stack(
-          children: [
-            Center(
-              child: isHost
-                  ? RtcLocalView.SurfaceView(channelId: liveStream.title)
-                  : liveStream.hostUid != null
-                      ? RtcRemoteView.SurfaceView(
-                          uid: liveStream.hostUid ?? 0,
-                          channelId: liveStream.title ?? "",
-                        )
-                      : Text(
-                          S.of(context).connecting,
-                          textAlign: TextAlign.center,
-                        ),
-            ),
-            Align(
-              alignment: Alignment.topRight,
-              child: Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: getHorizontal(context) * 0.023, vertical: 60),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                  color: Colors.black12,
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.remove_red_eye,
-                      color: Colors.white,
-                      size: 18,
-                    ),
-                    SizedBox(width: 5),
-                    Text(
-                      users.length.toString(),
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: EdgeInsets.all(getHorizontal(context) * 0.023),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CircleAvatar(
-                      radius: 25.0,
-                      backgroundImage:
-                          NetworkImage(liveStream.host!.image ?? noImage),
-                      backgroundColor: Colors.transparent,
-                    ),
-                    SizedBox(
-                      width: getHorizontal(context) * 0.03,
-                    ),
-                    SizedBox(
-                      width: getHorizontal(context) * 0.6,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            liveStream.host!.name ?? "",
-                            maxLines: 1,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w900,
-                              fontSize: getHorizontal(context) * 0.035,
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          Text(
-                            liveStream.host!.location ?? "",
-                            maxLines: 1,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: getHorizontal(context) * 0.021,
-                            ),
-                          ),
-                        ],
+        body: StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection("liveStreams")
+                .doc(liveStream.id)
+                .snapshots(),
+            builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+              var live = snapshot.data;
+              return snapshot.hasData
+                  ? Stack(children: [
+                      Center(
+                        child: isHost
+                            ? RtcLocalView.SurfaceView(
+                                channelId: liveStream.title)
+                            : liveStream.hostUid != null
+                                ? RtcRemoteView.SurfaceView(
+                                    uid: liveStream.hostUid ?? 0,
+                                    channelId: liveStream.title ?? "",
+                                  )
+                                : Text(
+                                    S.of(context).connecting,
+                                    textAlign: TextAlign.center,
+                                  ),
                       ),
-                    ),
-                    const Spacer(),
-                    isHost
-                        ? GestureDetector(
-                            onTap: isHost
-                                ? () {
-                                    _engine!.destroy();
-                                    _con.deleteLiveStream(liveStream, context);
-                                  }
-                                : () {
-                                    Navigator.pop(context);
-                                    _engine!.leaveChannel();
-                                  },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 10,
-                                  horizontal: getHorizontal(context) * 0.035),
-                              decoration: BoxDecoration(
-                                  color: Colors.redAccent,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Text(
-                                isHost
-                                    ? S.of(context).end_live
-                                    : S.of(context).leave_live,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w800,
-                                    fontSize: getHorizontal(context) * 0.029),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: getHorizontal(context) * 0.023,
+                              vertical: 60),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          decoration: BoxDecoration(
+                            color: Colors.black12,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.remove_red_eye,
+                                color: Colors.white,
+                                size: 18,
                               ),
-                            ),
-                          )
-                        : SizedBox(),
-                  ],
-                ),
-              ),
-            ),
-            Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  height: getVertical(context) * 0.28,
-                  alignment: Alignment.bottomCenter,
-                  margin: EdgeInsets.symmetric(vertical: 60),
-                  foregroundDecoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.transparent,
-                        Colors.transparent,
-                        Colors.transparent
-                      ],
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                    ),
-                  ),
-                  child: StreamBuilder(
-                      stream: FirebaseFirestore.instance
-                          .collection("liveStreams")
-                          .doc(liveStream.id)
-                          .collection("comments")
-                          .orderBy("time", descending: true)
-                          .snapshots(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
-                              snapshot) {
-                        return snapshot.hasData
-                            ? ListView.builder(
-                                itemCount: snapshot.data!.docs.length,
-                                reverse: true,
-                                scrollDirection: Axis.vertical,
-                                itemBuilder: ((context, index) {
-                                  var comment = Comment.fromMap(
-                                      snapshot.data!.docs[index].data());
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(9),
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          Colors.white,
-                                          Colors.white24,
-                                          Colors.white12,
-                                          Colors.transparent
-                                        ],
-                                        begin: Alignment.centerLeft,
-                                        end: Alignment.centerRight,
+                              SizedBox(width: 5),
+                              Text(
+                                live!['viewers'].toString(),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: Padding(
+                          padding:
+                              EdgeInsets.all(getHorizontal(context) * 0.023),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CircleAvatar(
+                                radius: 25.0,
+                                backgroundImage: NetworkImage(
+                                    liveStream.host!.image ?? noImage),
+                                backgroundColor: Colors.transparent,
+                              ),
+                              SizedBox(
+                                width: getHorizontal(context) * 0.015,
+                              ),
+                              SizedBox(
+                                width: getHorizontal(context) * 0.6,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      liveStream.host!.name ?? "",
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w900,
+                                        fontSize:
+                                            getHorizontal(context) * 0.035,
                                       ),
                                     ),
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 8.0, vertical: 3),
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 25.0,
-                                          backgroundImage: NetworkImage(
-                                              comment.commenter!.image ??
-                                                  noImage),
-                                          backgroundColor: Colors.transparent,
-                                        ),
-                                        SizedBox(
-                                          width: getHorizontal(context) * 0.03,
-                                        ),
-                                        SizedBox(
-                                          width: getHorizontal(context) * 0.6,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Text(
-                                                comment.commenter!.name ?? "",
-                                                maxLines: 1,
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w900,
-                                                  fontSize:
-                                                      getHorizontal(context) *
-                                                          0.035,
-                                                ),
-                                              ),
-                                              const SizedBox(height: 5),
-                                              Text(
-                                                comment.comment ?? "",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize:
-                                                      getHorizontal(context) *
-                                                          0.031,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      liveStream.title ?? "",
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize:
+                                            getHorizontal(context) * 0.021,
+                                      ),
                                     ),
-                                  );
-                                }),
-                              )
-                            : SizedBox();
-                      }),
-                )),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                margin: EdgeInsets.symmetric(
-                    horizontal: getHorizontal(context) * 0.02),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white.withOpacity(.8),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: TextField(
-                      controller: _commentController,
-                      style: TextStyle(
-                        fontSize: getHorizontal(context) * 0.041,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      decoration: InputDecoration(
-                          hintText: S.of(context).type_a_comment + "...",
-                          hintStyle: TextStyle(
-                            color: Colors.grey[700],
-                            fontSize: 16,
+                                  ],
+                                ),
+                              ),
+                              const Spacer(),
+                              GestureDetector(
+                                onTap: isHost
+                                    ? () {
+                                        _engine!.destroy();
+                                        _con.deleteLiveStream(
+                                            liveStream, context);
+                                      }
+                                    : () {
+                                        Navigator.pop(context);
+                                        _engine!.leaveChannel();
+                                      },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10,
+                                      horizontal:
+                                          getHorizontal(context) * 0.035),
+                                  decoration: BoxDecoration(
+                                      color: Colors.redAccent,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Text(
+                                    isHost
+                                        ? S.of(context).end_live
+                                        : S.of(context).leave_live,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize:
+                                            getHorizontal(context) * 0.029),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          border: InputBorder.none),
-                    )),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Comment _comment = Comment();
-                        if (_commentController.text.trim().isNotEmpty) {
-                          _comment.comment = _commentController.text;
-                          _comment.time = DateTime.now().toString();
-                          _comment.commenter = currentUser.value;
-                          _con.addComment(_comment, liveStream);
-                          _commentController.clear();
-                        }
-                      },
-                      child: const Icon(
-                        Icons.send,
-                        color: Colors.black,
+                        ),
                       ),
-                    )
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
+                      Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
+                            height: getVertical(context) * 0.28,
+                            alignment: Alignment.bottomCenter,
+                            margin: EdgeInsets.symmetric(vertical: 60),
+                            foregroundDecoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.transparent,
+                                  Colors.transparent,
+                                  Colors.transparent
+                                ],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                              ),
+                            ),
+                            child: StreamBuilder(
+                                stream: FirebaseFirestore.instance
+                                    .collection("liveStreams")
+                                    .doc(liveStream.id)
+                                    .collection("comments")
+                                    .orderBy("time", descending: true)
+                                    .snapshots(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<
+                                            QuerySnapshot<Map<String, dynamic>>>
+                                        snapshot) {
+                                  return snapshot.hasData
+                                      ? ListView.builder(
+                                          itemCount: snapshot.data!.docs.length,
+                                          reverse: true,
+                                          scrollDirection: Axis.vertical,
+                                          itemBuilder: ((context, index) {
+                                            var comment = Comment.fromMap(
+                                                snapshot.data!.docs[index]
+                                                    .data());
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(9),
+                                                gradient: LinearGradient(
+                                                  colors: [
+                                                    Colors.white,
+                                                    Colors.white24,
+                                                    Colors.white12,
+                                                    Colors.transparent
+                                                  ],
+                                                  begin: Alignment.centerLeft,
+                                                  end: Alignment.centerRight,
+                                                ),
+                                              ),
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8.0,
+                                                      vertical: 3),
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  CircleAvatar(
+                                                    radius: 25.0,
+                                                    backgroundImage:
+                                                        NetworkImage(comment
+                                                                .commenter!
+                                                                .image ??
+                                                            noImage),
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                  ),
+                                                  SizedBox(
+                                                    width:
+                                                        getHorizontal(context) *
+                                                            0.03,
+                                                  ),
+                                                  SizedBox(
+                                                    width:
+                                                        getHorizontal(context) *
+                                                            0.6,
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Text(
+                                                          comment.commenter!
+                                                                  .name ??
+                                                              "",
+                                                          maxLines: 1,
+                                                          style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w900,
+                                                            fontSize:
+                                                                getHorizontal(
+                                                                        context) *
+                                                                    0.035,
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                            height: 5),
+                                                        Text(
+                                                          comment.comment ?? "",
+                                                          style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            fontSize:
+                                                                getHorizontal(
+                                                                        context) *
+                                                                    0.031,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          }),
+                                        )
+                                      : SizedBox();
+                                }),
+                          )),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 5),
+                          margin: EdgeInsets.symmetric(
+                              horizontal: getHorizontal(context) * 0.02),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white.withOpacity(.8),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  child: TextField(
+                                controller: _commentController,
+                                style: TextStyle(
+                                  fontSize: getHorizontal(context) * 0.041,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                decoration: InputDecoration(
+                                    hintText:
+                                        S.of(context).type_a_comment + "...",
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey[700],
+                                      fontSize: 16,
+                                    ),
+                                    border: InputBorder.none),
+                              )),
+                              const SizedBox(
+                                width: 16,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Comment _comment = Comment();
+                                  if (_commentController.text
+                                      .trim()
+                                      .isNotEmpty) {
+                                    _comment.comment = _commentController.text;
+                                    _comment.time = DateTime.now().toString();
+                                    _comment.commenter = currentUser.value;
+                                    _con.addComment(_comment, liveStream);
+                                    _commentController.clear();
+                                  }
+                                },
+                                child: const Icon(
+                                  Icons.send,
+                                  color: Colors.black,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      )
+                    ])
+                  : SizedBox();
+            }),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: isHost
             ? Padding(

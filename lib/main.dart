@@ -37,10 +37,42 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
     SettingController().initiateSettings();
-    FirebaseAuth.instance.currentUser != null
-        ? getUser(FirebaseAuth.instance.currentUser!.uid)
-        : print("No User Founde");
+    WidgetsBinding.instance!.addObserver(this);
+    if (FirebaseAuth.instance.currentUser != null) {
+      getUser(FirebaseAuth.instance.currentUser!.uid);
+      updateUserStatus(FirebaseAuth.instance.currentUser!.uid, "active");
+    }
     super.initState();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    final isBg = state == AppLifecycleState.paused;
+    final isClosed = state == AppLifecycleState.detached;
+    final isScreen = state == AppLifecycleState.resumed;
+    final inactive = state == AppLifecycleState.inactive;
+
+    if (isScreen) {
+      updateUserStatus(FirebaseAuth.instance.currentUser!.uid, "active");
+    }
+    if (isClosed) {
+      updateUserStatus(FirebaseAuth.instance.currentUser!.uid, "offline");
+    }
+    if (isBg) {
+      updateUserStatus(FirebaseAuth.instance.currentUser!.uid, "domant");
+    }
+    if (inactive) {
+      updateUserStatus(FirebaseAuth.instance.currentUser!.uid, "domant");
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance!.removeObserver(this);
+    updateUserStatus(FirebaseAuth.instance.currentUser!.uid, "offline");
+    super.dispose();
   }
 
   @override

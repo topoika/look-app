@@ -90,7 +90,7 @@ class LiveStreamController extends ControllerMVC {
       _liveStream.reactions = 0;
       _liveStream.comments = [];
       _liveStream.country = currentUser.value.country;
-      _liveStream.viewers = 1;
+      _liveStream.viewers = 0;
       await firebaseFirestore
           .collection("liveStreams")
           .doc(currentUser.value.uid)

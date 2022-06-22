@@ -11,9 +11,6 @@ import 'package:look/base/pages/mobile_login.dart';
 import '../models/user_model.dart' as userModel;
 import 'package:path/path.dart' as Path;
 
-import '../pages/mobile_verification.dart';
-import '../pages/termscondition.dart';
-
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -151,6 +148,7 @@ Future verifyPhone(
     var newUser = await getUser(value.user!.uid);
     if (newUser != null) {
       currentUser.value = newUser;
+      updateUserStatus(FirebaseAuth.instance.currentUser!.uid, "active");
       currentUser.notifyListeners();
       // registerUser(currentUser.value);
     } else {
@@ -195,4 +193,16 @@ Future<userModel.User> uploadProfilePicture(
     }
     return updateUser(currentUser.value);
   });
+}
+
+void updateUserStatus(String id, String status) async {
+  try {
+    await _firestore
+        .collection(userCollection)
+        .doc(id)
+        .update({"active": status});
+  } catch (e) {
+    debugPrint("Error is ==" + e.toString());
+  }
+  //
 }
