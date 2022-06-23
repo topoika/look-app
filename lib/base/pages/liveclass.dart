@@ -18,6 +18,7 @@ import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 
 import '../../generated/l10n.dart';
 import '../Helper/strings.dart';
+import '../models/activity.dart';
 
 class LiveClass extends StatefulWidget {
   final bool isHost;
@@ -48,9 +49,14 @@ class _LiveClassState extends StateMVC<LiveClass> {
   final LiveStream liveStream;
   int? _remoteUid;
   TextEditingController _commentController = TextEditingController();
+  Stream<DocumentSnapshot<Map<String, dynamic>>>? stream;
   @override
   void initState() {
     initAgora();
+    stream = FirebaseFirestore.instance
+        .collection("liveStreams")
+        .doc(liveStream.id ?? "")
+        .snapshots();
     super.initState();
   }
 
@@ -68,6 +74,13 @@ class _LiveClassState extends StateMVC<LiveClass> {
           joinChannelSuccess: (String channel, int uid, int elapsed) {
             log("onchanneljoin : $channel , uid: $uid");
             isHost ? _con.updateStreamHostUid(liveStream, uid) : null;
+            _con.addActivity(
+                "joined",
+                "${liveStream.host!.name} has started live",
+                liveStream.host!,
+                liveStream,
+                null,
+                null);
           },
           userJoined: (int uid, int elapsed) {
             setState(() {
@@ -75,6 +88,13 @@ class _LiveClassState extends StateMVC<LiveClass> {
               _remoteUid = uid;
             });
             _con.updateStreamViewers(liveStream);
+            _con.addActivity(
+                "joined",
+                "${currentUser.value.name} has joined live",
+                currentUser.value,
+                liveStream,
+                null,
+                null);
           },
           error: (e) => log(e.toString()),
           userOffline: (int uid, UserOfflineReason reason) {
@@ -91,7 +111,15 @@ class _LiveClassState extends StateMVC<LiveClass> {
               _engine!.leaveChannel();
             } else {
               _engine!.destroy();
+
               Navigator.pop(context);
+              _con.addActivity(
+                  "joined",
+                  "${currentUser.value.name} has left live",
+                  currentUser.value,
+                  liveStream,
+                  null,
+                  null);
               _engine!.leaveChannel();
             }
           }),
@@ -128,10 +156,7 @@ class _LiveClassState extends StateMVC<LiveClass> {
     return SafeArea(
       child: Scaffold(
         body: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection("liveStreams")
-              .doc(liveStream.id)
-              .snapshots(),
+          stream: stream,
           builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
             var live = snapshot.data;
             return snapshot.hasData
@@ -186,7 +211,7 @@ class _LiveClassState extends StateMVC<LiveClass> {
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                             Text(
-                                              liveStream.host!.name ?? "",
+                                              liveStream.title ?? "",
                                               maxLines: 1,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w700,
@@ -198,8 +223,9 @@ class _LiveClassState extends StateMVC<LiveClass> {
                                             ),
                                             const SizedBox(height: 5),
                                             Text(
-                                              "💰  546" +
-                                                  live!['viewers'].toString(),
+                                              "💰 " +
+                                                  live!['pointsGifted']
+                                                      .toString(),
                                               maxLines: 1,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w700,
@@ -250,9 +276,9 @@ class _LiveClassState extends StateMVC<LiveClass> {
                                 GestureDetector(
                                   onTap: isHost
                                       ? () {
-                                          _engine!.destroy();
                                           _con.deleteLiveStream(
                                               liveStream, context);
+                                          _engine!.destroy();
                                         }
                                       : () {
                                           Navigator.pop(context);
@@ -271,231 +297,412 @@ class _LiveClassState extends StateMVC<LiveClass> {
                       ),
                       Align(
                         alignment: Alignment.bottomCenter,
-                        child: Container(
-                          height: getVertical(context) * 0.28,
-                          alignment: Alignment.bottomCenter,
-                          margin: EdgeInsets.symmetric(vertical: 60),
-                          foregroundDecoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Colors.transparent,
-                                Colors.transparent,
-                                Colors.transparent
-                              ],
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                            ),
-                          ),
-                          child: StreamBuilder(
-                              stream: FirebaseFirestore.instance
-                                  .collection("liveStreams")
-                                  .doc(liveStream.id)
-                                  .collection("comments")
-                                  .orderBy("time", descending: true)
-                                  .snapshots(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<
-                                          QuerySnapshot<Map<String, dynamic>>>
-                                      snapshot) {
-                                return snapshot.hasData
-                                    ? ListView.builder(
-                                        itemCount: snapshot.data!.docs.length,
-                                        reverse: true,
-                                        scrollDirection: Axis.vertical,
-                                        itemBuilder: ((context, index) {
-                                          var comment = Comment.fromMap(snapshot
-                                              .data!.docs[index]
-                                              .data());
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(9),
-                                              gradient: LinearGradient(
-                                                colors: [
-                                                  Colors.white,
-                                                  Colors.white24,
-                                                  Colors.white12,
-                                                  Colors.transparent
-                                                ],
-                                                begin: Alignment.centerLeft,
-                                                end: Alignment.centerRight,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: getVertical(context) * 0.3,
+                              width: getHorizontal(context) * 0.75,
+                              margin: EdgeInsets.only(
+                                  left: getHorizontal(context) * 0.02),
+                              child: StreamBuilder(
+                                  stream: FirebaseFirestore.instance
+                                      .collection("liveStreams")
+                                      .doc(liveStream.id)
+                                      .collection("activities")
+                                      .orderBy("time", descending: true)
+                                      .snapshots(),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<
+                                              QuerySnapshot<
+                                                  Map<String, dynamic>>>
+                                          snapshot) {
+                                    return snapshot.hasData
+                                        ? Stack(
+                                            children: [
+                                              ListView.builder(
+                                                itemCount:
+                                                    snapshot.data!.docs.length,
+                                                reverse: true,
+                                                scrollDirection: Axis.vertical,
+                                                itemBuilder: ((context, index) {
+                                                  var activity =
+                                                      Activity.fromMap(snapshot
+                                                          .data!.docs[index]
+                                                          .data());
+                                                  return Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 4.0),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        activity.type == "gift"
+                                                            ? Container(
+                                                                padding: EdgeInsets.symmetric(
+                                                                    horizontal:
+                                                                        getHorizontal(context) *
+                                                                            0.03,
+                                                                    vertical:
+                                                                        4),
+                                                                decoration: BoxDecoration(
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            18,
+                                                                            0,
+                                                                            26),
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            25)),
+                                                                child: Text(
+                                                                  "🌟 ${activity.gift!.points}",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700,
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        getHorizontal(context) *
+                                                                            0.03,
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            : CircleAvatar(
+                                                                radius: getHorizontal(
+                                                                        context) *
+                                                                    0.038,
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                                backgroundImage:
+                                                                    NetworkImage(activity
+                                                                            .actor!
+                                                                            .image ??
+                                                                        noImage),
+                                                              ),
+                                                        SizedBox(
+                                                          width: getHorizontal(
+                                                                  context) *
+                                                              0.02,
+                                                        ),
+                                                        SizedBox(
+                                                          width: getHorizontal(
+                                                                  context) *
+                                                              0.55,
+                                                          child: RichText(
+                                                            maxLines: 2,
+                                                            text: TextSpan(
+                                                              text: activity
+                                                                      .actor!
+                                                                      .name ??
+                                                                  "" + ("-"),
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                                fontSize:
+                                                                    getHorizontal(
+                                                                            context) *
+                                                                        0.029,
+                                                              ),
+                                                              children: <
+                                                                  TextSpan>[
+                                                                TextSpan(
+                                                                  text: activity
+                                                                          .desc ??
+                                                                      "",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .yellow,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    fontSize:
+                                                                        getHorizontal(context) *
+                                                                            0.025,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                }),
                                               ),
-                                            ),
-                                            margin: const EdgeInsets.symmetric(
-                                                horizontal: 8.0, vertical: 3),
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                CircleAvatar(
-                                                  radius: 25.0,
-                                                  backgroundImage: NetworkImage(
-                                                      comment.commenter!
-                                                              .image ??
-                                                          noImage),
-                                                  backgroundColor:
-                                                      Colors.transparent,
-                                                ),
-                                                SizedBox(
-                                                  width:
-                                                      getHorizontal(context) *
-                                                          0.03,
-                                                ),
-                                                SizedBox(
-                                                  width:
-                                                      getHorizontal(context) *
-                                                          0.6,
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: [
-                                                      Text(
-                                                        comment.commenter!
-                                                                .name ??
-                                                            "",
-                                                        maxLines: 1,
-                                                        style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w900,
-                                                          fontSize:
-                                                              getHorizontal(
-                                                                      context) *
-                                                                  0.035,
-                                                        ),
-                                                      ),
-                                                      const SizedBox(height: 5),
-                                                      Text(
-                                                        comment.comment ?? "",
-                                                        style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          fontSize:
-                                                              getHorizontal(
-                                                                      context) *
-                                                                  0.031,
-                                                        ),
-                                                      ),
-                                                    ],
+                                              Align(
+                                                alignment:
+                                                    Alignment.bottomCenter,
+                                                child: Container(
+                                                  height: getVertical(context) *
+                                                      0.03,
+                                                  width: double.infinity,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            30),
+                                                    gradient: LinearGradient(
+                                                      colors: [
+                                                        Colors.transparent,
+                                                        Colors.white
+                                                            .withOpacity(.2),
+                                                        Colors.white
+                                                            .withOpacity(.4),
+                                                        Colors.white
+                                                            .withOpacity(.3),
+                                                        Colors.white
+                                                            .withOpacity(.1),
+                                                        Colors.transparent,
+                                                        Colors.transparent
+                                                      ],
+                                                      begin: Alignment
+                                                          .bottomCenter,
+                                                      end: Alignment.topCenter,
+                                                    ),
                                                   ),
                                                 ),
-                                              ],
-                                            ),
-                                          );
-                                        }),
-                                      )
-                                    : SizedBox();
-                              }),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Row(
-                          children: [
-                            Flexible(
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 5),
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: getHorizontal(context) * 0.02),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(35),
-                                  color: Colors.black.withOpacity(.3),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: TextField(
-                                        controller: _commentController,
-                                        style: TextStyle(
-                                          fontSize:
-                                              getHorizontal(context) * 0.041,
-                                          fontWeight: FontWeight.bold,
+                                              )
+                                            ],
+                                          )
+                                        : SizedBox();
+                                  }),
+                            ),
+                            isHost
+                                ? SizedBox()
+                                : Container(
+                                    margin: EdgeInsets.only(
+                                        left: getHorizontal(context) * 0.02),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal:
+                                            getHorizontal(context) * 0.034,
+                                        vertical: 10),
+                                    decoration: BoxDecoration(
+                                        color: Color.fromARGB(255, 18, 0, 26),
+                                        borderRadius:
+                                            BorderRadius.circular(25)),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Image.asset(
+                                          chats,
+                                          color: Colors.white,
+                                          height: getHorizontal(context) * 0.06,
                                         ),
-                                        decoration: InputDecoration(
-                                            hintText:
-                                                S.of(context).type_a_comment +
-                                                    "...",
-                                            hintStyle: TextStyle(
+                                        SizedBox(
+                                            width:
+                                                getHorizontal(context) * 0.04),
+                                        Text(
+                                          "Chat with me",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.white,
+                                            fontSize:
+                                                getHorizontal(context) * 0.03,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                            SizedBox(height: 10),
+                            isHost
+                                ? SizedBox()
+                                : Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      SizedBox(
+                                        height: getVertical(context) * 0.075,
+                                        child: ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: gifts.length,
+                                          physics: ScrollPhysics(),
+                                          scrollDirection: Axis.horizontal,
+                                          itemBuilder: ((context, index) {
+                                            var gift = gifts[index];
+                                            return GestureDetector(
+                                              onTap: () {
+                                                _con.giftHostPoints(
+                                                    gift, liveStream);
+                                                _con.addActivity(
+                                                    "gift",
+                                                    "has gifted the host",
+                                                    currentUser.value,
+                                                    liveStream,
+                                                    gift,
+                                                    null);
+                                              },
+                                              child: Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal:
+                                                      getHorizontal(context) *
+                                                          0.02,
+                                                ),
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: <Widget>[
+                                                    Image.asset(
+                                                      gift.image ?? noImage,
+                                                      height: getHorizontal(
+                                                              context) *
+                                                          0.09,
+                                                    ),
+                                                    SizedBox(height: 10),
+                                                    Text(
+                                                      "💰 " +
+                                                          gift.points
+                                                              .toString(),
+                                                      maxLines: 1,
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: Colors.white,
+                                                        fontSize: getHorizontal(
+                                                                context) *
+                                                            0.03,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          }),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                            SizedBox(height: isHost ? 0 : 10),
+                            Row(
+                              children: [
+                                Flexible(
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 5),
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal:
+                                            getHorizontal(context) * 0.02),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(35),
+                                      color: Colors.black.withOpacity(.3),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: TextField(
+                                            controller: _commentController,
+                                            style: TextStyle(
                                               fontWeight: FontWeight.w500,
-                                              color: Colors.white60,
+                                              color: Colors.white,
                                               fontSize: getHorizontal(context) *
                                                   0.034,
                                             ),
-                                            border: InputBorder.none),
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Comment _comment = Comment();
-                                        if (_commentController.text
-                                            .trim()
-                                            .isNotEmpty) {
-                                          _comment.comment =
-                                              _commentController.text;
-                                          _comment.time =
-                                              DateTime.now().toString();
-                                          _comment.commenter =
-                                              currentUser.value;
-                                          _con.addComment(_comment, liveStream);
-                                          _commentController.clear();
-                                        }
-                                      },
-                                      child: const Icon(
-                                        Icons.send,
-                                        color: Colors.white70,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: getHorizontal(context) * 0.03),
-                            Icon(
-                              Icons.album,
-                              color: Colors.white,
-                              size: getHorizontal(context) * 0.1,
-                            ),
-                            SizedBox(width: getHorizontal(context) * 0.03),
-                            GestureDetector(
-                              onTap: isHost
-                                  ? () => _engine!.switchCamera()
-                                  : () {
-                                      log("Reward this nigah");
-                                    },
-                              child: Container(
-                                padding: EdgeInsets.all(
-                                  getHorizontal(context) * 0.02,
-                                ),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color.fromARGB(255, 18, 0, 26),
-                                        Color.fromARGB(255, 41, 2, 58),
-                                        Color.fromARGB(255, 57, 7, 68),
-                                        Color.fromARGB(255, 125, 3, 153),
-                                        Color.fromARGB(255, 134, 3, 163),
-                                        Color.fromARGB(255, 150, 2, 184),
+                                            decoration: InputDecoration(
+                                                hintText: S
+                                                        .of(context)
+                                                        .type_a_comment +
+                                                    "...",
+                                                hintStyle: TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.white60,
+                                                  fontSize:
+                                                      getHorizontal(context) *
+                                                          0.034,
+                                                ),
+                                                border: InputBorder.none),
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Comment _comment = Comment();
+                                            if (_commentController.text
+                                                .trim()
+                                                .isNotEmpty) {
+                                              _comment.comment =
+                                                  _commentController.text;
+                                              _comment.time =
+                                                  DateTime.now().toString();
+                                              _comment.commenter =
+                                                  currentUser.value;
+                                              _con.addActivity(
+                                                  "comment",
+                                                  _commentController.text,
+                                                  currentUser.value,
+                                                  liveStream,
+                                                  null,
+                                                  _comment);
+                                              _commentController.clear();
+                                            }
+                                          },
+                                          child: const Icon(
+                                            Icons.send,
+                                            color: Colors.white70,
+                                          ),
+                                        )
                                       ],
-                                      begin: Alignment.bottomLeft,
-                                      end: Alignment.topRight,
-                                    )),
-                                child: isHost
-                                    ? Icon(
-                                        Icons.switch_camera_outlined,
-                                        color: Colors.white,
-                                        size: getHorizontal(context) * 0.07,
-                                      )
-                                    : Image.asset(
-                                        box,
-                                        height: getHorizontal(context) * 0.09,
-                                      ),
-                              ),
-                            )
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: getHorizontal(context) * 0.03),
+                                Icon(
+                                  Icons.album,
+                                  color: Colors.white,
+                                  size: getHorizontal(context) * 0.1,
+                                ),
+                                SizedBox(width: getHorizontal(context) * 0.03),
+                                GestureDetector(
+                                  onTap: isHost
+                                      ? () => _engine!.switchCamera()
+                                      : () {
+                                          log("Reward this nigah");
+                                        },
+                                  child: Container(
+                                    padding: EdgeInsets.all(
+                                      getHorizontal(context) * 0.02,
+                                    ),
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Color.fromARGB(255, 18, 0, 26),
+                                            Color.fromARGB(255, 41, 2, 58),
+                                            Color.fromARGB(255, 57, 7, 68),
+                                            Color.fromARGB(255, 125, 3, 153),
+                                            Color.fromARGB(255, 134, 3, 163),
+                                            Color.fromARGB(255, 150, 2, 184),
+                                          ],
+                                          begin: Alignment.bottomLeft,
+                                          end: Alignment.topRight,
+                                        )),
+                                    child: isHost
+                                        ? Icon(
+                                            Icons.switch_camera_outlined,
+                                            color: Colors.white,
+                                            size: getHorizontal(context) * 0.07,
+                                          )
+                                        : Image.asset(
+                                            box,
+                                            height:
+                                                getHorizontal(context) * 0.09,
+                                          ),
+                                  ),
+                                )
+                              ],
+                            ),
                           ],
                         ),
                       )
@@ -503,36 +710,6 @@ class _LiveClassState extends StateMVC<LiveClass> {
                   )
                 : SizedBox();
           },
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: Padding(
-          padding: EdgeInsets.only(
-              bottom: 65,
-              left: getHorizontal(context) * 0.04,
-              right: getHorizontal(context) * 0.04),
-          child: Container(
-            width: getHorizontal(context),
-            color: Colors.white,
-            child: Row(
-              children: <Widget>[
-                ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: gifts.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: ((context, index) {
-                      var gift = gifts[index];
-                      return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Image.asset(
-                            gift.image ?? noImage,
-                          ),
-                        ],
-                      );
-                    }))
-              ],
-            ),
-          ),
         ),
       ),
     );

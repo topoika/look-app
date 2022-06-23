@@ -2,8 +2,11 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:look/base/models/activity.dart';
 import 'package:look/base/models/comment_model.dart';
+import 'package:look/base/models/gift.dart';
 import 'package:look/base/models/live_stream_model.dart';
+import 'package:look/base/models/user_model.dart';
 import 'package:look/base/pages/liveclass.dart';
 import 'package:look/base/pages/liveusers.dart';
 import 'package:look/base/repositories/calls_repository.dart';
@@ -15,7 +18,7 @@ import '../Helper/dimension.dart';
 class LiveStreamController extends ControllerMVC {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
-
+  String liveStreamCollection = "liveStreams";
   List<LiveStream> channels = <LiveStream>[];
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
@@ -91,8 +94,9 @@ class LiveStreamController extends ControllerMVC {
       _liveStream.comments = [];
       _liveStream.country = currentUser.value.country;
       _liveStream.viewers = 0;
+      _liveStream.pointsGifted = 0;
       await firebaseFirestore
-          .collection("liveStreams")
+          .collection(liveStreamCollection)
           .doc(currentUser.value.uid)
           .set(_liveStream.toMap())
           .then((value) {
@@ -108,15 +112,15 @@ class LiveStreamController extends ControllerMVC {
 
   deleteLiveStream(LiveStream _liveStream, BuildContext context) async {
     await firebaseFirestore
-        .collection("liveStreams")
+        .collection(liveStreamCollection)
         .doc(currentUser.value.uid)
         .delete();
     Navigator.push(
         context, MaterialPageRoute(builder: ((context) => LiveUsers())));
     firebaseFirestore
-        .collection("liveStreams")
+        .collection(liveStreamCollection)
         .doc(currentUser.value.uid)
-        .collection("comments")
+        .collection("activities")
         .get()
         .then((value) {
       for (DocumentSnapshot dc in value.docs) {
@@ -127,23 +131,53 @@ class LiveStreamController extends ControllerMVC {
 
   updateStreamViewers(LiveStream liveStream) async {
     await firebaseFirestore
-        .collection("liveStreams")
+        .collection(liveStreamCollection)
         .doc(liveStream.id)
         .update({"viewers": 3});
   }
 
   updateStreamHostUid(LiveStream liveStream, int uid) async {
     await firebaseFirestore
-        .collection("liveStreams")
+        .collection(liveStreamCollection)
         .doc(liveStream.id)
         .update({"hostUid": uid});
   }
 
   addComment(Comment comment, LiveStream liveStream) async {
     await firebaseFirestore
-        .collection("liveStreams")
+        .collection(liveStreamCollection)
         .doc(liveStream.id)
         .collection("comments")
         .add(comment.toMap());
+  }
+
+  giftHostPoints(Gift gift, LiveStream liveStream) async {
+    await firebaseFirestore
+        .collection(liveStreamCollection)
+        .doc(liveStream.id)
+        .get()
+        .then((value) async {
+      int points = value.data()!['pointsGifted'] + gift.points;
+      firebaseFirestore
+          .collection(liveStreamCollection)
+          .doc(liveStream.id)
+          .update({"pointsGifted": points});
+    });
+  }
+
+  void addActivity(String type, String desc, User actor, LiveStream liveStream,
+      Gift? gift, Comment? comment) async {
+    Activity activity = Activity();
+    activity.actor = actor;
+    activity.type = type;
+    activity.desc = desc;
+    activity.time = DateTime.now().toString();
+    activity.gift = gift != null ? gift : null;
+    activity.comment = comment != null ? comment : null;
+    await firebaseFirestore
+        .collection(liveStreamCollection)
+        .doc(liveStream.id)
+        .collection("activities")
+        .add(activity.toMap());
   }
 }
