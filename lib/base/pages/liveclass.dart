@@ -88,13 +88,8 @@ class _LiveClassState extends StateMVC<LiveClass> {
               _remoteUid = uid;
             });
             _con.updateStreamViewers(liveStream);
-            _con.addActivity(
-                "joined",
-                "${currentUser.value.name} has joined live",
-                currentUser.value,
-                liveStream,
-                null,
-                null);
+            _con.addActivity("joined", " has joined live", currentUser.value,
+                liveStream, null, null);
           },
           error: (e) => log(e.toString()),
           userOffline: (int uid, UserOfflineReason reason) {
@@ -113,13 +108,8 @@ class _LiveClassState extends StateMVC<LiveClass> {
               _engine!.destroy();
 
               Navigator.pop(context);
-              _con.addActivity(
-                  "joined",
-                  "${currentUser.value.name} has left live",
-                  currentUser.value,
-                  liveStream,
-                  null,
-                  null);
+              _con.addActivity("joined", " has left live", currentUser.value,
+                  liveStream, null, null);
               _engine!.leaveChannel();
             }
           }),
@@ -281,6 +271,13 @@ class _LiveClassState extends StateMVC<LiveClass> {
                                           _engine!.destroy();
                                         }
                                       : () {
+                                          _con.addActivity(
+                                              "joined",
+                                              " has left live",
+                                              currentUser.value,
+                                              liveStream,
+                                              null,
+                                              null);
                                           Navigator.pop(context);
                                           _engine!.leaveChannel();
                                         },

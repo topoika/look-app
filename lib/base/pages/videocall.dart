@@ -234,13 +234,6 @@ class _VideoCallsState extends State<VideoCalls> {
                                           size: 14,
                                         ),
                                         const SizedBox(width: 5),
-                                        // Text(
-                                        //   "0",
-                                        //   style: TextStyle(
-                                        //       color: Colors.white,
-                                        //       fontSize: 14,
-                                        //       fontWeight: FontWeight.w700),
-                                        // ),
                                         const SizedBox(width: 3),
                                         Icon(
                                           Icons.brightness_1_rounded,
@@ -248,8 +241,7 @@ class _VideoCallsState extends State<VideoCalls> {
                                               ? Colors.green
                                               : _user.active == "domant"
                                                   ? Colors.yellow
-                                                  : Colors.black
-                                                      .withOpacity(.8),
+                                                  : Colors.grey.withOpacity(.8),
                                           size: 16,
                                         ),
                                       ],
