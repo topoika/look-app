@@ -28,3 +28,12 @@ const String currency = "₩";
 // const String logo = "assets/look8.png";
 const String noImage =
     "https://t4.ftcdn.net/jpg/04/70/29/97/240_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg";
+
+///Icons///
+const String rainbow = "assets/icons/rainbow.png";
+const String party = "assets/icons/party.png";
+const String in_love = "assets/icons/in_love.png";
+const String heart = "assets/icons/heart.png";
+const String fire = "assets/icons/fire.png";
+const String emoji = "assets/icons/emoji.png";
+const String confetti = "assets/icons/confetti.png";

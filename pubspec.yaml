@@ -45,6 +45,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+    - assets/icons/
 
   fonts:
     - family: PopM
