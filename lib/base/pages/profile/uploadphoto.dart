@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:look/base/pages/utils/button.dart';
 import 'package:look/constant/theme.dart';
 import 'package:look/base/pages/profile/education.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 import '../../../generated/l10n.dart';
 import '../../Helper/dimension.dart';

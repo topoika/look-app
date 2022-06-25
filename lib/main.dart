@@ -8,6 +8,7 @@ import 'package:look/base/models/settings_model.dart';
 import 'package:look/base/pages/splash_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'base/repositories/user_repository.dart';
+
 import 'firebase_options.dart';
 import 'generated/l10n.dart';
 import 'route_generator.dart';
@@ -37,7 +38,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
     SettingController().initiateSettings();
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance?.addObserver(this);
+
     if (FirebaseAuth.instance.currentUser != null) {
       getUser(FirebaseAuth.instance.currentUser!.uid);
       updateUserStatus(FirebaseAuth.instance.currentUser!.uid, "active");
@@ -70,7 +72,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance?.removeObserver(this);
     updateUserStatus(FirebaseAuth.instance.currentUser!.uid, "offline");
     super.dispose();
   }

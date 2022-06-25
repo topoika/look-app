@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:look/base/Helper/dimension.dart';
@@ -136,6 +137,10 @@ Future verifyPhone(
   var _credential = PhoneAuthProvider.credential(
       verificationId: verificationCode, smsCode: smscode.trim());
   await auth.signInWithCredential(_credential).then((value) async {
+    await FirebaseMessaging.instance.getToken().then((value) {
+      currentUser.value.deviceToken = value.toString();
+      currentUser.notifyListeners();
+    });
     if (value.user != null) {
       Helper.hideLoader(loader);
       Navigator.pushReplacementNamed(context, "/TermsAndCondition",
@@ -150,11 +155,14 @@ Future verifyPhone(
       currentUser.value = newUser;
       updateUserStatus(FirebaseAuth.instance.currentUser!.uid, "active");
       currentUser.notifyListeners();
-      // registerUser(currentUser.value);
     } else {
       currentUser.value.uid = value.user!.uid;
       registerUser(currentUser.value);
     }
+    await FirebaseMessaging.instance.getToken().then((value) {
+      currentUser.value.deviceToken = value.toString();
+      currentUser.notifyListeners();
+    });
   });
 }
 

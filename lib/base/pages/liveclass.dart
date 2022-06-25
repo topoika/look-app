@@ -43,7 +43,6 @@ class _LiveClassState extends StateMVC<LiveClass> {
     _con = controller as LiveStreamController;
   }
   RtcEngine? _engine;
-  final users = <int>[];
   final bool isHost;
   final bool isInvited;
   final LiveStream liveStream;
@@ -73,44 +72,40 @@ class _LiveClassState extends StateMVC<LiveClass> {
       RtcEngineEventHandler(
           joinChannelSuccess: (String channel, int uid, int elapsed) {
             log("onchanneljoin : $channel , uid: $uid");
-            isHost ? _con.updateStreamHostUid(liveStream, uid) : null;
-            _con.addActivity(
-                "joined",
-                "${liveStream.host!.name} has started live",
-                liveStream.host!,
-                liveStream,
-                null,
-                null);
+            if (isHost) {
+              _con.updateStreamHostUid(liveStream, uid);
+              _con.addActivity("joined", " has started live", liveStream.host!,
+                  liveStream, null, null);
+            }
           },
           userJoined: (int uid, int elapsed) {
-            setState(() {
-              users.add(uid);
-              _remoteUid = uid;
-            });
-            _con.updateStreamViewers(liveStream);
-            _con.addActivity("joined", " has joined live", currentUser.value,
-                liveStream, null, null);
+            if (!isHost) {
+              _con.updateStreamViewers(liveStream, "joined");
+              _con.addActivity("joined", " has joined live", currentUser.value,
+                  liveStream, null, null);
+            }
           },
           error: (e) => log(e.toString()),
           userOffline: (int uid, UserOfflineReason reason) {
-            setState(() => users.remove(uid));
-            showSnackBar(context, reason.name, true);
+            _engine!.destroy();
+            _engine!.leaveChannel();
+            Navigator.pop(context);
+            if (isHost) {
+              showSnackBar(context, reason.name, true);
+            }
           },
           leaveChannel: (stats) {
             if (isHost) {
-              setState(() => users.clear());
               _engine!.destroy();
               _con.deleteLiveStream(liveStream, context);
-              Navigator.pop(context);
               _engine!.destroy();
               _engine!.leaveChannel();
             } else {
               _engine!.destroy();
-
-              Navigator.pop(context);
+              _engine!.leaveChannel();
+              _con.updateStreamViewers(liveStream, "left");
               _con.addActivity("joined", " has left live", currentUser.value,
                   liveStream, null, null);
-              _engine!.leaveChannel();
             }
           }),
     );
@@ -127,14 +122,12 @@ class _LiveClassState extends StateMVC<LiveClass> {
   @override
   void dispose() {
     if (isHost) {
-      users.clear();
       _engine!.destroy();
       _con.deleteLiveStream(liveStream, context);
       _engine!.destroy();
       _engine!.leaveChannel();
     } else {
       _engine!.destroy();
-      Navigator.pop(context);
       _engine!.leaveChannel();
     }
     _engine!.destroy();
@@ -266,9 +259,10 @@ class _LiveClassState extends StateMVC<LiveClass> {
                                 GestureDetector(
                                   onTap: isHost
                                       ? () {
+                                          _engine!.destroy();
+                                          Navigator.pop(context);
                                           _con.deleteLiveStream(
                                               liveStream, context);
-                                          _engine!.destroy();
                                         }
                                       : () {
                                           _con.addActivity(
@@ -278,8 +272,8 @@ class _LiveClassState extends StateMVC<LiveClass> {
                                               liveStream,
                                               null,
                                               null);
-                                          Navigator.pop(context);
                                           _engine!.leaveChannel();
+                                          Navigator.pop(context);
                                         },
                                   child: Icon(
                                     Icons.cancel_rounded,
@@ -358,19 +352,30 @@ class _LiveClassState extends StateMVC<LiveClass> {
                                                                     borderRadius:
                                                                         BorderRadius.circular(
                                                                             25)),
-                                                                child: Text(
-                                                                  "🌟 ${activity.gift!.points}",
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w700,
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                        getHorizontal(context) *
-                                                                            0.03,
-                                                                  ),
+                                                                child: Row(
+                                                                  children: [
+                                                                    Image.asset(
+                                                                      activity.gift!
+                                                                              .image ??
+                                                                          location,
+                                                                      height: getHorizontal(
+                                                                              context) *
+                                                                          0.035,
+                                                                    ),
+                                                                    Text(
+                                                                      "  ${activity.gift!.points}",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.w700,
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            getHorizontal(context) *
+                                                                                0.03,
+                                                                      ),
+                                                                    ),
+                                                                  ],
                                                                 ),
                                                               )
                                                             : CircleAvatar(
@@ -535,7 +540,7 @@ class _LiveClassState extends StateMVC<LiveClass> {
                                                     gift, liveStream);
                                                 _con.addActivity(
                                                     "gift",
-                                                    "has gifted the host",
+                                                    " has gifted the host",
                                                     currentUser.value,
                                                     liveStream,
                                                     gift,

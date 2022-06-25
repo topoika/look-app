@@ -63,7 +63,7 @@ class _TermsAndConditionState extends State<TermsAndCondition> {
             Padding(
               padding: EdgeInsets.only(
                   top: getVertical(context) * 0.1,
-                  left: getHorizontal(context) * 0.07),
+                  left: getHorizontal(context) * 0.05),
               child: Row(
                 children: [
                   Checkbox(
@@ -81,8 +81,9 @@ class _TermsAndConditionState extends State<TermsAndCondition> {
                           .of(context)
                           .i_agree_with_above_personal_handling_information,
                       textScaleFactor: getTextScale(context),
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: getHorizontal(context) * 0.03,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],

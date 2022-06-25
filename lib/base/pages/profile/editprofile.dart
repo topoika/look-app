@@ -6,7 +6,7 @@ import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/pages/profile/showprofile.dart';
 import 'package:look/base/pages/utils/button.dart';
 import 'package:look/base/pages/utils/decorations.dart';
-import 'package:look/base/pages/modifyinterests.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 import '../../../generated/l10n.dart';
 import '../../models/user_model.dart';
@@ -276,26 +276,46 @@ class _EditProfileState extends State<EditProfile> {
 
   Future chooseFile(int option) async {
     final pickedFile = await ImagePicker().pickImage(
-        source: ImageSource.gallery,
-        imageQuality: 90,
-        maxHeight: 600,
-        preferredCameraDevice: CameraDevice.front,
-        maxWidth: 500);
-    if (pickedFile != null) {
+      source: ImageSource.gallery,
+      imageQuality: 90,
+    );
+    final CroppedFile? croppedFile = await ImageCropper().cropImage(
+      sourcePath: pickedFile!.path,
+      aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+        CropAspectRatioPreset.ratio3x2,
+        CropAspectRatioPreset.original,
+        CropAspectRatioPreset.ratio4x3,
+        CropAspectRatioPreset.ratio16x9
+      ],
+      uiSettings: [
+        AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+        IOSUiSettings(
+          title: 'Cropper',
+        ),
+      ],
+    );
+
+    if (croppedFile != null) {
       switch (option) {
         case 1:
           setState(() {
-            image = File(pickedFile.path);
+            image = File(croppedFile.path);
           });
           break;
         case 2:
           setState(() {
-            image2 = File(pickedFile.path);
+            image2 = File(croppedFile.path);
           });
           break;
         case 3:
           setState(() {
-            image3 = File(pickedFile.path);
+            image3 = File(croppedFile.path);
           });
           break;
         default:

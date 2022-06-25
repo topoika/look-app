@@ -3,6 +3,7 @@ class User {
   String? name;
   String? userName;
   String? email;
+  String? deviceToken;
   String? country;
   String? job;
   String? location;
@@ -30,6 +31,7 @@ class User {
     this.name,
     this.userName,
     this.email,
+    this.deviceToken,
     this.country,
     this.job,
     this.location,
@@ -59,6 +61,7 @@ class User {
       'uid': uid,
       'name': name ?? "",
       'email': email ?? "",
+      'deviceToken': deviceToken ?? "",
       'userName': userName,
       'country': country ?? "",
       'job': job ?? "",
@@ -91,6 +94,7 @@ class User {
       name: map['name'],
       userName: map['userName'],
       email: map['email'],
+      deviceToken: map['deviceToken'],
       country: map['country'],
       job: map['job'],
       location: map['location'],

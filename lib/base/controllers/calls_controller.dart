@@ -16,7 +16,8 @@ class CallsController extends ControllerMVC {
           .collection("randomCalls")
           .doc(currentUser.value.uid)
           .delete();
-      Navigator.pushReplacementNamed(context, "/LiveUsers");
+      Navigator.pushNamedAndRemoveUntil(
+          context, "/LiveUsers", ModalRoute.withName('/LiveUsers'));
     } catch (e) {
       showSnackBar(context, "Veify your internet connection", true);
     }
