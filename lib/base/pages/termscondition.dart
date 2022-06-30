@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/repositories/user_repository.dart';
-import 'package:look/base/pages/liveusers.dart';
 
 import 'profile/uploadphoto.dart';
 import 'utils/button.dart';

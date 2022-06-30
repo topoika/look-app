@@ -1,12 +1,12 @@
+import 'package:look/base/controllers/main_controller.dart';
 import 'package:look/base/models/chat_room_model.dart';
 import 'package:look/base/models/message_model.dart';
-import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../repositories/chat_repository.dart';
 import '../repositories/user_repository.dart';
 import './../models/user_model.dart' as userModel;
 
-class ChatController extends ControllerMVC {
+class ChatController extends MainController {
   final userModel.User _user = currentUser.value;
   List<ChatRoom> userChatRooms = <ChatRoom>[];
   addMessage(String textMessage, userModel.User reciever, String roomId) {

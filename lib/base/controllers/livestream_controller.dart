@@ -2,22 +2,21 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:look/base/controllers/main_controller.dart';
 import 'package:look/base/models/activity.dart';
 import 'package:look/base/models/comment_model.dart';
 import 'package:look/base/models/gift.dart';
 import 'package:look/base/models/live_stream_model.dart';
 import 'package:look/base/models/user_model.dart';
 import 'package:look/base/pages/liveclass.dart';
-import 'package:look/base/pages/liveusers.dart';
 import 'package:look/base/repositories/calls_repository.dart';
 import 'package:look/base/repositories/user_repository.dart';
-import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../Helper/dimension.dart';
 
-class LiveStreamController extends ControllerMVC {
+class LiveStreamController extends MainController {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
-  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   String liveStreamCollection = "liveStreams";
   List<LiveStream> channels = <LiveStream>[];
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
@@ -25,6 +24,39 @@ class LiveStreamController extends ControllerMVC {
   @override
   void initState() {
     getChannels();
+    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    //   RemoteNotification? notification = message.notification;
+    //   AndroidNotification? android = message.notification?.android;
+    //   if (notification != null &&
+    //       android != null &&
+    //       message.data['type'] == "text") {
+    //     flutterLocalNotificationsPlugin.show(
+    //       notification.hashCode,
+    //       notification.title,
+    //       notification.body,
+    //       NotificationDetails(
+    //         android: AndroidNotificationDetails(
+    //           "one",
+    //           "one",
+    //           icon: 'launch_background',
+    //         ),
+    //       ),
+    //     );
+    //   } else if (notification != null &&
+    //       android != null &&
+    //       message.data['type'] == "call") {
+    //     log(message.notification!.body.toString());
+    //     getVideocall(message.notification!.body!).then((value) {
+    //       showDialog(
+    //           context: state!.context,
+    //           barrierColor: Colors.black45,
+    //           barrierDismissible: false,
+    //           builder: (context) {
+    //             return CallingDialog(videoCall: value!);
+    //           });
+    //     });
+    //   }
+    // });
     super.initState();
   }
 

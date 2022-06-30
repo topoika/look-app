@@ -27,6 +27,7 @@ dependencies:
   flutter_local_notifications: ^9.5.3
   flutter_localizations:
     sdk: flutter
+  flutter_ringtone_player: ^3.2.0
   fluttertoast: ^8.0.9
   geocode: 1.0.1
   geolocator: ^8.0.0

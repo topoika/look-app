@@ -1,8 +1,7 @@
 import 'package:look/base/models/videocall.dart';
-import 'package:mvc_pattern/mvc_pattern.dart';
 
-class VideoCallsController extends ControllerMVC {
+import 'main_controller.dart';
+
+class VideoCallsController extends MainController {
   List<VideoCall>? videoCalls = <VideoCall>[];
-  
-  
 }

@@ -33,106 +33,109 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: SafeArea(
-            child: SingleChildScrollView(
-          child: Column(
-            children: [
-              topBarItem(context, false),
-              Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: getHorizontal(context) * 0.06,
-                    vertical: getVertical(context) * 0.02),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  // mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      width: getHorizontal(context) * 0.5,
-                      child: TabBar(
-                        padding: EdgeInsets.all(0),
-                        indicatorColor: Colors.black,
-                        indicatorSize: TabBarIndicatorSize.tab,
-                        indicatorPadding: EdgeInsets.only(
-                            left: getHorizontal(context) * 0.13,
-                            right: getHorizontal(context) * 0.03),
-                        tabs: [
-                          tabBarItem(context, S.of(context).grid, grid),
-                          tabBarItem(context, S.of(context).list, list),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                width: getHorizontal(context) * 0.9,
-                height: 28,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
+    return NotificationListener(
+      child: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          key: _con.globalKey,
+          resizeToAvoidBottomInset: false,
+          body: SafeArea(
+              child: SingleChildScrollView(
+            child: Column(
+              children: [
+                topBarItem(context, false),
+                Container(
+                  margin: EdgeInsets.symmetric(
+                      horizontal: getHorizontal(context) * 0.06,
+                      vertical: getVertical(context) * 0.02),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    // mainAxisSize: MainAxisSize.min,
                     children: [
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            activeCountry = "All";
-                          });
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        width: getHorizontal(context) * 0.5,
+                        child: TabBar(
+                          padding: EdgeInsets.all(0),
+                          indicatorColor: Colors.black,
+                          indicatorSize: TabBarIndicatorSize.tab,
+                          indicatorPadding: EdgeInsets.only(
+                              left: getHorizontal(context) * 0.13,
                               right: getHorizontal(context) * 0.03),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: getHorizontal(context) * 0.02,
-                              vertical: 5),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: activeCountry == "All"
-                                ? Colors.red
-                                : Theme.of(context).accentColor,
-                          ),
-                          child: Text(
-                            S.of(context).all.toUpperCase(),
-                            style: TextStyle(
-                                fontSize: getHorizontal(context) * 0.034,
-                                color: Colors.black),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: getHorizontal(context),
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: countries.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            var country = countries[index];
-                            return countryItemWidget(context, country, () {
-                              setState(() => activeCountry = country.name!);
-                            }, activeCountry);
-                          },
+                          tabs: [
+                            tabBarItem(context, S.of(context).grid, grid),
+                            tabBarItem(context, S.of(context).list, list),
+                          ],
                         ),
                       ),
                     ],
                   ),
                 ),
-              ),
-              const SizedBox(height: 5),
-              SizedBox(
-                width: getHorizontal(context) * 0.9,
-                height: getVertical(context) * 0.8,
-                child: TabBarView(
-                  children: [
-                    gridView(),
-                    listView(),
-                  ],
+                SizedBox(
+                  width: getHorizontal(context) * 0.9,
+                  height: 28,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              activeCountry = "All";
+                            });
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(
+                                right: getHorizontal(context) * 0.03),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: getHorizontal(context) * 0.02,
+                                vertical: 5),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: activeCountry == "All"
+                                  ? Colors.red
+                                  : Theme.of(context).accentColor,
+                            ),
+                            child: Text(
+                              S.of(context).all.toUpperCase(),
+                              style: TextStyle(
+                                  fontSize: getHorizontal(context) * 0.034,
+                                  color: Colors.black),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: getHorizontal(context),
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: countries.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              var country = countries[index];
+                              return countryItemWidget(context, country, () {
+                                setState(() => activeCountry = country.name!);
+                              }, activeCountry);
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        )),
+                const SizedBox(height: 5),
+                SizedBox(
+                  width: getHorizontal(context) * 0.9,
+                  height: getVertical(context) * 0.8,
+                  child: TabBarView(
+                    children: [
+                      gridView(),
+                      listView(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )),
+        ),
       ),
     );
   }
@@ -491,7 +494,7 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
         enableDrag: true,
         isScrollControlled: true,
         builder: (context) {
-          return AddTitleBottomSheet(scaffoldKey: _con.scaffoldKey);
+          return AddTitleBottomSheet(scaffoldKey: _con.globalKey);
         });
     // _con.createLiveStream(context);
   }

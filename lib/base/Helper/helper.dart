@@ -4,6 +4,12 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 
 class Helper {
+  late BuildContext context;
+
+  Helper.of(BuildContext _context) {
+    context = _context;
+  }
+
   static OverlayEntry overlayLoader(context) {
     OverlayEntry loader = OverlayEntry(builder: (context) {
       final size = MediaQuery.of(context).size;
@@ -27,6 +33,17 @@ class Helper {
         loader.remove();
       } catch (e) {}
     });
+  }
+
+  static showSnackBar(String txt, bool danger) {
+    SnackBar snackBar = SnackBar(
+      margin: const EdgeInsets.all(20),
+      behavior: SnackBarBehavior.floating,
+      content: Text(txt),
+      backgroundColor: (danger ? Colors.redAccent : Colors.greenAccent),
+    );
+    return snackBar;
+    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
 

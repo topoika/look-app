@@ -6,8 +6,9 @@ import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 import 'package:flutter/material.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/strings.dart';
-import 'package:look/base/models/notifications.dart';
+import 'package:look/base/controllers/calls_controller.dart';
 import 'package:look/base/models/videocall.dart';
+import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../env.dart';
 import '../../generated/l10n.dart';
@@ -19,7 +20,11 @@ class CallPage extends StatefulWidget {
   _CallPageState createState() => _CallPageState();
 }
 
-class _CallPageState extends State<CallPage> {
+class _CallPageState extends StateMVC<CallPage> {
+  late CallsController _con;
+  _CallPageState() : super(CallsController()) {
+    _con = controller as CallsController;
+  }
   bool muted = false;
   bool videoMuted = false;
   RtcEngine? _engine;
@@ -203,6 +208,7 @@ class _CallPageState extends State<CallPage> {
         child: RawMaterialButton(
           onPressed: () {
             Navigator.pop(context);
+            _con.declineVideoCall(context, widget.videoCall);
             _engine!.leaveChannel();
             _engine!.destroy();
           },
@@ -224,6 +230,7 @@ class _CallPageState extends State<CallPage> {
   void dispose() {
     _engine!.leaveChannel();
     _engine!.destroy();
+
     super.dispose();
   }
 }

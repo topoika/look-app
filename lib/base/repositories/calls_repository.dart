@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
+import 'package:look/base/models/videocall.dart';
 
 Future<String> getChannelToken(String channelName) async {
   var client = http.Client();
@@ -11,5 +13,19 @@ Future<String> getChannelToken(String channelName) async {
     return responseMap['token'];
   } else {
     return "";
+  }
+}
+
+Future<VideoCall?> getVideocall(String id) async {
+  try {
+    return await FirebaseFirestore.instance
+        .collection("videoCalls")
+        .doc(id)
+        .get()
+        .then((value) {
+      return VideoCall.fromMap(value.data()!);
+    });
+  } catch (e) {
+    return null;
   }
 }

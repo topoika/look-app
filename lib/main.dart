@@ -6,7 +6,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:look/base/controllers/settings_controller.dart';
 import 'package:look/base/models/settings_model.dart';
 import 'package:look/base/pages/splash_screen.dart';
+import 'package:look/base/pages/utils/snackbar.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'base/models/notifications.dart';
 import 'base/repositories/user_repository.dart';
 
 import 'firebase_options.dart';
@@ -39,7 +41,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     SettingController().initiateSettings();
     WidgetsBinding.instance?.addObserver(this);
-
     if (FirebaseAuth.instance.currentUser != null) {
       getUser(FirebaseAuth.instance.currentUser!.uid);
       updateUserStatus(FirebaseAuth.instance.currentUser!.uid, "active");
@@ -63,10 +64,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       updateUserStatus(FirebaseAuth.instance.currentUser!.uid, "offline");
     }
     if (isBg) {
-      updateUserStatus(FirebaseAuth.instance.currentUser!.uid, "domant");
+      updateUserStatus(FirebaseAuth.instance.currentUser!.uid, "offline");
     }
     if (inactive) {
-      updateUserStatus(FirebaseAuth.instance.currentUser!.uid, "domant");
+      updateUserStatus(FirebaseAuth.instance.currentUser!.uid, "offline");
     }
   }
 

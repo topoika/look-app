@@ -35,7 +35,8 @@ class RouteGenerator {
       case '/Recharge':
         return MaterialPageRoute(builder: (_) => Recharge());
       case '/CallPage':
-        return MaterialPageRoute(builder: (_) => CallPage(videoCall: args as VideoCall));
+        return MaterialPageRoute(
+            builder: (_) => CallPage(videoCall: args as VideoCall));
       case '/RandomCalling':
         return MaterialPageRoute(builder: (_) => RandomCalling());
       case '/TermsAndCondition':
@@ -44,18 +45,6 @@ class RouteGenerator {
       case '/MobileVerification':
         return MaterialPageRoute(
             builder: (_) => MobileVerification(verificationId: args as String));
-      // case '/Splash':
-      //   return MaterialPageRoute(builder: (_) => const SplashScreen());
-      // case '/Home':
-      //   return MaterialPageRoute(
-      //       builder: (_) => MapPage(
-      //             created: false,
-      //             event: Event(),
-      //           ));
-      // case '/Login':
-      //   return MaterialPageRoute(builder: (_) => const Login());
-      // case '/Startup':
-      //   return MaterialPageRoute(builder: (_) => const StartUp());
       default:
         return MaterialPageRoute(
             builder: (_) =>

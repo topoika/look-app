@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:look/base/Helper/dimension.dart';
+import 'package:look/base/controllers/livestream_controller.dart';
+import 'package:look/base/controllers/videocalls_controller.dart';
 import 'package:look/base/models/user_model.dart';
+import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../Helper/strings.dart';
 import '../../generated/l10n.dart';
@@ -18,14 +21,19 @@ class VideoCalls extends StatefulWidget {
   _VideoCallsState createState() => _VideoCallsState();
 }
 
-class _VideoCallsState extends State<VideoCalls> {
+class _VideoCallsState extends StateMVC<VideoCalls> {
   String activeCountry = "All";
+  late VideoCallsController _con;
+  _VideoCallsState() : super(VideoCallsController()) {
+    _con = controller as VideoCallsController;
+  }
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        key: _con.globalKey,
         body: SafeArea(
             child: SingleChildScrollView(
           child: Column(
@@ -172,7 +180,7 @@ class _VideoCallsState extends State<VideoCalls> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  OtherUsersDetails(user: _user),
+                                  OtherUsersDetails(user: _user, random: false),
                             ),
                           ),
                           child: Container(
@@ -329,7 +337,7 @@ class _VideoCallsState extends State<VideoCalls> {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                OtherUsersDetails(user: _user),
+                                OtherUsersDetails(user: _user, random: false),
                           ),
                         ),
                         child: Container(

@@ -4,22 +4,23 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:look/base/controllers/livestream_controller.dart';
+import 'package:look/base/pages/utils/snackbar.dart';
+import 'package:look/base/repositories/calls_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+
+import '../models/videocall.dart';
+
+ValueNotifier<VideoCall> activeVideoCall = ValueNotifier(VideoCall());
 
 class SplashController extends ControllerMVC {
   final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-  late GlobalKey<ScaffoldState> scaffoldKey;
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-
-  SplashScreenController() {
-    this.scaffoldKey = GlobalKey<ScaffoldState>();
-  }
 
   @override
   void initState() {
     super.initState();
-
     FirebaseMessaging.instance.requestPermission(
         sound: true,
         badge: true,
@@ -29,26 +30,36 @@ class SplashController extends ControllerMVC {
         criticalAlert: false,
         provisional: false);
     configureFirebase(firebaseMessaging);
-
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-      if (notification != null && android != null) {
-        flutterLocalNotificationsPlugin.show(
-          notification.hashCode,
-          notification.title,
-          notification.body,
-          NotificationDetails(
-            android: AndroidNotificationDetails(
-              "one",
-              "one",
-              icon: 'launch_background',
-            ),
-          ),
-        );
-        log(message.toString());
-      }
-    });
+    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    //   RemoteNotification? notification = message.notification;
+    //   AndroidNotification? android = message.notification?.android;
+    //   if (notification != null &&
+    //       android != null &&
+    //       message.data['type'] == "text") {
+    //     flutterLocalNotificationsPlugin.show(
+    //       notification.hashCode,
+    //       notification.title,
+    //       notification.body,
+    //       NotificationDetails(
+    //         android: AndroidNotificationDetails(
+    //           "one",
+    //           "one",
+    //           icon: 'launch_background',
+    //         ),
+    //       ),
+    //     );
+    //   } else if (notification != null &&
+    //       android != null &&
+    //       message.data['type'] == "call") {
+    //     log(message.notification!.body.toString());
+    //     getVideocall(message.notification!.body!).then((value) {
+    //       setState(() {
+    //         activeVideoCall.value = value!;
+    //       });
+    //       showSnackBar(state!.context, value!.id.toString(), true);
+    //     });
+    //   }
+    // });
   }
 
   void configureFirebase(FirebaseMessaging _firebaseMessaging) {
@@ -60,11 +71,12 @@ class SplashController extends ControllerMVC {
   }
 
   Future notificationOnResume(Map<String, dynamic> message) async {
+    log(message.toString());
+
     try {
       if (message['data']['id'] == "orders") {
         // settingRepo.navigatorKey.currentState
         //     .pushReplacementNamed('/Pages', arguments: 3);
-        log(message['data'].toString());
       }
     } catch (e) {
       // print(CustomTrace(StackTrace.current, message: e));
@@ -72,10 +84,9 @@ class SplashController extends ControllerMVC {
   }
 
   Future notificationOnLaunch(Map<String, dynamic> message) async {
+    log("Message is :" + message.toString());
     String messageId = "await settingRepo.getMessageId()";
     try {
-      log(message.toString());
-
       if (messageId != message['google.message_id']) {
         if (message['data']['id'] == "orders") {
           // await settingRepo.saveMessageId(message['google.message_id']);
@@ -89,7 +100,7 @@ class SplashController extends ControllerMVC {
   }
 
   Future notificationOnMessage(Map<String, dynamic> message) async {
-    log(message.toString());
+    log("message" + message.toString());
     Fluttertoast.showToast(
       msg: message['notification']['title'],
       toastLength: Toast.LENGTH_LONG,

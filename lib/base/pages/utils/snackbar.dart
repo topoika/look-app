@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 void showSnackBar(BuildContext context, String txt, bool danger) {
   var snackBar = SnackBar(
@@ -12,4 +13,13 @@ void showSnackBar(BuildContext context, String txt, bool danger) {
     // ),
   );
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+}
+
+void showToast(String text) {
+  Fluttertoast.showToast(
+    msg: text,
+    toastLength: Toast.LENGTH_LONG,
+    gravity: ToastGravity.BOTTOM,
+    timeInSecForIosWeb: 5,
+  );
 }

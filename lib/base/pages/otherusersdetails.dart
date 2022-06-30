@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:look/base/controllers/calls_controller.dart';
 import 'package:look/base/models/videocall.dart';
 import 'package:look/base/pages/call.dart';
 import 'package:look/base/Helper/dimension.dart';
@@ -7,6 +8,7 @@ import 'package:look/base/models/user_model.dart';
 import 'package:look/base/pages/utils/titles.dart';
 import 'package:look/base/repositories/calls_repository.dart';
 import 'package:look/base/repositories/user_repository.dart';
+import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../generated/l10n.dart';
@@ -14,15 +16,20 @@ import 'utils/snackbar.dart';
 
 class OtherUsersDetails extends StatefulWidget {
   final User user;
-  const OtherUsersDetails({Key? key, required this.user}) : super(key: key);
+  final bool random;
+  const OtherUsersDetails({Key? key, required this.user, required this.random})
+      : super(key: key);
 
   @override
   _OtherUsersDetailsState createState() => _OtherUsersDetailsState(user);
 }
 
-class _OtherUsersDetailsState extends State<OtherUsersDetails> {
+class _OtherUsersDetailsState extends StateMVC<OtherUsersDetails> {
   final User _user;
-  _OtherUsersDetailsState(this._user);
+  late CallsController _con;
+  _OtherUsersDetailsState(this._user) : super(CallsController()) {
+    _con = controller as CallsController;
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -149,23 +156,25 @@ class _OtherUsersDetailsState extends State<OtherUsersDetails> {
                             color: Colors.black54),
                       ),
                       const Spacer(),
-                      GestureDetector(
-                          onTap: () => Navigator.pop(context),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: getHorizontal(context) * 0.07,
-                                vertical: 5),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                border: Border.all(color: Colors.black54)),
-                            child: Text(
-                              S.of(context).skip,
-                              style: TextStyle(
-                                  fontSize: getHorizontal(context) * 0.048,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black54),
-                            ),
-                          ))
+                      widget.random
+                          ? GestureDetector(
+                              onTap: () => Navigator.pop(context),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: getHorizontal(context) * 0.07,
+                                    vertical: 5),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    border: Border.all(color: Colors.black54)),
+                                child: Text(
+                                  S.of(context).skip,
+                                  style: TextStyle(
+                                      fontSize: getHorizontal(context) * 0.048,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black54),
+                                ),
+                              ))
+                          : SizedBox()
                     ],
                   ),
                   const SizedBox(height: 10),
@@ -238,29 +247,8 @@ class _OtherUsersDetailsState extends State<OtherUsersDetails> {
   Future<void> onJoin(chennal, BuildContext context) async {
     await _handleCameraAndMic(Permission.camera);
     await _handleCameraAndMic(Permission.microphone);
-    await getChannelToken("Test Channel").then(
-      (value) {
-        if (value.length > 0) {
-          VideoCall _videoCall = VideoCall();
-          _videoCall.token = value;
-          _videoCall.name = "Test Channel";
-          _videoCall.caller = currentUser.value;
-          _videoCall.reciever = _user;
-          _videoCall.minutes = 0;
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CallPage(videoCall: _videoCall),
-            ),
-          );
-        } else {
-          showSnackBar(
-              context,
-              S.of(context).error_while_generating_token_please_try_again,
-              true);
-        }
-      },
-    );
+    showToast("Please wait...");
+    _con.createVideoCall(context, _user);
   }
 
   Future<void> _handleCameraAndMic(Permission permission) async {
