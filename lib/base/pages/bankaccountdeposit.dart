@@ -148,7 +148,7 @@ class _BankAccountDepositState extends StateMVC<BankAccountDeposit> {
                                 onTap: () {
                                   if (_con.formKey.currentState!.validate()) {
                                     _con.creditUserPoints(
-                                        widget.bigEventPoints.toDouble());
+                                        widget.bigEventPoints);
                                     Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(

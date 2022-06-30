@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:look/base/pages/utils/snackbar.dart';
+import 'package:look/base/repositories/user_repository.dart';
 
 class Helper {
   late BuildContext context;
@@ -58,4 +60,8 @@ Future<bool> isConnection() async {
     active = false;
   }
   return active;
+}
+
+bool eligibleOfSendingPoints(int points) {
+  return currentUser.value.points! > points;
 }

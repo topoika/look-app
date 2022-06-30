@@ -120,7 +120,7 @@ class _AwardState extends StateMVC<Award> {
                   setState(() {
                     selected = number;
                   });
-                  _con.creditUserPoints(number.toDouble());
+                  _con.creditUserPoints(number);
                   snack(number,
                       '$number ${S.of(context).points_collected_visit_tomorrow_to_have_more}');
                 }

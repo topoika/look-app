@@ -74,15 +74,15 @@ class _LiveClassState extends StateMVC<LiveClass> {
             log("onchanneljoin : $channel , uid: $uid");
             if (isHost) {
               _con.updateStreamHostUid(liveStream, uid);
-              _con.addActivity("joined", " has started live", liveStream.host!,
-                  liveStream, null, null);
+              _con.addActivity(context, "joined", " has started live",
+                  liveStream.host!, liveStream, null, null);
             }
           },
           userJoined: (int uid, int elapsed) {
             if (!isHost) {
               _con.updateStreamViewers(liveStream, "joined");
-              _con.addActivity("joined", " has joined live", currentUser.value,
-                  liveStream, null, null);
+              _con.addActivity(context, "joined", " has joined live",
+                  currentUser.value, liveStream, null, null);
             }
           },
           error: (e) => log(e.toString()),
@@ -104,8 +104,8 @@ class _LiveClassState extends StateMVC<LiveClass> {
               _engine!.destroy();
               _engine!.leaveChannel();
               _con.updateStreamViewers(liveStream, "left");
-              _con.addActivity("joined", " has left live", currentUser.value,
-                  liveStream, null, null);
+              _con.addActivity(context, "joined", " has left live",
+                  currentUser.value, liveStream, null, null);
             }
           }),
     );
@@ -266,6 +266,7 @@ class _LiveClassState extends StateMVC<LiveClass> {
                                         }
                                       : () {
                                           _con.addActivity(
+                                              context,
                                               "joined",
                                               " has left live",
                                               currentUser.value,
@@ -538,7 +539,9 @@ class _LiveClassState extends StateMVC<LiveClass> {
                                               onTap: () {
                                                 _con.giftHostPoints(
                                                     gift, liveStream);
+                                                _con.updateRections(liveStream);
                                                 _con.addActivity(
+                                                    context,
                                                     "gift",
                                                     " has gifted the host",
                                                     currentUser.value,
@@ -641,8 +644,9 @@ class _LiveClassState extends StateMVC<LiveClass> {
                                               _comment.commenter =
                                                   currentUser.value;
                                               _con.addActivity(
+                                                  context,
                                                   "comment",
-                                                  _commentController.text,
+                                                  " ${_commentController.text}",
                                                   currentUser.value,
                                                   liveStream,
                                                   null,

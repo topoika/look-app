@@ -16,7 +16,7 @@ class User {
   String? image;
   String? image2;
   String? image3;
-  double? points;
+  int? points;
   String? personality;
   String? drinking;
   String? smoking;
@@ -107,7 +107,7 @@ class User {
       image: map['image'],
       image2: map['image2'],
       image3: map['image3'],
-      points: map['points']?.toDouble(),
+      points: map['points']!.toInt(),
       personality: map['personality'],
       drinking: map['drinking'],
       smoking: map['smoking'],

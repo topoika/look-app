@@ -8,7 +8,7 @@ class PaymentController extends ControllerMVC {
   final formKey = GlobalKey<FormState>();
   FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   String userCollection = "Users";
-  void creditUserPoints(double points) async {
+  void creditUserPoints(int points) async {
     await _firebaseFirestore
         .collection(userCollection)
         .doc(currentUser.value.uid)

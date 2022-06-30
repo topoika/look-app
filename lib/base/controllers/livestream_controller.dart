@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:look/base/Helper/helper.dart';
 import 'package:look/base/controllers/main_controller.dart';
 import 'package:look/base/models/activity.dart';
 import 'package:look/base/models/comment_model.dart';
@@ -10,6 +11,7 @@ import 'package:look/base/models/gift.dart';
 import 'package:look/base/models/live_stream_model.dart';
 import 'package:look/base/models/user_model.dart';
 import 'package:look/base/pages/liveclass.dart';
+import 'package:look/base/pages/utils/snackbar.dart';
 import 'package:look/base/repositories/calls_repository.dart';
 import 'package:look/base/repositories/user_repository.dart';
 
@@ -24,39 +26,7 @@ class LiveStreamController extends MainController {
   @override
   void initState() {
     getChannels();
-    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    //   RemoteNotification? notification = message.notification;
-    //   AndroidNotification? android = message.notification?.android;
-    //   if (notification != null &&
-    //       android != null &&
-    //       message.data['type'] == "text") {
-    //     flutterLocalNotificationsPlugin.show(
-    //       notification.hashCode,
-    //       notification.title,
-    //       notification.body,
-    //       NotificationDetails(
-    //         android: AndroidNotificationDetails(
-    //           "one",
-    //           "one",
-    //           icon: 'launch_background',
-    //         ),
-    //       ),
-    //     );
-    //   } else if (notification != null &&
-    //       android != null &&
-    //       message.data['type'] == "call") {
-    //     log(message.notification!.body.toString());
-    //     getVideocall(message.notification!.body!).then((value) {
-    //       showDialog(
-    //           context: state!.context,
-    //           barrierColor: Colors.black45,
-    //           barrierDismissible: false,
-    //           builder: (context) {
-    //             return CallingDialog(videoCall: value!);
-    //           });
-    //     });
-    //   }
-    // });
+
     super.initState();
   }
 
@@ -175,6 +145,20 @@ class LiveStreamController extends MainController {
     });
   }
 
+  updateRections(LiveStream liveStream) async {
+    await firebaseFirestore
+        .collection(liveStreamCollection)
+        .doc(liveStream.id)
+        .get()
+        .then((value) async {
+      int viewers = value.data()!['reactions'] + 1;
+      firebaseFirestore
+          .collection(liveStreamCollection)
+          .doc(liveStream.id)
+          .update({"reactions": viewers});
+    });
+  }
+
   updateStreamHostUid(LiveStream liveStream, int uid) async {
     await firebaseFirestore
         .collection(liveStreamCollection)
@@ -204,8 +188,8 @@ class LiveStreamController extends MainController {
     });
   }
 
-  void addActivity(String type, String desc, User actor, LiveStream liveStream,
-      Gift? gift, Comment? comment) async {
+  void addActivity(BuildContext context, String type, String desc, User actor,
+      LiveStream liveStream, Gift? gift, Comment? comment) async {
     Activity activity = Activity();
     activity.actor = actor;
     activity.type = type;
@@ -213,10 +197,16 @@ class LiveStreamController extends MainController {
     activity.time = DateTime.now().toString();
     activity.gift = gift != null ? gift : null;
     activity.comment = comment != null ? comment : null;
-    await firebaseFirestore
-        .collection(liveStreamCollection)
-        .doc(liveStream.id)
-        .collection("activities")
-        .add(activity.toMap());
+    if (gift != null && eligibleOfSendingPoints(gift.points!)) {
+    } else if (gift == null) {
+      await firebaseFirestore
+          .collection(liveStreamCollection)
+          .doc(liveStream.id)
+          .collection("activities")
+          .add(activity.toMap());
+    } else {
+      showSnackBar(
+          context, "Your points balance it too low, please recharge", true);
+    }
   }
 }
