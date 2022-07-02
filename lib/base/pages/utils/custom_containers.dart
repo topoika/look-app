@@ -114,7 +114,7 @@ Widget bottomNavigation(BuildContext context, String home) {
     margin: EdgeInsets.only(
         left: getHorizontal(context) * 0.06,
         right: getHorizontal(context) * 0.06,
-        bottom: 35),
+        bottom: home != "home" ? 10 : 35),
     padding: EdgeInsets.symmetric(
         horizontal: getHorizontal(context) * 0.03, vertical: 7),
     decoration: BoxDecoration(
@@ -129,7 +129,9 @@ Widget bottomNavigation(BuildContext context, String home) {
       mainAxisSize: MainAxisSize.max,
       children: [
         InkWell(
-          onTap: () => Navigator.pushNamed(context, "/Search"),
+          onTap: () => home != "home"
+              ? Navigator.pushReplacementNamed(context, "/LiveUsers")
+              : null,
           child: Image.asset(
             search,
             height: getHorizontal(context) * 0.065,

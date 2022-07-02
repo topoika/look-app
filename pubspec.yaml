@@ -28,6 +28,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_ringtone_player: ^3.2.0
+  flutter_share: ^2.0.0
   fluttertoast: ^8.0.9
   google_maps_flutter: ^2.1.8
   google_maps_place_picker_mb: ^2.0.0-mb.20

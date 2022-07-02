@@ -169,7 +169,7 @@ class _MyProfileState extends State<MyProfile> {
                         onTap: () => logOut(context),
                         child: cont(terms, S.of(context).log_out),
                       ),
-                      SizedBox(height: 100),
+                      SizedBox(height: 50),
                     ],
                   ),
                 ),

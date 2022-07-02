@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/pages/bigevent.dart';
+import 'package:look/base/pages/utils/snackbar.dart';
 
 import '../../generated/l10n.dart';
 import '../repositories/user_repository.dart';
@@ -15,6 +16,17 @@ class Recharge extends StatefulWidget {
 }
 
 class _RechargeState extends State<Recharge> {
+  @override
+  void initState() {
+    showBanner();
+    super.initState();
+  }
+
+  showBanner() async {
+    await Future.delayed(Duration(seconds: 2)).then((value) => showSnackBar(
+        context, "Get 1.5 times point when you pay for bank accounts", true));
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
