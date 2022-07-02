@@ -158,6 +158,19 @@
     "video_rate":"비디오 속도",
     "sms_rate":"Sms 요금",
     "language_text":"언어",
-    "select_language":"언어 선택",
-    "message_text":"메시지"
+    "message_text":"메시지",
+    "new_match":"새 일치",
+    "push_notifications": "푸시 알림",
+    "block_list":"차단 목록",
+    "age_range_of_partners":"파트너의 연령대",
+    "global_mode": "글로벌 모드",
+    "change_your_location_and_meet_other_local_people":"위치를 변경하고 다른 지역 사람들을 만나세요",
+    "new_loction_addition":"새 위치 추가",
+    "my_current_location":"내 현재 위치",
+    "social_discovery_range_setting":"소셜 검색 범위 설정",
+    "settings_text":"설정",
+    "max_distance_of_partners":"파트너로부터의 최대 거리",
+    "you_are_availble_online_video_call_now_waiting":"지금 다른 사람을 기다리는 온라인 화상 통화를 사용할 수 있습니다.",
+    "note_text":"참고",
+    "not_allowed_to upload any ponographic": "포노그래픽 텍스트 또는 이미지 콘텐츠를 업로드할 수 있습니다. 위반 사항이 확인되면 회사에서 직접 중단하고 수입이 정산되지 않습니다."
 }

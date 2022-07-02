@@ -3,8 +3,6 @@ import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/pages/utils/custom_containers.dart';
 import 'package:look/base/pages/utils/edit_video_rate.dart';
 import 'package:look/base/repositories/user_repository.dart';
-import 'package:look/base/pages/recharge.dart';
-import '../utils/edit_language.dart';
 import './../../models/user_model.dart' as userModel;
 import './../utils/titles.dart';
 
@@ -29,7 +27,7 @@ class _MyProfileState extends State<MyProfile> {
           children: [
             SizedBox(
               width: getHorizontal(context) * 1,
-              height: getVertical(context) * 0.5,
+              height: getVertical(context) * 0.34,
               child: Image.network(
                 _user.image ?? noImage,
                 fit: BoxFit.cover,
@@ -38,7 +36,7 @@ class _MyProfileState extends State<MyProfile> {
             Padding(
               padding: EdgeInsets.only(
                   left: getHorizontal(context) * 0.4,
-                  top: getVertical(context) * 0.07),
+                  top: getVertical(context) * 0.1),
               child: Text(S.of(context).my_info,
                   style: TextStyle(
                       fontSize: getHorizontal(context) * 0.055,
@@ -48,7 +46,7 @@ class _MyProfileState extends State<MyProfile> {
             Container(
               padding: const EdgeInsets.only(top: 15),
               color: Colors.white,
-              margin: EdgeInsets.only(top: getVertical(context) * 0.2),
+              margin: EdgeInsets.only(top: getVertical(context) * 0.3),
               child: SingleChildScrollView(
                 child: Padding(
                   padding: EdgeInsets.symmetric(
@@ -129,32 +127,31 @@ class _MyProfileState extends State<MyProfile> {
                         ),
                       ),
                       InkWell(
-                          onTap: () {},
+                          onTap: () =>
+                              Navigator.pushNamed(context, "/CallsHistory"),
                           child: cont(callhistory, S.of(context).call_history)),
                       InkWell(
-                        onTap: () {},
+                        onTap: () =>
+                            Navigator.pushNamed(context, "/PublicNotice"),
                         child: cont(publicnotice, S.of(context).public_notice),
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () =>
+                            Navigator.pushNamed(context, "/AdminInquiry"),
                         child: cont(inquiry, "1:1 " + S.of(context).inquiry),
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () => Navigator.pushNamed(context, "/MyInvitee"),
                         child: cont(invitee, S.of(context).my_invitee),
                       ),
                       InkWell(
-                        onTap: () => showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            backgroundColor: Colors.transparent,
-                            builder: (context) {
-                              return EditLanguage();
-                            }),
-                        child: cont(settings, S.of(context).language_text),
+                        onTap: () =>
+                            Navigator.pushNamed(context, "/SettingsPage"),
+                        child: cont(settings, S.of(context).settings_text),
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () =>
+                            Navigator.pushNamed(context, "/TransactionHistory"),
                         child: cont(
                             transhistory, S.of(context).transaction_history),
                       ),

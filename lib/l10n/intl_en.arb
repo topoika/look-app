@@ -162,6 +162,19 @@
     "video_rate":"Video rate",
     "sms_rate":"Sms rate",
     "language_text":"Language",
-    "select_language":"Select Language",
-    "message_text":"Message"
+    "message_text":"Message",
+    "new_match":"New Match",
+    "push_notifications":"Push Notifications",
+    "block_list":"Block List",
+    "age_range_of_partners":"Age range of partners",
+    "global_mode":"Global mode",
+    "change_your_location_and_meet_other_local_people":"Change your location and meet other local people",
+    "new_loction_addition":"new location addition",
+    "my_current_location":"my current location",
+    "social_discovery_range_setting":"Social discovery range setting",
+    "settings_text":"Settings",
+    "max_distance_of_partners":"Maximum distance from partners",
+    "you_are_availble_online_video_call_now_waiting":"You are available online video call now waiting for others",
+    "note_text":"Note",
+    "not_allowed_to_upload_any_ponographic":"It is allowed to upload any ponographic text or image content. If violations are verified, the corporation will stop it directly and the earnings will be not settled"
 }

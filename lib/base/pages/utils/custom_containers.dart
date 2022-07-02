@@ -38,6 +38,10 @@ Widget countryItemWidget(BuildContext context, Country country, Function onTap,
             padding: const EdgeInsets.all(5),
             child: Image.network(
               "https://flagcdn.com/w160/${country.code!.toLowerCase()}.png",
+              errorBuilder: (BuildContext context, Object exception,
+                  StackTrace? stackTrace) {
+                return SizedBox();
+              },
               fit: BoxFit.cover,
             ),
           ),
@@ -170,7 +174,7 @@ Widget tabBarItem(BuildContext context, String text, image) {
       Text(
         text,
         style: TextStyle(
-          fontSize: getHorizontal(context) * 0.035,
+          fontSize: getHorizontal(context) * 0.032,
           color: Colors.black,
           fontWeight: FontWeight.w700,
         ),

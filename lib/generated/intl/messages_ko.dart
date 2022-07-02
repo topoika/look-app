@@ -24,15 +24,20 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accept": MessageLookupByLibrary.simpleMessage("수락"),
         "add_content": MessageLookupByLibrary.simpleMessage("콘텐츠 추가"),
+        "age_range_of_partners":
+            MessageLookupByLibrary.simpleMessage("파트너의 연령대"),
         "all": MessageLookupByLibrary.simpleMessage("모두"),
         "are_you_sure": MessageLookupByLibrary.simpleMessage("확실합니까?"),
         "available_points": MessageLookupByLibrary.simpleMessage("사용 가능한 포인트"),
         "bachelor_degree": MessageLookupByLibrary.simpleMessage("학사 학위"),
         "big_event": MessageLookupByLibrary.simpleMessage("큰 이벤트"),
+        "block_list": MessageLookupByLibrary.simpleMessage("차단 목록"),
         "call_history": MessageLookupByLibrary.simpleMessage("통화 기록"),
         "calling_text": MessageLookupByLibrary.simpleMessage("전화"),
         "camping": MessageLookupByLibrary.simpleMessage("캠핑"),
         "cancel_text": MessageLookupByLibrary.simpleMessage("취소"),
+        "change_your_location_and_meet_other_local_people":
+            MessageLookupByLibrary.simpleMessage("위치를 변경하고 다른 지역 사람들을 만나세요"),
         "chats": MessageLookupByLibrary.simpleMessage("채팅"),
         "check_internet_connection":
             MessageLookupByLibrary.simpleMessage("인터넷 연결 확인"),
@@ -79,6 +84,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "get_current_location":
             MessageLookupByLibrary.simpleMessage("현재 위치 가져오기"),
         "gift_text": MessageLookupByLibrary.simpleMessage("선물"),
+        "global_mode": MessageLookupByLibrary.simpleMessage("글로벌 모드"),
         "go_live": MessageLookupByLibrary.simpleMessage("라이브 시작"),
         "grid": MessageLookupByLibrary.simpleMessage("그리드"),
         "heavy_drinker": MessageLookupByLibrary.simpleMessage("과음자"),
@@ -116,21 +122,27 @@ class MessageLookup extends MessageLookupByLibrary {
         "married": MessageLookupByLibrary.simpleMessage("결혼"),
         "martitual_status": MessageLookupByLibrary.simpleMessage("결혼 상태"),
         "masters": MessageLookupByLibrary.simpleMessage("마스터"),
+        "max_distance_of_partners":
+            MessageLookupByLibrary.simpleMessage("파트너로부터의 최대 거리"),
         "men": MessageLookupByLibrary.simpleMessage("남자"),
         "message_text": MessageLookupByLibrary.simpleMessage("메시지"),
         "min_text": MessageLookupByLibrary.simpleMessage("최소"),
         "modify_interest": MessageLookupByLibrary.simpleMessage("내 관심사"),
         "movie": MessageLookupByLibrary.simpleMessage("영화"),
         "music": MessageLookupByLibrary.simpleMessage("음악"),
+        "my_current_location": MessageLookupByLibrary.simpleMessage("내 현재 위치"),
         "my_info": MessageLookupByLibrary.simpleMessage("내 정보"),
         "my_invitee": MessageLookupByLibrary.simpleMessage("내 초대자"),
         "my_points": MessageLookupByLibrary.simpleMessage("내 포인트"),
+        "new_loction_addition": MessageLookupByLibrary.simpleMessage("새 위치 추가"),
+        "new_match": MessageLookupByLibrary.simpleMessage("새 일치"),
         "next": MessageLookupByLibrary.simpleMessage("다음"),
         "no_data_found": MessageLookupByLibrary.simpleMessage("데이터를 찾을 수 없음"),
         "no_text": MessageLookupByLibrary.simpleMessage("아니요"),
         "non_drinker": MessageLookupByLibrary.simpleMessage("비 음주자"),
         "non_smoker": MessageLookupByLibrary.simpleMessage("비흡연자"),
         "none": MessageLookupByLibrary.simpleMessage("없음"),
+        "note_text": MessageLookupByLibrary.simpleMessage("참고"),
         "ok_text": MessageLookupByLibrary.simpleMessage("확인"),
         "open_minded": MessageLookupByLibrary.simpleMessage("오픈 마인드"),
         "otp_cant_be_less_than_six_characters":
@@ -155,6 +167,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "post_graduate": MessageLookupByLibrary.simpleMessage("졸업 후"),
         "processing_text": MessageLookupByLibrary.simpleMessage("처리 중"),
         "public_notice": MessageLookupByLibrary.simpleMessage("공시"),
+        "push_notifications": MessageLookupByLibrary.simpleMessage("푸시 알림"),
         "reading": MessageLookupByLibrary.simpleMessage("독서"),
         "recharge": MessageLookupByLibrary.simpleMessage("재충전"),
         "recieved_gifts": MessageLookupByLibrary.simpleMessage("받은 선물"),
@@ -167,9 +180,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "search_username": MessageLookupByLibrary.simpleMessage("사용자 이름 검색"),
         "searching_for_a_user": MessageLookupByLibrary.simpleMessage("사용자 검색"),
         "searching_for_user": MessageLookupByLibrary.simpleMessage("사용자 검색"),
-        "select_language": MessageLookupByLibrary.simpleMessage("언어 선택"),
         "self_introduction": MessageLookupByLibrary.simpleMessage("자기 소개"),
         "separated": MessageLookupByLibrary.simpleMessage("분리된"),
+        "settings_text": MessageLookupByLibrary.simpleMessage("설정"),
         "singing": MessageLookupByLibrary.simpleMessage("노래하다"),
         "single": MessageLookupByLibrary.simpleMessage("단일"),
         "single_dad": MessageLookupByLibrary.simpleMessage("싱글 아빠"),
@@ -179,6 +192,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "smoking": MessageLookupByLibrary.simpleMessage("흡연"),
         "sms_rate": MessageLookupByLibrary.simpleMessage("Sms 요금"),
         "sns_text": MessageLookupByLibrary.simpleMessage("sms"),
+        "social_discovery_range_setting":
+            MessageLookupByLibrary.simpleMessage("소셜 검색 범위 설정"),
         "social_drinker": MessageLookupByLibrary.simpleMessage("소셜 음주자"),
         "sports": MessageLookupByLibrary.simpleMessage("스포츠"),
         "status": MessageLookupByLibrary.simpleMessage("상태"),
@@ -202,6 +217,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "widowed": MessageLookupByLibrary.simpleMessage("과부"),
         "women": MessageLookupByLibrary.simpleMessage("여자"),
         "yes_text": MessageLookupByLibrary.simpleMessage("예"),
+        "you_are_availble_online_video_call_now_waiting":
+            MessageLookupByLibrary.simpleMessage(
+                "지금 다른 사람을 기다리는 온라인 화상 통화를 사용할 수 있습니다."),
         "your_name_livestream":
             MessageLookupByLibrary.simpleMessage("당신의 이름은 실시간 스트리밍")
       };

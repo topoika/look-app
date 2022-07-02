@@ -38,6 +38,8 @@
         <meta-data
                 android:name="com.google.firebase.messaging.default_notification_icon"
                 android:resource="@mipmap/ic_notification" />
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyDagVDpNM7mCIke-N1u1PU_V2RCwf1hMNk"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

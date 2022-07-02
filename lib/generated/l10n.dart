@@ -1410,10 +1410,10 @@ class S {
     );
   }
 
-  /// `Searching for a User`
+  /// `Searching for new Friends`
   String get searching_for_user {
     return Intl.message(
-      'Searching for a User',
+      'Searching for new Friends',
       name: 'searching_for_user',
       desc: '',
       args: [],
@@ -1650,21 +1650,151 @@ class S {
     );
   }
 
-  /// `Select Language`
-  String get select_language {
-    return Intl.message(
-      'Select Language',
-      name: 'select_language',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Message`
   String get message_text {
     return Intl.message(
       'Message',
       name: 'message_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New Match`
+  String get new_match {
+    return Intl.message(
+      'New Match',
+      name: 'new_match',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Push Notifications`
+  String get push_notifications {
+    return Intl.message(
+      'Push Notifications',
+      name: 'push_notifications',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Block List`
+  String get block_list {
+    return Intl.message(
+      'Block List',
+      name: 'block_list',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Age range of partners`
+  String get age_range_of_partners {
+    return Intl.message(
+      'Age range of partners',
+      name: 'age_range_of_partners',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Global mode`
+  String get global_mode {
+    return Intl.message(
+      'Global mode',
+      name: 'global_mode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change your location and meet other local people`
+  String get change_your_location_and_meet_other_local_people {
+    return Intl.message(
+      'Change your location and meet other local people',
+      name: 'change_your_location_and_meet_other_local_people',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `new location addition`
+  String get new_loction_addition {
+    return Intl.message(
+      'new location addition',
+      name: 'new_loction_addition',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `my current location`
+  String get my_current_location {
+    return Intl.message(
+      'my current location',
+      name: 'my_current_location',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Social discovery range setting`
+  String get social_discovery_range_setting {
+    return Intl.message(
+      'Social discovery range setting',
+      name: 'social_discovery_range_setting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Settings`
+  String get settings_text {
+    return Intl.message(
+      'Settings',
+      name: 'settings_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Maximum distance from partners`
+  String get max_distance_of_partners {
+    return Intl.message(
+      'Maximum distance from partners',
+      name: 'max_distance_of_partners',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You are available online video call now waiting for others`
+  String get you_are_availble_online_video_call_now_waiting {
+    return Intl.message(
+      'You are available online video call now waiting for others',
+      name: 'you_are_availble_online_video_call_now_waiting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Note`
+  String get note_text {
+    return Intl.message(
+      'Note',
+      name: 'note_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `It is allowed to upload any ponographic text or image content. If violations are verified, the corporation will stop it directly and the earnings will be not settled`
+  String get not_allowed_to_upload_any_ponographic {
+    return Intl.message(
+      'It is allowed to upload any ponographic text or image content. If violations are verified, the corporation will stop it directly and the earnings will be not settled',
+      name: 'not_allowed_to_upload_any_ponographic',
       desc: '',
       args: [],
     );

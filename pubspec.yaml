@@ -29,18 +29,18 @@ dependencies:
     sdk: flutter
   flutter_ringtone_player: ^3.2.0
   fluttertoast: ^8.0.9
-  geocode: 1.0.1
-  geolocator: ^8.0.0
-  google_maps_flutter: ^2.1.1
+  google_maps_flutter: ^2.1.8
+  google_maps_place_picker_mb: ^2.0.0-mb.20
   google_sign_in: ^5.2.1
   http: ^0.13.4
   image_cropper: ^2.0.3
   image_picker: ^0.8.4+4
   intl_utils: ^2.6.1
-  location: ^4.2.0
+  location: ^4.4.0
   mvc_pattern: ^8.10.1+1
   permission_handler: ^8.2.0
   pin_code_fields: ^7.4.0
+  shared_preferences: ^2.0.15
   url_launcher: ^6.0.17
   webview_flutter: ^3.0.0
 

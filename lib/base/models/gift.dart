@@ -47,7 +47,7 @@ List<Gift> gifts = <Gift>[
   Gift(
     id: "3",
     name: "fire",
-    image: fire,
+    image: fire, 
     points: 18,
   ),
   Gift(

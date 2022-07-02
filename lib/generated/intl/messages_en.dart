@@ -24,6 +24,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accept": MessageLookupByLibrary.simpleMessage("Accept"),
         "add_content": MessageLookupByLibrary.simpleMessage("Add content"),
+        "age_range_of_partners":
+            MessageLookupByLibrary.simpleMessage("Age range of partners"),
         "all": MessageLookupByLibrary.simpleMessage("All"),
         "are_you_sure": MessageLookupByLibrary.simpleMessage("Are you sure"),
         "available_points":
@@ -31,10 +33,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "bachelor_degree":
             MessageLookupByLibrary.simpleMessage("Bachelor Degree"),
         "big_event": MessageLookupByLibrary.simpleMessage("Big Event"),
+        "block_list": MessageLookupByLibrary.simpleMessage("Block List"),
         "call_history": MessageLookupByLibrary.simpleMessage("Call History"),
         "calling_text": MessageLookupByLibrary.simpleMessage("Calling"),
         "camping": MessageLookupByLibrary.simpleMessage("Camping"),
         "cancel_text": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "change_your_location_and_meet_other_local_people":
+            MessageLookupByLibrary.simpleMessage(
+                "Change your location and meet other local people"),
         "chats": MessageLookupByLibrary.simpleMessage("Chats"),
         "check_internet_connection": MessageLookupByLibrary.simpleMessage(
             "Check your internet connection"),
@@ -89,6 +95,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "get_current_location":
             MessageLookupByLibrary.simpleMessage("Get Current Location"),
         "gift_text": MessageLookupByLibrary.simpleMessage("Gift"),
+        "global_mode": MessageLookupByLibrary.simpleMessage("Global mode"),
         "go_live": MessageLookupByLibrary.simpleMessage("Go Live"),
         "grid": MessageLookupByLibrary.simpleMessage("Grid"),
         "heavy_drinker": MessageLookupByLibrary.simpleMessage("Heavy Drinker"),
@@ -133,21 +140,32 @@ class MessageLookup extends MessageLookupByLibrary {
         "martitual_status":
             MessageLookupByLibrary.simpleMessage("Marital Status"),
         "masters": MessageLookupByLibrary.simpleMessage("Masters"),
+        "max_distance_of_partners": MessageLookupByLibrary.simpleMessage(
+            "Maximum distance from partners"),
         "men": MessageLookupByLibrary.simpleMessage("Men"),
         "message_text": MessageLookupByLibrary.simpleMessage("Message"),
         "min_text": MessageLookupByLibrary.simpleMessage("min"),
         "modify_interest": MessageLookupByLibrary.simpleMessage("My Interests"),
         "movie": MessageLookupByLibrary.simpleMessage("Movie"),
         "music": MessageLookupByLibrary.simpleMessage("Music"),
+        "my_current_location":
+            MessageLookupByLibrary.simpleMessage("my current location"),
         "my_info": MessageLookupByLibrary.simpleMessage("My Info"),
         "my_invitee": MessageLookupByLibrary.simpleMessage("My Invitee"),
         "my_points": MessageLookupByLibrary.simpleMessage("My Points"),
+        "new_loction_addition":
+            MessageLookupByLibrary.simpleMessage("new location addition"),
+        "new_match": MessageLookupByLibrary.simpleMessage("New Match"),
         "next": MessageLookupByLibrary.simpleMessage("Next"),
         "no_data_found": MessageLookupByLibrary.simpleMessage("No Data Found"),
         "no_text": MessageLookupByLibrary.simpleMessage("No"),
         "non_drinker": MessageLookupByLibrary.simpleMessage("Non Drinker"),
         "non_smoker": MessageLookupByLibrary.simpleMessage("Non Smoker"),
         "none": MessageLookupByLibrary.simpleMessage("None"),
+        "not_allowed_to_upload_any_ponographic":
+            MessageLookupByLibrary.simpleMessage(
+                "It is allowed to upload any ponographic text or image content. If violations are verified, the corporation will stop it directly and the earnings will be not settled"),
+        "note_text": MessageLookupByLibrary.simpleMessage("Note"),
         "ok_text": MessageLookupByLibrary.simpleMessage("Ok"),
         "open_minded": MessageLookupByLibrary.simpleMessage("Open Minded"),
         "otp_cant_be_less_than_six_characters":
@@ -186,6 +204,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "post_graduate": MessageLookupByLibrary.simpleMessage("Post Graduate"),
         "processing_text": MessageLookupByLibrary.simpleMessage("Processing"),
         "public_notice": MessageLookupByLibrary.simpleMessage("Public Notice"),
+        "push_notifications":
+            MessageLookupByLibrary.simpleMessage("Push Notifications"),
         "reading": MessageLookupByLibrary.simpleMessage("Reading"),
         "recharge": MessageLookupByLibrary.simpleMessage("Recharge"),
         "recieved_gifts":
@@ -203,12 +223,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "searching_for_a_user":
             MessageLookupByLibrary.simpleMessage("Searching for a User"),
         "searching_for_user":
-            MessageLookupByLibrary.simpleMessage("Searching for a User"),
-        "select_language":
-            MessageLookupByLibrary.simpleMessage("Select Language"),
+            MessageLookupByLibrary.simpleMessage("Searching for new Friends"),
         "self_introduction":
             MessageLookupByLibrary.simpleMessage("Self Introduction"),
         "separated": MessageLookupByLibrary.simpleMessage("Separated"),
+        "settings_text": MessageLookupByLibrary.simpleMessage("Settings"),
         "singing": MessageLookupByLibrary.simpleMessage("Singing"),
         "single": MessageLookupByLibrary.simpleMessage("Single"),
         "single_dad": MessageLookupByLibrary.simpleMessage("Single Dad"),
@@ -218,6 +237,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "smoking": MessageLookupByLibrary.simpleMessage("Smoking"),
         "sms_rate": MessageLookupByLibrary.simpleMessage("Sms rate"),
         "sns_text": MessageLookupByLibrary.simpleMessage("sms"),
+        "social_discovery_range_setting": MessageLookupByLibrary.simpleMessage(
+            "Social discovery range setting"),
         "social_drinker":
             MessageLookupByLibrary.simpleMessage("Social Drinker"),
         "sports": MessageLookupByLibrary.simpleMessage("Sports"),
@@ -251,6 +272,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "widowed": MessageLookupByLibrary.simpleMessage("Widowed"),
         "women": MessageLookupByLibrary.simpleMessage("Women"),
         "yes_text": MessageLookupByLibrary.simpleMessage("Yes"),
+        "you_are_availble_online_video_call_now_waiting":
+            MessageLookupByLibrary.simpleMessage(
+                "You are available online video call now waiting for others"),
         "your_name_livestream":
             MessageLookupByLibrary.simpleMessage("Your name livestream")
       };

@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:look/base/models/videocall.dart';
 
+import 'base/models/videocall.dart';
 import 'base/pages/call.dart';
+import 'base/pages/settings/block_list.dart';
+import 'base/pages/settings/call_history.dart';
 import 'base/pages/chatrooms.dart';
 import 'base/pages/liveusers.dart';
 import 'base/pages/mobile_login.dart';
 import 'base/pages/mobile_verification.dart';
 import 'base/pages/modifyinterests.dart';
+import 'base/pages/settings/my_invitees.dart';
+import 'base/pages/settings/one_to_one_chat.dart';
 import 'base/pages/profile/showprofile.dart';
+import 'base/pages/settings/pubic_notice.dart';
 import 'base/pages/randomcalling.dart';
 import 'base/pages/recharge.dart';
 import 'base/pages/search.dart';
+import 'base/pages/settings/settings.dart';
 import 'base/pages/termscondition.dart';
+import 'base/pages/settings/transaction_history.dart';
 import 'base/pages/videocall.dart';
 
 class RouteGenerator {
@@ -45,6 +52,20 @@ class RouteGenerator {
       case '/MobileVerification':
         return MaterialPageRoute(
             builder: (_) => MobileVerification(verificationId: args as String));
+      case '/SettingsPage':
+        return MaterialPageRoute(builder: (_) => SettingsPage());
+      case '/CallsHistory':
+        return MaterialPageRoute(builder: (_) => CallsHistory());
+      case '/PublicNotice':
+        return MaterialPageRoute(builder: (_) => PublicNotice());
+      case '/AdminInquiry':
+        return MaterialPageRoute(builder: (_) => AdminInquiry());
+      case '/MyInvitee':
+        return MaterialPageRoute(builder: (_) => MyInvitee());
+      case '/TransactionHistory':
+        return MaterialPageRoute(builder: (_) => TransactionHistory());
+      case '/BlockList':
+        return MaterialPageRoute(builder: (_) => BlockList());
       default:
         return MaterialPageRoute(
             builder: (_) =>

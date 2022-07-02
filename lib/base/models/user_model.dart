@@ -26,6 +26,8 @@ class User {
   int? age;
   String? active;
   List<String>? interests;
+  bool? globalMode;
+  bool? videoCallsAvailable;
   User({
     this.uid,
     this.name,
@@ -54,6 +56,8 @@ class User {
     this.age,
     this.interests,
     this.active,
+    this.globalMode,
+    this.videoCallsAvailable,
   });
 
   Map<String, dynamic> toMap() {
@@ -85,6 +89,8 @@ class User {
       'age': age ?? 0,
       'interests': interests ?? [],
       'active': active ?? "online",
+      'globalMode': globalMode ?? false,
+      'videoCallsAvailable': videoCallsAvailable ?? videoCallsAvailable,
     };
   }
 
@@ -118,6 +124,8 @@ class User {
       interests:
           map['interests'] != null ? List<String>.from(map['interests']) : null,
       active: map['active'],
+      globalMode: map['globalMode'],
+      videoCallsAvailable: map['videoCallsAvailable'],
     );
   }
 }
