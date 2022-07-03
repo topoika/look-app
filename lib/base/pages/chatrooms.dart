@@ -153,7 +153,7 @@ class _ChatRoomsState extends StateMVC<ChatRooms> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: theme().mPurple,
+        backgroundColor: Colors.redAccent,
         child: const Icon(Icons.search),
         onPressed: () {
           Navigator.push(

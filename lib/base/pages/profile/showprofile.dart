@@ -132,13 +132,19 @@ class _MyProfileState extends State<MyProfile> {
                           child: cont(callhistory, S.of(context).call_history)),
                       InkWell(
                         onTap: () =>
-                            Navigator.pushNamed(context, "/PublicNotice"),
-                        child: cont(publicnotice, S.of(context).public_notice),
+                            Navigator.pushNamed(context, "/TransactionHistory"),
+                        child: cont(
+                            transhistory, S.of(context).transaction_history),
                       ),
                       InkWell(
                         onTap: () =>
                             Navigator.pushNamed(context, "/AdminInquiry"),
                         child: cont(inquiry, "1:1 " + S.of(context).inquiry),
+                      ),
+                      InkWell(
+                        onTap: () =>
+                            Navigator.pushNamed(context, "/PublicNotice"),
+                        child: cont(publicnotice, S.of(context).public_notice),
                       ),
                       InkWell(
                         onTap: () => Navigator.pushNamed(context, "/MyInvitee"),
@@ -148,12 +154,6 @@ class _MyProfileState extends State<MyProfile> {
                         onTap: () =>
                             Navigator.pushNamed(context, "/SettingsPage"),
                         child: cont(settings, S.of(context).settings_text),
-                      ),
-                      InkWell(
-                        onTap: () =>
-                            Navigator.pushNamed(context, "/TransactionHistory"),
-                        child: cont(
-                            transhistory, S.of(context).transaction_history),
                       ),
                       InkWell(
                           onTap: () => Navigator.pushReplacementNamed(
@@ -205,7 +205,10 @@ class _MyProfileState extends State<MyProfile> {
             decoration: BoxDecoration(
                 color: Color.fromARGB(255, 241, 185, 185),
                 borderRadius: BorderRadius.circular(10)),
-            child: Image.asset(txt1),
+            child: txt2 == S.of(context).log_out
+                ? Icon(Icons.logout_outlined,
+                    color: Colors.red, size: getHorizontal(context) * 0.09)
+                : Image.asset(txt1),
           ),
           profileText(context, txt2)
         ],

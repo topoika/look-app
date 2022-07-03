@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../Helper/dimension.dart';
+import '../../Helper/helper.dart';
 import '../../models/message_model.dart';
 
 class ChatBubbleWidget extends StatelessWidget {
@@ -61,14 +62,5 @@ class ChatBubbleWidget extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String? getDateFormatedFromString(String date, String type) {
-    if (type == "time") {
-      return DateFormat.jm().format(DateTime.parse(date)).toString();
-    } else if (type == "date") {
-      return DateFormat.yMMMMd('en_US').format(DateTime.parse(date)).toString();
-    }
-    return null;
   }
 }

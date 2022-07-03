@@ -84,17 +84,8 @@ class SplashController extends ControllerMVC {
   }
 
   Future notificationOnLaunch(Map<String, dynamic> message) async {
-    log("Message is :" + message.toString());
     String messageId = "await settingRepo.getMessageId()";
-    try {
-      if (messageId != message['google.message_id']) {
-        if (message['data']['id'] == "orders") {
-          // await settingRepo.saveMessageId(message['google.message_id']);
-          // settingRepo.navigatorKey.currentState
-          //     .pushReplacementNamed('/Pages', arguments: 3);
-        }
-      }
-    } catch (e) {
+    try {} catch (e) {
       // print(CustomTrace(StackTrace.current, message: e));
     }
   }

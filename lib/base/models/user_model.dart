@@ -1,5 +1,6 @@
 class User {
   String? uid;
+  String? invitee;
   String? name;
   String? userName;
   String? email;
@@ -30,6 +31,7 @@ class User {
   bool? videoCallsAvailable;
   User({
     this.uid,
+    this.invitee,
     this.name,
     this.userName,
     this.email,
@@ -63,6 +65,7 @@ class User {
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,
+      'invitee': invitee,
       'name': name ?? "",
       'email': email ?? "",
       'deviceToken': deviceToken ?? "",
@@ -97,6 +100,7 @@ class User {
   factory User.fromMap(Map<String, dynamic>? map) {
     return User(
       uid: map!['uid'],
+      invitee: map['invitee'],
       name: map['name'],
       userName: map['userName'],
       email: map['email'],

@@ -147,8 +147,8 @@ class _BankAccountDepositState extends StateMVC<BankAccountDeposit> {
                             child: InkWell(
                                 onTap: () {
                                   if (_con.formKey.currentState!.validate()) {
-                                    _con.creditUserPoints(
-                                        widget.bigEventPoints);
+                                    _con.creditUserPoints(context,
+                                        widget.bigEventPoints, "bank recharge");
                                     Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(

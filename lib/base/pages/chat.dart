@@ -187,7 +187,7 @@ class _ChatState extends StateMVC<Chat> {
                                       element.uid != currentUser.value.uid);
                               _message.deleteBy = [];
                               _con.addMessage(
-                                  context, _message, widget.chatRoom.id ?? "");
+                                  context, _message, widget.chatRoom);
                               messageText.clear();
                             }
                           },

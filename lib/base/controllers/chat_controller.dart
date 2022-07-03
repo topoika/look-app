@@ -1,27 +1,33 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:look/base/controllers/main_controller.dart';
+import 'package:look/base/models/chat_room_model.dart';
 import 'package:look/base/models/message_model.dart';
 import 'package:look/base/pages/utils/snackbar.dart';
 
-import '../repositories/chat_repository.dart';
+import '../models/notifications.dart';
 import '../repositories/user_repository.dart';
-import './../models/user_model.dart' as userModel;
 
 class ChatController extends MainController {
-  final userModel.User _user = currentUser.value;
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   final adminCollection = "adminChats";
   final chatsCollection = "chats";
   final chatRoomCollection = "chatRoom";
-  addMessage(BuildContext context, Message message, String roomId) async {
+  addMessage(BuildContext context, Message message, ChatRoom room) async {
     try {
       await firebaseFirestore
           .collection(chatRoomCollection)
-          .doc(roomId)
+          .doc(room.id!)
           .collection(chatsCollection)
           .add(message.toMap());
-      updateLastMessage(message, roomId);
+      updateLastMessage(message, room.id!);
+      Notifications().sendPushMessage(
+          room.involved!
+              .firstWhere((element) => element.uid != currentUser.value.uid)
+              .deviceToken!,
+          message.message!,
+          currentUser.value.name!,
+          "text");
     } catch (e) {
       showSnackBar(context, "Verify your internet connection", true);
     }

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
@@ -67,12 +66,19 @@ Future<bool> isConnection() async {
 bool eligibleOfSendingPoints(int points) {
   return currentUser.value.points! > points;
 }
+String? getDateFormatedFromString(String date, String type) {
+  if (type == "time") {
+    return DateFormat.jm().format(DateTime.parse(date)).toString();
+  } else if (type == "date") {
+    return DateFormat.yMMMMd('en_US').format(DateTime.parse(date)).toString();
+  }
+  return null;
+}
 
 String? getTimeDifference(String time) {
   final DateTime tm = DateTime.parse(time);
   final DateTime now = DateTime.now();
   int diff = now.difference(tm).inMinutes;
-  log(diff.toString());
   if (diff == 0) {
     return "Now";
   } else if (diff > 0 && diff < 60) {

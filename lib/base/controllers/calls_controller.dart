@@ -52,8 +52,8 @@ class CallsController extends MainController {
                 ),
               );
             });
-            Notifications()
-                .sendPushMessage(user.deviceToken!, _videoCall.id!, "Message");
+            Notifications().sendPushMessage(
+                user.deviceToken!, _videoCall.id!, "Message", "call");
           } catch (e) {
             showSnackBar(context, "Veify your internet connection", true);
           }

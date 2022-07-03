@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/controllers/payement_controller.dart';
-import 'package:look/base/controllers/user_controller.dart';
 import 'package:look/base/models/user_model.dart';
 import 'package:look/base/pages/utils/button.dart';
 import 'package:look/base/repositories/user_repository.dart';
 import 'package:look/constant/theme.dart';
 import 'package:look/base/pages/recharge.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../generated/l10n.dart';
 
@@ -27,10 +27,29 @@ class _AwardState extends StateMVC<Award> {
     _con = controller as PaymentController;
   }
   final User _user = currentUser.value;
-  int day = DateTime.now().day;
+
+  bool doneToday = false;
+  int today = 0;
   @override
   void initState() {
     super.initState();
+    doneForToday();
+  }
+
+  void doneForToday() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    if (preferences.containsKey("rewarded")) {
+      setState(() => doneToday = DateTime.now().day ==
+          DateTime.parse(preferences.getString("rewarded")!).day);
+    } else {
+      setState(() => doneToday = false);
+    }
+  }
+
+  void setDoneForToday() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString("rewarded", DateTime.now().toString());
+    setState(() => doneToday = true);
   }
 
   @override
@@ -49,17 +68,22 @@ class _AwardState extends StateMVC<Award> {
               children: [
                 Image.asset(
                   daimond,
-                  height: 30,
+                  height: 25,
                 ),
+                SizedBox(width: getHorizontal(context) * .01),
                 Column(
                   children: [
                     Text(
                       _user.points.toString(),
-                      style: TextStyle(fontSize: getHorizontal(context) * 0.05),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: getHorizontal(context) * 0.05),
                     ),
                     Text(
                       S.of(context).my_points,
-                      style: TextStyle(fontSize: getHorizontal(context) * 0.03),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: getHorizontal(context) * 0.025),
                     ),
                   ],
                 ),
@@ -71,7 +95,7 @@ class _AwardState extends StateMVC<Award> {
               margin:
                   EdgeInsets.only(top: 10, bottom: getVertical(context) * 0.05),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(40),
                 color: theme().mC,
               ),
               child: Text(
@@ -79,7 +103,7 @@ class _AwardState extends StateMVC<Award> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: getHorizontal(context) * 0.05,
-                    color: Colors.black),
+                    color: Colors.white),
               ),
             ),
             Wrap(
@@ -99,39 +123,44 @@ class _AwardState extends StateMVC<Award> {
                 cont(120),
               ],
             ),
+            SizedBox(height: getVertical(context) * .04),
             buttonWidget(
                 context,
                 () => Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => const Recharge())),
                 S.of(context).recharge),
+            SizedBox(height: getVertical(context) * .015),
+            buttonWidget(
+                context,
+                () => Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => const Recharge())),
+                "VIP Subscription Plan"),
           ]),
         ),
       ),
     );
   }
 
-  int selected = 1;
   Widget cont(int number) {
     return Stack(
       children: [
         GestureDetector(
-          onTap: selected != 0
+          onTap: doneToday
               ? () {
-                  setState(() {
-                    selected = number;
-                  });
-                  _con.creditUserPoints(number);
-                  snack(number,
-                      '$number ${S.of(context).points_collected_visit_tomorrow_to_have_more}');
-                }
-              : () {
                   snack(number,
                       "You have already collected points for today come back tommorow for more");
+                }
+              : () {
+                  setState(() => today = number);
+                  _con.creditUserPoints(context, number, "daily reward");
+                  setDoneForToday();
+                  snack(number,
+                      '$number ${S.of(context).points_collected_visit_tomorrow_to_have_more}');
                 },
           child: Container(
             margin: EdgeInsets.all(getHorizontal(context) * 0.01),
-            width: getHorizontal(context) * 0.23,
-            height: getVertical(context) * 0.15,
+            width: getHorizontal(context) * 0.2,
+            height: getVertical(context) * 0.14,
             padding: EdgeInsets.all(2),
             decoration: BoxDecoration(
               color: Colors.black,
@@ -143,26 +172,43 @@ class _AwardState extends StateMVC<Award> {
             ),
           ),
         ),
-        selected == number
+        today == number
             ? Container(
                 margin: EdgeInsets.all(getHorizontal(context) * 0.01),
-                width: getHorizontal(context) * 0.23,
-                height: getVertical(context) * 0.15,
+                width: getHorizontal(context) * 0.2,
+                height: getVertical(context) * 0.14,
                 alignment: Alignment.center,
                 padding: EdgeInsets.all(2),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(.4),
+                  color: Colors.white.withOpacity(.8),
                   borderRadius: BorderRadius.circular(5),
                 ),
-                child: Text(
-                  number.toString(),
-                  style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: getHorizontal(context) * 0.045,
-                  ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(height: 17),
+                    Icon(
+                      Icons.check,
+                      size: getHorizontal(context) * 0.1,
+                      color: Colors.redAccent,
+                    ),
+                    Container(
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      color: Colors.white.withOpacity(.8),
+                      child: Text(
+                        "💰 ${number.toString()}",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w800,
+                          color: Colors.redAccent,
+                          fontSize: getHorizontal(context) * 0.045,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               )
-            : SizedBox(),
+            : SizedBox()
       ],
     );
   }
@@ -171,6 +217,7 @@ class _AwardState extends StateMVC<Award> {
     final snackBar = SnackBar(
       margin: const EdgeInsets.all(20),
       behavior: SnackBarBehavior.floating,
+      duration: Duration(seconds: 2),
       content: Text(message),
       backgroundColor: (Colors.blueAccent),
       action: SnackBarAction(

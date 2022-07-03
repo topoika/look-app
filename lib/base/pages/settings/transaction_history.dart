@@ -1,17 +1,28 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:look/base/Helper/helper.dart';
+import 'package:look/base/controllers/payement_controller.dart';
+import 'package:look/base/models/transaction.dart';
+import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../../generated/l10n.dart';
 import '../../Helper/dimension.dart';
+import '../../repositories/user_repository.dart';
 import 'my_invitees.dart';
 
 class TransactionHistory extends StatefulWidget {
   TransactionHistory({Key? key}) : super(key: key);
 
   @override
-  State<TransactionHistory> createState() => _TransactionHistoryState();
+  _TransactionHistoryState createState() => _TransactionHistoryState();
 }
 
-class _TransactionHistoryState extends State<TransactionHistory> {
+class _TransactionHistoryState extends StateMVC<TransactionHistory> {
+  late PaymentController _con;
+  _TransactionHistoryState() : super(PaymentController()) {
+    _con = controller as PaymentController;
+  }
+  int totalPoints = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,26 +132,46 @@ class _TransactionHistoryState extends State<TransactionHistory> {
                 ),
               ],
             ),
-            ListView.builder(
-              physics: ScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: 10,
-              itemBuilder: (context, index) => Table(
-                border: TableBorder.all(
-                    color: Colors
-                        .transparent), // Allows to add a border decoration around your table
-                children: [
-                  TableRow(
-                    children: [
-                      tableItem(context, "2022-05-01"),
-                      tableItem(context, "david wiil"),
-                      tableItem(context, "00:5:20"),
-                      tableItem(context, "1200"),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+            StreamBuilder(
+                stream: _con.firebaseFirestore
+                    .collection(_con.transCollection)
+                    .where('doneBy', isEqualTo: currentUser.value.uid)
+                    .orderBy("time", descending: true)
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                        snapshot) {
+                  return !snapshot.hasData
+                      ? SizedBox()
+                      : ListView.builder(
+                          physics: ScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            var trans = Transactions.fromMap(
+                                snapshot.data!.docs[index].data());
+                            return Table(
+                              border: TableBorder.all(
+                                  color: Colors
+                                      .transparent), // Allows to add a border decoration around your table
+                              children: [
+                                TableRow(
+                                  children: [
+                                    tableItem(
+                                        context,
+                                        getDateFormatedFromString(
+                                            trans.created!, "date")!),
+                                    tableItem(context, trans.name!),
+                                    tableItem(context,
+                                        getTimeDifference(trans.created!)!),
+                                    tableItem(context, trans.points.toString()),
+                                  ],
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                }),
             Divider(
               color: Colors.black87,
               thickness: 1,
@@ -156,7 +187,7 @@ class _TransactionHistoryState extends State<TransactionHistory> {
                     tableItem(context, ""),
                     tableItem(context, ""),
                     tableItem(context, ""),
-                    tableItem(context, "120000"),
+                    tableItem(context, "4000"),
                   ],
                 ),
               ],

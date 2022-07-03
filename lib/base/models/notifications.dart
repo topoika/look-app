@@ -5,7 +5,8 @@ import 'package:http/http.dart' as http;
 
 class Notifications {
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-  void sendPushMessage(String token, String body, String title) async {
+  void sendPushMessage(
+      String token, String body, String title, String type) async {
     try {
       await http.post(
         Uri.parse('https://fcm.googleapis.com/fcm/send'),
@@ -21,7 +22,7 @@ class Notifications {
             'data': <String, dynamic>{
               'click_action': 'FLUTTER_NOTIFICATION_CLICK',
               'id': '1',
-              'type': "call",
+              'type': type,
               'status': 'done'
             },
             "to": token,
@@ -32,6 +33,4 @@ class Notifications {
       log("error push notification");
     }
   }
-
-  
 }
