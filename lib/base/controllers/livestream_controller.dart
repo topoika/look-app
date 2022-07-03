@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:look/base/Helper/helper.dart';
 import 'package:look/base/controllers/main_controller.dart';
 import 'package:look/base/models/activity.dart';

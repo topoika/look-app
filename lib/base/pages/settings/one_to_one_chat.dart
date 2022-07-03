@@ -1,19 +1,26 @@
-import 'dart:developer';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:look/base/Helper/dimension.dart';
+import 'package:look/base/controllers/chat_controller.dart';
 import 'package:look/base/models/message_model.dart';
 import 'package:look/base/pages/utils/chat_bubble.dart';
 import 'package:look/generated/l10n.dart';
+import 'package:mvc_pattern/mvc_pattern.dart';
+
+import '../../repositories/user_repository.dart';
 
 class AdminInquiry extends StatefulWidget {
   AdminInquiry({Key? key}) : super(key: key);
 
   @override
-  State<AdminInquiry> createState() => _AdminInquiryState();
+  _AdminInquiryState createState() => _AdminInquiryState();
 }
 
-class _AdminInquiryState extends State<AdminInquiry> {
+class _AdminInquiryState extends StateMVC<AdminInquiry> {
+  late ChatController _con;
+  _AdminInquiryState() : super(ChatController()) {
+    _con = controller as ChatController;
+  }
   TextEditingController messageText = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -49,54 +56,40 @@ class _AdminInquiryState extends State<AdminInquiry> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              // child: StreamBuilder(
-              //     stream: _con.firestore
-              //         .collection(_con.eventsCollection)
-              //         .doc(widget.event.id)
-              //         .collection("chats")
-              //         .orderBy('time', descending: true)
-              //         .snapshots(),
-              //     builder: (BuildContext context,
-              //         AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
-              //             snapshot) {
-              //       return !snapshot.hasData
-              //           ? const Center(
-              //               child: Text(
-              //                 "No chats, \nbe the first to chat",
-              //                 style: TextStyle(color: Colors.red),
-              //               ),
-              //             )
-              //           : ListView.builder(
-              //               shrinkWrap: true,
-              //               scrollDirection: Axis.vertical,
-              //               reverse: true,
-              //               itemCount: snapshot.data!.docs.length,
-              //               physics: const AlwaysScrollableScrollPhysics(),
-              //               itemBuilder: (context, index) {
-              //                 var message = Message.fromMap(
-              //                     snapshot.data!.docs[index].data());
-              //                 return ChatBubble(
-              //                   sendByMe: message.sender!.id ==
-              //                       currentUser.value.id,
-              //                   message: message,
-              //                 );
-              //               },
-              //             );
-              //     })),
-              child: ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                reverse: true,
-                itemCount: 10,
-                physics: const AlwaysScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  bool sendByMe = index.isEven;
-                  return ChatBubbleWidget(
-                    message: Message(),
-                    sendByMe: sendByMe,
-                  );
-                },
-              ),
+              child: StreamBuilder(
+                  stream: _con.firebaseFirestore
+                      .collection(_con.adminCollection)
+                      .doc(currentUser.value.uid)
+                      .collection(_con.chatsCollection)
+                      .orderBy('time', descending: true)
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                          snapshot) {
+                    return !snapshot.hasData
+                        ? const Center(
+                            child: Text(
+                              "No chats, \nbe the first to chat",
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            reverse: true,
+                            itemCount: snapshot.data!.docs.length,
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              var message = Message.fromMap(
+                                  snapshot.data!.docs[index].data());
+                              return ChatBubbleWidget(
+                                sendByMe: message.sendBy!.uid !=
+                                    currentUser.value.uid,
+                                message: message,
+                              );
+                            },
+                          );
+                  }),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10),
@@ -134,7 +127,15 @@ class _AdminInquiryState extends State<AdminInquiry> {
                           color: Colors.black87,
                         ),
                         suffixIcon: InkWell(
-                          onTap: () => log("message"),
+                          onTap: () {
+                            if (messageText.text.trim().isNotEmpty) {
+                              _con.addAdminMessage(
+                                context,
+                                messageText.text,
+                              );
+                              messageText.clear();
+                            }
+                          },
                           child: Icon(
                             Icons.send,
                             color: Colors.black,

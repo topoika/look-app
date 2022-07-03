@@ -110,7 +110,7 @@ class _AwardState extends StateMVC<Award> {
     );
   }
 
-  int selected = 0;
+  int selected = 1;
   Widget cont(int number) {
     return Stack(
       children: [

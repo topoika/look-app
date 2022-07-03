@@ -1,15 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/controllers/chat_controller.dart';
 import 'package:look/base/models/chat_room_model.dart';
+import 'package:look/base/models/message_model.dart';
 import 'package:look/base/pages/call.dart';
+import 'package:look/base/pages/utils/chat_bubble.dart';
 import 'package:look/base/repositories/user_repository.dart';
 import 'package:look/constant/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as cf;
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
+import '../Helper/helper.dart';
 import '../Helper/strings.dart';
 import '../models/videocall.dart';
 
@@ -26,59 +30,10 @@ class _ChatState extends StateMVC<Chat> {
     _con = controller as ChatController;
   }
 
-  final _controller = ScrollController();
   TextEditingController messageText = TextEditingController();
-
-  Widget chatMessages() {
-    return SizedBox(
-      height: getVertical(context) * 0.75,
-      child: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection("chatRoom")
-            .doc(widget.chatRoom.id)
-            .collection("chats")
-            .orderBy('time', descending: false)
-            .snapshots(),
-        builder:
-            (BuildContext context, AsyncSnapshot<cf.QuerySnapshot> snapshot) {
-          WidgetsBinding.instance!.addPostFrameCallback((_) {
-            if (_controller.hasClients) {
-              _controller.jumpTo(_controller.position.maxScrollExtent);
-            } else {
-              // setState(() => null);
-            }
-          });
-          if (!snapshot.hasData) {
-            return Center(
-              child: Text(
-                S.of(context).no_data_found,
-                style: TextStyle(color: Colors.red),
-              ),
-            );
-          }
-          return ListView(
-            controller: _controller,
-            children: snapshot.data!.docs.map((document) {
-              return Center(
-                child: MessageTile(
-                  message: document['message'].toString(),
-                  sendByMe: currentUser.value.uid ==
-                      document['recieved']['uid'].toString(),
-                ),
-              );
-            }).toList(),
-          );
-        },
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
-    TextStyle textstyle = TextStyle(
-      fontSize: getHorizontal(context) * 0.041,
-      fontWeight: FontWeight.bold,
-    );
     var _otherUser = widget.chatRoom.involved!
         .firstWhere((value) => value.uid != currentUser.value.uid);
     return Scaffold(
@@ -92,7 +47,7 @@ class _ChatState extends StateMVC<Chat> {
               onPressed: () {
                 Navigator.of(context).pop();
               }),
-          leadingWidth: 30,
+          leadingWidth: 20,
           title: Row(
             children: <Widget>[
               CircleAvatar(
@@ -143,107 +98,123 @@ class _ChatState extends StateMVC<Chat> {
               width: getHorizontal(context) * 0.03,
             ),
           ]),
-      body: Column(
-        children: [
-          Expanded(child: chatMessages()),
-          Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-            margin:
-                EdgeInsets.symmetric(horizontal: getHorizontal(context) * 0.02),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.black.withOpacity(.2),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                    child: TextField(
-                  controller: messageText,
-                  style: textstyle,
-                  decoration: InputDecoration(
-                      hintText: "${S.of(context).type_message} ...",
-                      hintStyle: TextStyle(
-                        color: Colors.grey[700],
-                        fontSize: 16,
+      body: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: getHorizontal(context) * 0.04,
+          vertical: getVertical(context) * 0.015,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: StreamBuilder(
+                stream: _con.firebaseFirestore
+                    .collection("chatRoom")
+                    .doc(widget.chatRoom.id)
+                    .collection(_con.chatsCollection)
+                    .orderBy('time', descending: true)
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<cf.QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: Text(
+                        S.of(context).no_data_found,
+                        style: TextStyle(color: Colors.red),
                       ),
-                      border: InputBorder.none),
-                )),
-                const SizedBox(
-                  width: 16,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    _con.addMessage(
-                        messageText.text,
-                        widget.chatRoom.involved!.firstWhere(
-                            (element) => element.uid != currentUser.value.uid),
-                        widget.chatRoom.id ?? "");
-                    messageText.clear();
-                  },
-                  child: const Icon(
-                    Icons.send,
-                    color: Colors.black,
-                  ),
-                )
-              ],
+                    );
+                  }
+
+                  return ListView.builder(
+                      itemCount: snapshot.data!.docs.length,
+                      reverse: true,
+                      itemBuilder: (context, index) {
+                        var message = Message.fromMap(snapshot.data!.docs[index]
+                            .data() as Map<String, dynamic>);
+
+                        return ChatBubbleWidget(
+                            message: message,
+                            sendByMe:
+                                message.sendBy!.uid != currentUser.value.uid);
+                      });
+                },
+              ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class MessageTile extends StatelessWidget {
-  final String message;
-  final bool sendByMe;
-
-  const MessageTile({Key? key, required this.message, required this.sendByMe})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-          top: 8, bottom: 8, left: sendByMe ? 24 : 0, right: sendByMe ? 0 : 24),
-      alignment: sendByMe ? Alignment.centerLeft : Alignment.centerRight,
-      child: Container(
-        margin: sendByMe
-            ? const EdgeInsets.only(right: 30)
-            : const EdgeInsets.only(left: 30),
-        padding:
-            const EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
-        decoration: BoxDecoration(
-            borderRadius: !sendByMe
-                ? const BorderRadius.only(
-                    topLeft: Radius.circular(23),
-                    topRight: Radius.circular(23),
-                    bottomLeft: Radius.circular(23))
-                : const BorderRadius.only(
-                    topLeft: Radius.circular(23),
-                    topRight: Radius.circular(23),
-                    bottomRight: Radius.circular(23)),
-            gradient: LinearGradient(
-              colors: !sendByMe
-                  ? [
-                      const Color(0xFFf62459).withAlpha(120),
-                      const Color(0xFFf62459).withAlpha(120)
-                    ]
-                  : [
-                      const Color(0xFFf62459).withOpacity(0.6),
-                      const Color(0xFFf62459).withOpacity(0.6)
-                      // const Color(0x1AFFFFFF), const Color(0x1AFFFFFF)
-                    ],
-            )),
-        child: Text(
-          message,
-          textAlign: TextAlign.start,
-          style: const TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontFamily: 'OverpassRegular',
-              fontWeight: FontWeight.w300),
+            Padding(
+              padding: EdgeInsets.only(top: 10),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: messageText,
+                      textCapitalization: TextCapitalization.sentences,
+                      style: TextStyle(
+                        fontSize: getHorizontal(context) * 0.038,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(7),
+                          borderSide: BorderSide(
+                            color: Colors.black87,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(7),
+                          borderSide: BorderSide(
+                            color: Colors.black87,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(7),
+                          borderSide: BorderSide(
+                            color: Colors.black87,
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.attach_file,
+                          color: Colors.black87,
+                        ),
+                        suffixIcon: InkWell(
+                          onTap: () {
+                            if (messageText.text.trim().isNotEmpty) {
+                              Message _message = Message();
+                              _message.message = messageText.text;
+                              _message.time = DateTime.now().toString();
+                              _message.sendBy = currentUser.value;
+                              _message.recieved = widget.chatRoom.involved!
+                                  .firstWhere((element) =>
+                                      element.uid != currentUser.value.uid);
+                              _message.deleteBy = [];
+                              _con.addMessage(
+                                  context, _message, widget.chatRoom.id ?? "");
+                              messageText.clear();
+                            }
+                          },
+                          child: Icon(
+                            Icons.send,
+                            color: Colors.black,
+                          ),
+                        ),
+                        disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(7),
+                          borderSide: BorderSide(
+                            color: Colors.black87,
+                          ),
+                        ),
+                        hintText: "${S.of(context).type_message} ...",
+                        hintStyle: TextStyle(
+                          color: Colors.grey[700],
+                          fontWeight: FontWeight.w600,
+                          fontSize: getHorizontal(context) * 0.037,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

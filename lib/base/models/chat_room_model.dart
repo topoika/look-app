@@ -5,7 +5,7 @@ class ChatRoom {
   String? id;
   Message? lastMessage;
   List<User>? involved;
-  DateTime? lastUpdated;
+  String? lastUpdated;
   List<String>? deletedBy;
   List<String>? involes;
   ChatRoom({
@@ -22,7 +22,7 @@ class ChatRoom {
       'id': id,
       'lastMessage': lastMessage?.toMap(),
       'involved': involved!.map((x) => x.toMap()).toList(),
-      'lastUpdated': lastUpdated?.millisecondsSinceEpoch,
+      'lastUpdated': lastUpdated,
       'deletedBy': deletedBy,
       'involes': involes,
     };
@@ -41,9 +41,8 @@ class ChatRoom {
               ),
             )
           : null,
-      lastUpdated: map['lastUpdated'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['lastUpdated'] as int)
-          : null,
+      lastUpdated:
+          map['lastUpdated'] != null ? map['lastUpdated'] as String : null,
       deletedBy: map['deletedBy'] != null
           ? List<String>.from((map['deletedBy'] as List))
           : null,

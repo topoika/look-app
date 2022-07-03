@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../Helper/dimension.dart';
 import '../../models/message_model.dart';
@@ -40,7 +41,7 @@ class ChatBubbleWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                "Hey?  May I help you?",
+                message.message ?? "",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   color: Colors.black87,
@@ -48,7 +49,7 @@ class ChatBubbleWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                "12:32 PM",
+                getDateFormatedFromString(message.time!, "time")!,
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   color: Colors.black54,
@@ -60,5 +61,14 @@ class ChatBubbleWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String? getDateFormatedFromString(String date, String type) {
+    if (type == "time") {
+      return DateFormat.jm().format(DateTime.parse(date)).toString();
+    } else if (type == "date") {
+      return DateFormat.yMMMMd('en_US').format(DateTime.parse(date)).toString();
+    }
+    return null;
   }
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:look/base/models/chat_room_model.dart';
 
 import 'base/models/videocall.dart';
 import 'base/pages/call.dart';
+import 'base/pages/chat.dart';
 import 'base/pages/settings/block_list.dart';
 import 'base/pages/settings/call_history.dart';
 import 'base/pages/chatrooms.dart';
@@ -29,6 +31,9 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => LiveUsers());
       case '/ChatRooms':
         return MaterialPageRoute(builder: (_) => ChatRooms());
+      case '/Chat':
+        return MaterialPageRoute(
+            builder: (_) => Chat(chatRoom: args as ChatRoom));
       case '/Search':
         return MaterialPageRoute(builder: (_) => Search());
       case '/VideoCalls':

@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:look/base/pages/utils/snackbar.dart';
+import 'package:intl/intl.dart';
+
 import 'package:look/base/repositories/user_repository.dart';
 
 class Helper {
@@ -64,4 +66,24 @@ Future<bool> isConnection() async {
 
 bool eligibleOfSendingPoints(int points) {
   return currentUser.value.points! > points;
+}
+
+String? getTimeDifference(String time) {
+  final DateTime tm = DateTime.parse(time);
+  final DateTime now = DateTime.now();
+  int diff = now.difference(tm).inMinutes;
+  log(diff.toString());
+  if (diff == 0) {
+    return "Now";
+  } else if (diff > 0 && diff < 60) {
+    return "$diff min";
+  } else if (diff > 60 && diff < 300) {
+    return "${(diff / 60).floor()} hours";
+  } else if (diff > 300 && diff < 1440) {
+    return DateFormat.jm().format(tm).toString();
+  } else if (diff > 1440 && diff < 2880) {
+    return "Yesterday";
+  } else {
+    return DateFormat.yMMMMd('en_US').format(tm).toString();
+  }
 }
