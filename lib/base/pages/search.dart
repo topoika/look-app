@@ -36,7 +36,8 @@ class _SearchState extends StateMVC<Search> {
     return ListTile(
       leading: CircleAvatar(
         radius: 30.0,
-        backgroundImage: NetworkImage(user.image ?? noImage),
+        backgroundImage:
+            NetworkImage(user.images!.length > 0 ? user.images![0] : noImage),
         backgroundColor: Colors.transparent,
       ),
       contentPadding: EdgeInsets.all(0),

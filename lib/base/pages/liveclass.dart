@@ -181,7 +181,9 @@ class _LiveClassState extends StateMVC<LiveClass> {
                                       CircleAvatar(
                                         radius: getHorizontal(context) * 0.045,
                                         backgroundImage: NetworkImage(
-                                            liveStream.host!.image ?? noImage),
+                                            liveStream.host!.images!.length > 0
+                                                ? liveStream.host!.images![0]
+                                                : noImage),
                                         backgroundColor: Colors.transparent,
                                       ),
                                       SizedBox(
@@ -386,11 +388,15 @@ class _LiveClassState extends StateMVC<LiveClass> {
                                                                 backgroundColor:
                                                                     Colors
                                                                         .white,
-                                                                backgroundImage:
-                                                                    NetworkImage(activity
+                                                                backgroundImage: NetworkImage(activity
                                                                             .actor!
-                                                                            .image ??
-                                                                        noImage),
+                                                                            .images!
+                                                                            .length >
+                                                                        0
+                                                                    ? activity
+                                                                        .actor!
+                                                                        .images![0]
+                                                                    : noImage),
                                                               ),
                                                         SizedBox(
                                                           width: getHorizontal(

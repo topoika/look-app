@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:look/base/models/chat_room_model.dart';
 
 import 'base/models/videocall.dart';
+import 'base/pages/bigevent.dart';
 import 'base/pages/call.dart';
 import 'base/pages/chat.dart';
 import 'base/pages/settings/block_list.dart';
@@ -34,6 +35,8 @@ class RouteGenerator {
       case '/Chat':
         return MaterialPageRoute(
             builder: (_) => Chat(chatRoom: args as ChatRoom));
+      case '/BigEvent':
+        return MaterialPageRoute(builder: (_) => BigEvent());
       case '/Search':
         return MaterialPageRoute(builder: (_) => Search());
       case '/VideoCalls':

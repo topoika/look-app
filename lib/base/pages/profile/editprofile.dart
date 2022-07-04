@@ -3,10 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:look/base/Helper/dimension.dart';
-import 'package:look/base/pages/profile/showprofile.dart';
 import 'package:look/base/pages/utils/button.dart';
 import 'package:look/base/pages/utils/decorations.dart';
-import 'package:image_cropper/image_cropper.dart';
+import 'package:look/base/pages/utils/snackbar.dart';
 
 import '../../../generated/l10n.dart';
 import '../../models/user_model.dart';
@@ -26,9 +25,8 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   final User _user = currentUser.value;
   final formKey = GlobalKey<FormState>();
-  File? image = null;
-  File? image2 = null;
-  File? image3 = null;
+  final List<File> _images = <File>[];
+
   @override
   Widget build(BuildContext context) {
     TextStyle _textStyle(bool black) {
@@ -55,25 +53,73 @@ class _EditProfileState extends State<EditProfile> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () => chooseFile(1),
-                      child: editProfileImageContainer(
-                          context, image != null ? image : null, _user.image),
-                    ),
-                    GestureDetector(
-                      onTap: () => chooseFile(2),
-                      child: editProfileImageContainer(context,
-                          image2 != null ? image2 : null, _user.image2),
-                    ),
-                    GestureDetector(
-                      onTap: () => chooseFile(3),
-                      child: editProfileImageContainer(context,
-                          image3 != null ? image3 : null, _user.image3),
-                    ),
-                  ],
+                SizedBox(
+                  height: getVertical(context) * 0.18,
+                  child: ListView(
+                    // mainAxisAlignment: MainAxisAlignment.center,
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    physics: ScrollPhysics(),
+                    children: [
+                      ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          physics: ScrollPhysics(),
+                          itemCount: currentUser.value.images!.length,
+                          itemBuilder: (context, index) {
+                            return editProfileImageContainer(
+                                context, _user.images![index], () {
+                              setState(() => currentUser.value.images!
+                                  .remove(_user.images![index]));
+                              deleteImage(context);
+                            });
+                          }),
+                      _images.length < 1
+                          ? SizedBox()
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              physics: ScrollPhysics(),
+                              itemCount: _images.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  alignment: Alignment.center,
+                                  width: getHorizontal(context) / 3 - 27,
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: getVertical(context) * 0.01,
+                                      horizontal:
+                                          getHorizontal(context) * 0.024),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.black12,
+                                  ),
+                                  child: Image.file(
+                                    _images[index],
+                                    height: getVertical(context) * 0.16,
+                                    width: getHorizontal(context) / 3 - 27,
+                                    fit: BoxFit.cover,
+                                  ),
+                                );
+                              }),
+                      Container(
+                        alignment: Alignment.center,
+                        width: getHorizontal(context) / 3 - 27,
+                        margin: EdgeInsets.symmetric(
+                            vertical: getVertical(context) * 0.01,
+                            horizontal: getHorizontal(context) * 0.03),
+                        decoration: BoxDecoration(
+                          color: Colors.black12,
+                        ),
+                        child: GestureDetector(
+                          onTap: () => chooseFile(),
+                          child: Icon(Icons.add,
+                              color: Colors.redAccent,
+                              size: getHorizontal(context) * 0.09),
+                        ),
+                      ),
+                      SizedBox(width: getHorizontal(context) * 0.04)
+                    ],
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(
@@ -220,26 +266,16 @@ class _EditProfileState extends State<EditProfile> {
                   padding: EdgeInsets.symmetric(
                       horizontal: getHorizontal(context) * 0.03,
                       vertical: getVertical(context) * 0.02),
-                  child: buttonWidget(context, () {
+                  child: buttonWidget(context, () async {
                     if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
                       currentUser.notifyListeners();
-                      if (image != null) {
-                        uploadProfilePicture(image, currentUser.value, 1);
-                      } else {
-                        updateUser(currentUser.value);
-                      }
-                      if (image2 != null) {
-                        uploadProfilePicture(image2, currentUser.value, 2);
-                      } else {
-                        updateUser(currentUser.value);
-                      }
-                      if (image3 != null) {
-                        uploadProfilePicture(image3, currentUser.value, 3);
-                      } else {
-                        updateUser(currentUser.value);
-                      }
-                      Navigator.pushReplacementNamed(context, "/MyProfile");
+                      uploadProfilePictures(_images, currentUser.value);
+                      updateUser(currentUser.value);
+                      showToast("Uploading images...");
+                      await Future.delayed(Duration(seconds: 7)).then((value) =>
+                          Navigator.pushReplacementNamed(
+                              context, "/MyProfile"));
                     }
                   },
                       S.of(context).save_text +
@@ -274,52 +310,61 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  Future chooseFile(int option) async {
-    final pickedFile = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 90,
-    );
-    final CroppedFile? croppedFile = await ImageCropper().cropImage(
-      sourcePath: pickedFile!.path,
-      aspectRatioPresets: [
-        CropAspectRatioPreset.square,
-        CropAspectRatioPreset.ratio3x2,
-        CropAspectRatioPreset.original,
-        CropAspectRatioPreset.ratio4x3,
-        CropAspectRatioPreset.ratio16x9
-      ],
-      uiSettings: [
-        AndroidUiSettings(
-            toolbarTitle: 'Cropper',
-            toolbarColor: Colors.deepOrange,
-            toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.original,
-            lockAspectRatio: false),
-        IOSUiSettings(
-          title: 'Cropper',
-        ),
-      ],
-    );
-
-    if (croppedFile != null) {
-      switch (option) {
-        case 1:
-          setState(() {
-            image = File(croppedFile.path);
-          });
-          break;
-        case 2:
-          setState(() {
-            image2 = File(croppedFile.path);
-          });
-          break;
-        case 3:
-          setState(() {
-            image3 = File(croppedFile.path);
-          });
-          break;
-        default:
+  void chooseFile() async {
+    await ImagePicker()
+        .pickMultiImage(imageQuality: 70, maxHeight: 600, maxWidth: 500)
+        .then((value) {
+      for (var image in value!) {
+        setState(() => _images.add(File(image.path)));
       }
-    } else {}
+    });
   }
+  // Future chooseFile(int option) async {
+  //   final pickedFile = await ImagePicker().pickImage(
+  //     source: ImageSource.gallery,
+  //     imageQuality: 90,
+  //   );
+  //   final CroppedFile? croppedFile = await ImageCropper().cropImage(
+  //     sourcePath: pickedFile!.path,
+  //     aspectRatioPresets: [
+  //       CropAspectRatioPreset.square,
+  //       CropAspectRatioPreset.ratio3x2,
+  //       CropAspectRatioPreset.original,
+  //       CropAspectRatioPreset.ratio4x3,
+  //       CropAspectRatioPreset.ratio16x9
+  //     ],
+  //     uiSettings: [
+  //       AndroidUiSettings(
+  //           toolbarTitle: 'Cropper',
+  //           toolbarColor: Colors.deepOrange,
+  //           toolbarWidgetColor: Colors.white,
+  //           initAspectRatio: CropAspectRatioPreset.original,
+  //           lockAspectRatio: false),
+  //       IOSUiSettings(
+  //         title: 'Cropper',
+  //       ),
+  //     ],
+  //   );
+
+  //   if (croppedFile != null) {
+  //     switch (option) {
+  //       case 1:
+  //         setState(() {
+  //           image = File(croppedFile.path);
+  //         });
+  //         break;
+  //       case 2:
+  //         setState(() {
+  //           image2 = File(croppedFile.path);
+  //         });
+  //         break;
+  //       case 3:
+  //         setState(() {
+  //           image3 = File(croppedFile.path);
+  //         });
+  //         break;
+  //       default:
+  //     }
+  //   } else {}
+  // }
 }

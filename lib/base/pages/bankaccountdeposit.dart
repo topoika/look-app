@@ -64,7 +64,7 @@ class _BankAccountDepositState extends StateMVC<BankAccountDeposit> {
                             fontSize: getHorizontal(context) * 0.04),
                       ),
                       Text(
-                        ": ${currentUser.value.points.toString()}",
+                        "     ${currentUser.value.points.toString()}",
                         style: TextStyle(
                             color: Colors.red,
                             fontWeight: FontWeight.bold,
@@ -112,7 +112,8 @@ class _BankAccountDepositState extends StateMVC<BankAccountDeposit> {
                                     .of(context)
                                     .please_enter_the_depositor_name,
                                 hintStyle: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
+                                    fontSize: getHorizontal(context) * 0.034,
+                                    fontWeight: FontWeight.w700),
                               ),
                               validator: (val) {
                                 return val!.length > 5

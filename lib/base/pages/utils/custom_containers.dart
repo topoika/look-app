@@ -338,34 +338,29 @@ Widget divider(double thickness) {
 }
 
 Widget editProfileImageContainer(
-    BuildContext context, File? image, String? img) {
+    BuildContext context, String? img, Function ontap) {
   return Padding(
     padding: const EdgeInsets.all(8),
     child: Container(
-        width: getHorizontal(context) / 3 - 27,
-        height: getVertical(context) * 0.18,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          color: img != null ? Colors.transparent : Colors.black26,
-        ),
-        child: Stack(
-          children: [
-            image != null
-                ? Image.file(
-                    image,
-                    height: getVertical(context) * 0.18,
-                    width: getHorizontal(context) / 3 - 27,
-                    fit: BoxFit.cover,
-                  )
-                : img != null
-                    ? Image.network(
-                        img,
-                        height: getVertical(context) * 0.18,
-                        width: getHorizontal(context) / 3 - 27,
-                        fit: BoxFit.cover,
-                      )
-                    : SizedBox(),
-            Align(
+      width: getHorizontal(context) / 3 - 27,
+      height: getVertical(context) * 0.18,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: img != null ? Colors.transparent : Colors.black26,
+      ),
+      child: Stack(
+        children: [
+          img != null
+              ? Image.network(
+                  img,
+                  height: getVertical(context) * 0.18,
+                  width: getHorizontal(context) / 3 - 27,
+                  fit: BoxFit.cover,
+                )
+              : SizedBox(),
+          GestureDetector(
+            onTap: () => ontap(),
+            child: Align(
               alignment: Alignment.bottomRight,
               child: Container(
                 padding: EdgeInsets.all(5),
@@ -378,14 +373,16 @@ Widget editProfileImageContainer(
                       Theme.of(context).accentColor,
                     ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
                 child: Icon(
-                  Icons.add,
+                  Icons.delete,
                   color: Colors.white,
                   size: 15,
                 ),
               ),
-            )
-          ],
-        )),
+            ),
+          )
+        ],
+      ),
+    ),
   );
 }
 
@@ -459,3 +456,47 @@ Widget addStreamTitleBottomSheet(BuildContext context) {
     ),
   );
 }
+
+Widget bigEventBtn(BuildContext context) => Center(
+      child: GestureDetector(
+        onTap: () => Navigator.pushReplacementNamed(context, "/BigEvent"),
+        child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.only(top: getVertical(context) * 0.1),
+              padding: EdgeInsets.symmetric(
+                  horizontal: getHorizontal(context) * 0.16, vertical: 5),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.red, width: 1),
+                borderRadius: BorderRadius.circular(40),
+              ),
+              child: Text(
+                S.of(context).big_event,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.w700,
+                    fontSize: getHorizontal(context) * 0.04),
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.redAccent,
+              ),
+              margin: EdgeInsets.symmetric(
+                  horizontal: getHorizontal(context) * 0.04),
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: Text(
+                "Get 1.5 times point when you pay for bank accounts",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: getHorizontal(context) * 0.035,
+                    fontWeight: FontWeight.w700),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );

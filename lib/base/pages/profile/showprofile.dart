@@ -29,7 +29,7 @@ class _MyProfileState extends State<MyProfile> {
               width: getHorizontal(context) * 1,
               height: getVertical(context) * 0.34,
               child: Image.network(
-                _user.image ?? noImage,
+                _user.images!.length > 0 ? _user.images![0] : noImage,
                 fit: BoxFit.cover,
               ),
             ),
@@ -126,6 +126,10 @@ class _MyProfileState extends State<MyProfile> {
                           ],
                         ),
                       ),
+                      InkWell(
+                          onTap: () =>
+                              Navigator.pushNamed(context, "/CallsHistory"),
+                          child: cont(coinstore, "Redeem Points")),
                       InkWell(
                           onTap: () =>
                               Navigator.pushNamed(context, "/CallsHistory"),

@@ -14,9 +14,6 @@ class User {
   String? phone;
   String? gender;
   String? marital;
-  String? image;
-  String? image2;
-  String? image3;
   int? points;
   String? personality;
   String? drinking;
@@ -27,6 +24,7 @@ class User {
   int? age;
   String? active;
   List<String>? interests;
+  List<String>? images;
   bool? globalMode;
   bool? videoCallsAvailable;
   User({
@@ -45,9 +43,6 @@ class User {
     this.phone,
     this.gender,
     this.marital,
-    this.image,
-    this.image2,
-    this.image3,
     this.points,
     this.personality,
     this.drinking,
@@ -57,6 +52,7 @@ class User {
     this.smsRate,
     this.age,
     this.interests,
+    this.images,
     this.active,
     this.globalMode,
     this.videoCallsAvailable,
@@ -79,9 +75,6 @@ class User {
       'phone': phone,
       'gender': gender ?? "",
       'marital': marital ?? "",
-      'image': image ?? "",
-      'image2': image2 ?? "",
-      'image3': image3 ?? "",
       'points': points ?? 0,
       'personality': personality ?? "",
       'drinking': drinking ?? "",
@@ -91,9 +84,10 @@ class User {
       'smsRate': smsRate ?? 0,
       'age': age ?? 0,
       'interests': interests ?? [],
+      'images': images ?? [],
       'active': active ?? "online",
       'globalMode': globalMode ?? false,
-      'videoCallsAvailable': videoCallsAvailable ?? videoCallsAvailable,
+      'videoCallsAvailable': videoCallsAvailable ?? false,
     };
   }
 
@@ -114,9 +108,6 @@ class User {
       phone: map['phone'],
       gender: map['gender'],
       marital: map['marital'],
-      image: map['image'],
-      image2: map['image2'],
-      image3: map['image3'],
       points: map['points']!.toInt(),
       personality: map['personality'],
       drinking: map['drinking'],
@@ -127,9 +118,10 @@ class User {
       age: map['age'],
       interests:
           map['interests'] != null ? List<String>.from(map['interests']) : null,
+      images: map['images'] != null ? List<String>.from(map['images']) : null,
       active: map['active'],
       globalMode: map['globalMode'],
-      videoCallsAvailable: map['videoCallsAvailable'],
+      videoCallsAvailable: map['videoCallsAvailable'] ?? false,
     );
   }
 }

@@ -90,8 +90,10 @@ class _CallingDialogState extends StateMVC<CallingDialog> {
                 CircleAvatar(
                   radius: getHorizontal(context) * 0.05,
                   backgroundColor: Colors.white24,
-                  backgroundImage:
-                      NetworkImage(widget.videoCall.caller!.image ?? noImage),
+                  backgroundImage: NetworkImage(
+                      widget.videoCall.caller!.images!.length > 0
+                          ? widget.videoCall.caller!.images![0]
+                          : noImage),
                 )
               ],
             ),

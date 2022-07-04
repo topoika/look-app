@@ -5,7 +5,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:look/base/pages/utils/button.dart';
 import 'package:look/constant/theme.dart';
 import 'package:look/base/pages/profile/education.dart';
-import 'package:image_cropper/image_cropper.dart';
 
 import '../../../generated/l10n.dart';
 import '../../Helper/dimension.dart';
@@ -19,7 +18,8 @@ class UploadPhoto extends StatefulWidget {
 }
 
 class _UploadPhotoState extends State<UploadPhoto> {
-  late File _image;
+  final List<File> _images = <File>[];
+
   bool image = false;
   final formKey = GlobalKey<FormState>();
   String _selectedDate = "";
@@ -62,7 +62,7 @@ class _UploadPhotoState extends State<UploadPhoto> {
                   onTap: () {
                     chooseFile();
                   },
-                  child: !image
+                  child: _images.length < 1
                       ? Container(
                           padding: const EdgeInsets.all(10),
                           width: getHorizontal(context) * 0.35,
@@ -81,7 +81,7 @@ class _UploadPhotoState extends State<UploadPhoto> {
                           width: getHorizontal(context) * 0.35,
                           height: getVertical(context) * 0.18,
                           child: CircleAvatar(
-                            backgroundImage: FileImage(_image),
+                            backgroundImage: FileImage(_images[0]),
                           ),
                         ),
                 ),
@@ -217,7 +217,10 @@ class _UploadPhotoState extends State<UploadPhoto> {
                     registerUser(currentUser.value).then((value) {
                       setState(() {
                         currentUser.value = value;
-                        uploadProfilePicture(_image, value, 1);
+                        uploadProfilePictures(
+                          _images,
+                          value,
+                        );
                         currentUser.notifyListeners();
                       });
                       Navigator.pushReplacement(
@@ -244,7 +247,7 @@ class _UploadPhotoState extends State<UploadPhoto> {
         maxWidth: 500);
     if (pickedFile != null) {
       setState(() {
-        _image = File(pickedFile.path);
+        _images.add(File(pickedFile.path));
         image = true;
       });
     } else {}

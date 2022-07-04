@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/strings.dart';
-import 'package:look/base/pages/bigevent.dart';
-import 'package:look/base/pages/utils/snackbar.dart';
 
 import '../../generated/l10n.dart';
 import '../repositories/user_repository.dart';
 import 'bankaccountdeposit.dart';
+import 'utils/custom_containers.dart';
 
 class Recharge extends StatefulWidget {
   const Recharge({Key? key}) : super(key: key);
@@ -18,13 +17,7 @@ class Recharge extends StatefulWidget {
 class _RechargeState extends State<Recharge> {
   @override
   void initState() {
-    showBanner();
     super.initState();
-  }
-
-  showBanner() async {
-    await Future.delayed(Duration(seconds: 2)).then((value) => showSnackBar(
-        context, "Get 1.5 times point when you pay for bank accounts", true));
   }
 
   @override
@@ -48,27 +41,31 @@ class _RechargeState extends State<Recharge> {
                   Text(
                     S.of(context).points_recharge,
                     style: TextStyle(
-                      fontSize: getHorizontal(context) * 0.046,
+                      fontSize: getHorizontal(context) * 0.07,
+                      fontWeight: FontWeight.w800,
                     ),
                   ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        S.of(context).my_points,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: getHorizontal(context) * 0.04),
-                      ),
-                      Text(
-                        ": ${currentUser.value.points.toString()}",
-                        style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.bold,
-                            fontSize: getHorizontal(context) * 0.04),
-                      )
-                    ],
+                  SizedBox(height: 10),
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      text: S.of(context).my_points,
+                      style: TextStyle(
+                          fontSize: getHorizontal(context) * 0.04,
+                          color: Colors.black87,
+                          fontWeight: FontWeight.bold),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: "    " +
+                              currentUser.value.points.toString() +
+                              "P",
+                          style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold,
+                              fontSize: getHorizontal(context) * 0.04),
+                        ),
+                      ],
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -98,30 +95,7 @@ class _RechargeState extends State<Recharge> {
                       box(40000, 189.0),
                     ],
                   ),
-                  Center(
-                    child: Container(
-                      margin: EdgeInsets.only(top: getVertical(context) * 0.1),
-                      padding: const EdgeInsets.all(10),
-                      width: getHorizontal(context) * 0.5,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.red, width: 3),
-                        borderRadius: BorderRadius.circular(40),
-                      ),
-                      child: InkWell(
-                          onTap: () => Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => BigEvent())),
-                          child: Text(
-                            S.of(context).big_event,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.bold,
-                                fontSize: getHorizontal(context) * 0.05),
-                          )),
-                    ),
-                  )
+                  bigEventBtn(context)
                 ],
               )
             ],
@@ -132,7 +106,7 @@ class _RechargeState extends State<Recharge> {
   }
 
   Widget box(int txt, double price) {
-    return InkWell(
+    return GestureDetector(
       onTap: () => Navigator.pushReplacement(
           context,
           MaterialPageRoute(

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,13 +8,16 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/helper.dart';
+import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/pages/mobile_login.dart';
+import 'package:look/base/pages/utils/snackbar.dart';
 
 import '../models/user_model.dart' as userModel;
 import 'package:path/path.dart' as Path;
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final FirebaseAuth auth = FirebaseAuth.instance;
+FirebaseStorage storage = FirebaseStorage.instance;
 
 ValueNotifier<userModel.User> currentUser = ValueNotifier(userModel.User());
 const userCollection = 'Users';
@@ -103,9 +107,23 @@ Future<void> profilePhoto({photo, email}) async {
   });
 }
 
+var acs = ActionCodeSettings(
+    // URL you want to redirect back to. The domain (www.example.com) for this
+    // URL must be whitelisted in the Firebase Console.
+    url: 'https://www.example.com/finishSignUp?cartId=1234',
+    // This must be true
+    handleCodeInApp: true,
+    iOSBundleId: 'com.example.ios',
+    androidPackageName: 'com.example.android',
+    // installIfNotAvailable
+    androidInstallApp: true,
+    // minimumVersion
+    androidMinimumVersion: '12');
 Future phoneLogin(String mobile, BuildContext context) async {
   Overlay.of(context)!.insert(loader);
   log(mobile);
+  auth.sendSignInLinkToEmail(
+      email: "toptam13@gmil.com", actionCodeSettings: acs);
   auth.verifyPhoneNumber(
     phoneNumber: mobile,
     timeout: const Duration(seconds: 60),
@@ -177,30 +195,33 @@ void logOut(context) {
       (route) => false);
 }
 
-Future<userModel.User> uploadProfilePicture(
-    photo, userModel.User user, int option) async {
-  Reference storageReference = FirebaseStorage.instance
-      .ref()
-      .child('${user.uid}/${Path.basename(photo.path)}');
-  UploadTask uploadTask = storageReference.putFile(photo);
-  await uploadTask.then((res) {
-    res.ref.getDownloadURL();
-  });
-  return await storageReference.getDownloadURL().then((value) {
-    switch (option) {
-      case 1:
-        currentUser.value.image = value;
-        break;
-      case 2:
-        currentUser.value.image2 = value;
-        break;
-      case 3:
-        currentUser.value.image3 = value;
-        break;
-      default:
-    }
-    return updateUser(currentUser.value);
-  });
+Future<userModel.User> uploadProfilePictures(
+    List<File> photos, userModel.User user) async {
+  for (var photo in photos) {
+    UploadTask uploadTask = storage
+        .ref()
+        .child('users/')
+        .child('profilePictures/')
+        .child("${user.uid}/${photo.path.split('/').last}")
+        .putFile(photo);
+    await uploadTask.then((res) async {
+      await res.ref.getDownloadURL().then((value) {
+        currentUser.value.images!.add(value);
+      });
+    });
+  }
+  return updateUser(currentUser.value);
+}
+
+void deleteImage(BuildContext context) async {
+  try {
+    await _firestore
+        .collection(userCollection)
+        .doc(currentUser.value.uid)
+        .update({"images": currentUser.value.images});
+  } catch (e) {
+    showSnackBar(context, "Verify your internet connection", true);
+  }
 }
 
 void updateUserStatus(String id, String status) async {

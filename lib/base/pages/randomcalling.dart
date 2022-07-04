@@ -125,7 +125,9 @@ class _RandomCallingState extends StateMVC<RandomCalling> {
                                 radius: getHorizontal(context) * 0.11,
                                 backgroundColor: Colors.white,
                                 backgroundImage: NetworkImage(
-                                    currentUser.value.image ?? noImage),
+                                    currentUser.value.images!.length > 0
+                                        ? currentUser.value.images![0]
+                                        : noImage),
                                 child: videoCall != null
                                     ? Icon(
                                         Icons.check,

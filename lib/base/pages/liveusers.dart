@@ -208,7 +208,9 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(5),
                                     child: Image.network(
-                                      _user!.image ?? noImage,
+                                      _user!.images!.length > 0
+                                          ? _user.images![0]
+                                          : noImage,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -430,7 +432,9 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
                                   image: DecorationImage(
                                     fit: BoxFit.cover,
                                     image: NetworkImage(
-                                      _user!.image ?? noImage,
+                                      _user!.images!.length > 0
+                                          ? _user.images![0]
+                                          : noImage,
                                     ),
                                   ),
                                 ),

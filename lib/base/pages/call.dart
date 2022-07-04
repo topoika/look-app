@@ -163,7 +163,9 @@ class _CallPageState extends StateMVC<CallPage> {
                             radius: 40,
                             backgroundColor: Theme.of(context).accentColor,
                             foregroundImage: NetworkImage(
-                                widget.videoCall.reciever!.image ?? noImage),
+                                widget.videoCall.reciever!.images!.length > 0
+                                    ? widget.videoCall.reciever!.images![0]
+                                    : noImage),
                           ),
                           SizedBox(height: 10),
                           Text(

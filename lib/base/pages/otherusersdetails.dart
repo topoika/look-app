@@ -39,20 +39,63 @@ class _OtherUsersDetailsState extends StateMVC<OtherUsersDetails> {
           children: [
             Stack(
               children: [
-                SizedBox(
+                Container(
+                  color: Colors.black12,
                   height: getVertical(context) * 0.6,
-                  child: Image.network(
-                    _user.image ?? noImage,
-                    fit: BoxFit.cover,
+                  child: _user.images!.length > 0
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          physics: ScrollPhysics(),
+                          itemCount: _user.images!.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: getHorizontal(context) * 0.01),
+                              child: Image.network(
+                                _user.images![index],
+                                fit: BoxFit.cover,
+                                width: getHorizontal(context),
+                              ),
+                            );
+                          })
+                      : Image.network(
+                          noImage,
+                          fit: BoxFit.cover,
+                          width: getHorizontal(context),
+                        ),
+                ),
+                Positioned(
+                  bottom: 10,
+                  child: SizedBox(
+                    height: 16,
+                    width: getHorizontal(context),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          physics: ScrollPhysics(),
+                          itemCount: _user.images!.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              height: 15,
+                              width: 15,
+                              margin: EdgeInsets.symmetric(horizontal: 2),
+                              decoration: BoxDecoration(
+                                color: Colors.redAccent,
+                                shape: BoxShape.circle,
+                              ),
+                            );
+                          }),
+                    ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 5.0, top: 5),
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: const Icon(
+                  child: GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: const Icon(
                       Icons.arrow_back_ios_outlined,
                       color: Colors.red,
                       size: 20,
@@ -124,10 +167,12 @@ class _OtherUsersDetailsState extends StateMVC<OtherUsersDetails> {
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black)),
                                   Text(
-                                    S.of(context).accept,
+                                    widget.random
+                                        ? S.of(context).accept
+                                        : S.of(context).video_call,
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: getHorizontal(context) * 0.045,
+                                      fontSize: getHorizontal(context) * 0.043,
                                       color: Colors.redAccent,
                                     ),
                                   ),

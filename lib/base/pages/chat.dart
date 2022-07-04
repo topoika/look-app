@@ -52,7 +52,9 @@ class _ChatState extends StateMVC<Chat> {
             children: <Widget>[
               CircleAvatar(
                 radius: 25.0,
-                backgroundImage: NetworkImage(_otherUser.image ?? noImage),
+                backgroundImage: NetworkImage(_otherUser.images!.length > 0
+                    ? _otherUser.images![0]
+                    : noImage),
                 backgroundColor: Colors.transparent,
               ),
               SizedBox(

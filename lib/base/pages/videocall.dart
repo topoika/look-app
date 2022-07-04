@@ -197,7 +197,9 @@ class _VideoCallsState extends StateMVC<VideoCalls> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(5),
                                     child: Image.network(
-                                      _user.image ?? noImage,
+                                      _user.images!.length > 0
+                                          ? _user.images![0]
+                                          : noImage,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -354,7 +356,9 @@ class _VideoCallsState extends StateMVC<VideoCalls> {
                                   image: DecorationImage(
                                     fit: BoxFit.cover,
                                     image: NetworkImage(
-                                      _user.image ?? noImage,
+                                      _user.images!.length > 0
+                                          ? _user.images![0]
+                                          : noImage,
                                     ),
                                   ),
                                 ),
