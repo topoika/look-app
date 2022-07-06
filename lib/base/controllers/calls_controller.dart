@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -14,7 +16,36 @@ import '../repositories/user_repository.dart';
 
 class CallsController extends MainController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  String callsCollection = "callHistory";
+  late Timer timer;
+  int seconds = 0;
+  int minutes = 0;
+  int hours = 0;
   final GlobalKey<ScaffoldState> globalKey = GlobalKey();
+
+  void startTimer(VideoCall call) {
+    const oneSec = const Duration(seconds: 1);
+    timer = new Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        setState(() {
+          seconds++;
+        });
+        updateCallTime(call);
+        if (seconds == 60) {
+          setState(() {
+            minutes++;
+            seconds = 0;
+          });
+        }
+        if (minutes == 60) {
+          hours++;
+          minutes = 0;
+        }
+      },
+    );
+  }
+
   void removeFromRandomCalls(BuildContext context) async {
     try {
       await firestore
@@ -24,8 +55,16 @@ class CallsController extends MainController {
       Navigator.pushNamedAndRemoveUntil(
           context, "/LiveUsers", ModalRoute.withName('/LiveUsers'));
     } catch (e) {
-      showSnackBar(context, "Veify your internet connection", true);
+      showSnackBar(
+          context, S.of(context).verify_your_internet_connection, true);
     }
+  }
+
+  void updateCallTime(VideoCall call) async {
+    await firestore
+        .collection("videoCalls")
+        .doc(call.id)
+        .update({"minutes": minutes, "hours": hours, "seconds": seconds});
   }
 
   Future<void> createVideoCall(BuildContext context, User user) async {
@@ -38,7 +77,10 @@ class CallsController extends MainController {
           _videoCall.name = user.name;
           _videoCall.caller = currentUser.value;
           _videoCall.reciever = user;
-          _videoCall.minutes = 0;
+          _videoCall.minutes = 00;
+          _videoCall.hours = 00;
+          _videoCall.seconds = 00;
+          _videoCall.time = DateTime.now().toString();
           try {
             firestore
                 .collection("videoCalls")
@@ -55,7 +97,8 @@ class CallsController extends MainController {
             Notifications().sendPushMessage(
                 user.deviceToken!, _videoCall.id!, "Message", "call");
           } catch (e) {
-            showSnackBar(context, "Veify your internet connection", true);
+            showSnackBar(
+                context, S.of(context).verify_your_internet_connection, true);
           }
         } else {
           showSnackBar(
@@ -83,7 +126,8 @@ class CallsController extends MainController {
             .doc(currentUser.value.uid)
             .set(videoCall.toMap());
       } catch (e) {
-        showSnackBar(context, "Veify your internet connection", true);
+        showSnackBar(
+            context, S.of(context).verify_your_internet_connection, true);
       }
       return videoCall;
     });
@@ -113,21 +157,28 @@ class CallsController extends MainController {
       Navigator.pushReplacementNamed(context, "/CallPage",
           arguments: videoCall);
     } catch (e) {
-      showSnackBar(context, "Veify your internet connection", true);
+      showSnackBar(
+          context, S.of(context).verify_your_internet_connection, true);
     }
   }
 
   void declineVideoCall(BuildContext context, VideoCall videoCall) async {
+    videoCall.minutes = minutes;
+    videoCall.seconds = seconds;
+    videoCall.hours = hours;
     try {
-      firestore.collection("videoCalls").doc(videoCall.id).delete();
+      firestore.collection(callsCollection).add(videoCall.toMap()).then(
+          (value) =>
+              firestore.collection("videoCalls").doc(videoCall.id).delete());
       Fluttertoast.showToast(
-        msg: "Call ended",
+        msg: S.of(context).call_ended,
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 5,
       );
     } catch (e) {
-      showSnackBar(context, "Veify your internet connection", true);
+      showSnackBar(
+          context, S.of(context).verify_your_internet_connection, true);
     }
   }
 }

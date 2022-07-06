@@ -6,6 +6,7 @@ import 'package:look/base/controllers/videocalls_controller.dart';
 import 'package:look/base/models/user_model.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
+import '../Helper/helper.dart';
 import '../Helper/strings.dart';
 import '../../generated/l10n.dart';
 import '../models/country_model.dart';
@@ -363,22 +364,23 @@ class _VideoCallsState extends StateMVC<VideoCalls> {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: getHorizontal(context) * 0.03),
+                              SizedBox(width: getHorizontal(context) * 0.02),
                               SizedBox(
-                                width: getHorizontal(context) * 0.62,
+                                width: getHorizontal(context) * 0.55,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: <Widget>[
                                     Text(
-                                      "${_user.name ?? ""} ${_user.age.toString()} ${_user.location}",
+                                      "${_user.name ?? ""} ${_user.age.toString()} ${_user.location!.split(" ")[0].replaceAll(",", "")}, ${_user.country}",
                                       maxLines: 1,
-                                      style: mainStyle(Colors.black, 0.031),
+                                      style: mainStyle(Colors.black, 0.032),
                                     ),
                                     Text(
                                       _user.describe ?? "",
                                       maxLines: 1,
-                                      style: mainStyle(Colors.black45, 0.028),
+                                      style: mainStyle(Colors.black45, 0.026),
                                     ),
                                   ],
                                 ),
@@ -386,10 +388,11 @@ class _VideoCallsState extends StateMVC<VideoCalls> {
                               Spacer(),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   Text(
-                                    "1hr",
+                                    getTimeDifference(_user.dob!)!,
                                     style: mainStyle(Colors.black45, 0.029),
                                   ),
                                   Text(

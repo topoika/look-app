@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:flutter_share/flutter_share.dart';
+import 'package:look/base/Helper/helper.dart';
+import 'package:look/base/controllers/user_controller.dart';
+import 'package:look/base/models/user_model.dart';
+import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../generated/l10n.dart';
+import '../../repositories/user_repository.dart';
 
 class MyInvitee extends StatefulWidget {
   MyInvitee({Key? key}) : super(key: key);
 
   @override
-  State<MyInvitee> createState() => _MyInviteeState();
+  _MyInviteeState createState() => _MyInviteeState();
 }
 
-class _MyInviteeState extends State<MyInvitee> {
+class _MyInviteeState extends StateMVC<MyInvitee> {
+  late UserController _con;
+  _MyInviteeState() : super(UserController()) {
+    _con = controller as UserController;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,27 +68,47 @@ class _MyInviteeState extends State<MyInvitee> {
                 ),
               ],
             ),
-            ListView.builder(
-              physics: ScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: 5,
-              itemBuilder: (context, index) => Table(
-                border: TableBorder.all(
-                    color: Colors
-                        .transparent), // Allows to add a border decoration around your table
-                children: [
-                  TableRow(
-                    children: [
-                      tableItem(context, "2022-05-01"),
-                      tableItem(context, "david wiil"),
-                      tableItem(context, "male"),
-                      tableItem(context, "22"),
-                      tableItem(context, "Nairobi kenya"),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+            StreamBuilder(
+                stream: _con.firebaseFirestore
+                    .collection(_con.userCollection)
+                    .where('invitee', isEqualTo: currentUser.value.uid)
+                    .orderBy("joined", descending: true)
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                        snapshot) {
+                  return !snapshot.hasData
+                      ? SizedBox()
+                      : ListView.builder(
+                          physics: ScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            var user =
+                                User.fromMap(snapshot.data!.docs[index].data());
+                            return Table(
+                              border: TableBorder.all(
+                                  color: Colors
+                                      .transparent), // Allows to add a border decoration around your table
+                              children: [
+                                TableRow(
+                                  children: [
+                                    tableItem(
+                                        context,
+                                        getDateFormatedFromString(
+                                            user.joined!, "date")!),
+                                    tableItem(
+                                        context, user.name!.toLowerCase()),
+                                    tableItem(context, user.gender!),
+                                    tableItem(context, user.age!.toString()),
+                                    tableItem(context,
+                                        "${user.location!.split(" ")[0].replaceAll(",", "")} ${user.country}"),
+                                  ],
+                                ),
+                              ],
+                            );
+                          });
+                }),
           ],
         ),
       ),
@@ -104,6 +134,6 @@ Widget tableItem(BuildContext context, String text) => Padding(
         style: TextStyle(
             fontWeight: FontWeight.w800,
             color: Colors.black54,
-            fontSize: getHorizontal(context) * 0.028),
+            fontSize: getHorizontal(context) * 0.026),
       ),
     );

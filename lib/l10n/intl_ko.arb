@@ -195,5 +195,21 @@
     "full_name": "이름",
     "gender_text": "성별",
     "age_text": "나이",
-    "location_text":"위치"
+    "location_text":"위치",
+    "ask_any_question_and_admin_will_respond_immediatelly": "어떤 질문이든 관리자가 즉시 응답합니다",
+    "what_can_i_help_you":"무엇을 도와드릴까요?",
+    "point_to_be_refund": "환불 포인트",
+    "bank_text": "은행",
+    "account_text": "계정",
+    "depositor_text": "예금자",
+    "notice_text": "공지",
+    "the_minimum_redeem_point_is":"최소 교환 포인트는",
+    "we_deduct": "공제합니다",
+    "deposit_fee_and": "예금 수수료 및",
+    "vat_text":"VAT.",
+    "city_text": "도시",
+    "call_ended": "통화 종료됨",
+    "Please_wait": "기다려 주십시오",
+    "verify_your_internet_connection":"인터넷 연결 확인",
+    "there_are_not_enough_you_have":"당신이 가진 것이 충분하지 않습니다."
 }

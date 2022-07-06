@@ -199,5 +199,21 @@
     "full_name":"full name",
     "gender_text":"gender",
     "age_text":"age",
-    "location_text":"location"
+    "location_text":"location",
+    "ask_any_question_and_admin_will_respond_immediatelly":"Ask any question and admin will respond immediatelly",
+    "what_can_i_help_you":"What can I help you",
+    "point_to_be_refund":"Point to be refund",
+    "bank_text":"Bank",
+    "account_text":"Account",
+    "depositor_text":"Depositor",
+    "notice_text":"Notice",
+    "the_minimum_redeem_point_is":"The minimum redeem point is",
+    "we_deduct":"We deduct",
+    "deposit_fee_and":"deposit fee and",
+    "vat_text":"VAT.",
+    "city_text":"City",
+    "call_ended":"Call ended",
+    "please_wait":"Please wait",
+    "verify_your_internet_connection":"Verify your internet connection",
+    "there_are_not_enough_you_have":"There are not enough you have"
 }

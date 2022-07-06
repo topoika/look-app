@@ -8,6 +8,8 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 class UserController extends ControllerMVC {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   GlobalKey<FormState> phoneFormKey = GlobalKey();
+  FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  String userCollection = "Users";
 
   @override
   void initState() {

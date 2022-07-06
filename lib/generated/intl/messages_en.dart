@@ -25,12 +25,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "accept": MessageLookupByLibrary.simpleMessage("Accept"),
         "account_holder":
             MessageLookupByLibrary.simpleMessage("Account Holder"),
+        "account_text": MessageLookupByLibrary.simpleMessage("Account"),
         "add_content": MessageLookupByLibrary.simpleMessage("Add content"),
         "age_range_of_partners":
             MessageLookupByLibrary.simpleMessage("Age range of partners"),
         "age_text": MessageLookupByLibrary.simpleMessage("age"),
         "all": MessageLookupByLibrary.simpleMessage("All"),
         "are_you_sure": MessageLookupByLibrary.simpleMessage("Are you sure"),
+        "ask_any_question_and_admin_will_respond_immediatelly":
+            MessageLookupByLibrary.simpleMessage(
+                "Ask any question and admin will respond immediatelly"),
         "available_points":
             MessageLookupByLibrary.simpleMessage("Available Points"),
         "bachelor_degree":
@@ -38,8 +42,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "balance_text": MessageLookupByLibrary.simpleMessage("balance"),
         "bank_account_deposit":
             MessageLookupByLibrary.simpleMessage("Bank Account Deposit"),
+        "bank_text": MessageLookupByLibrary.simpleMessage("Bank"),
         "big_event": MessageLookupByLibrary.simpleMessage("Big Event"),
         "block_list": MessageLookupByLibrary.simpleMessage("Block List"),
+        "call_ended": MessageLookupByLibrary.simpleMessage("Call ended"),
         "call_history": MessageLookupByLibrary.simpleMessage("Call History"),
         "calling_text": MessageLookupByLibrary.simpleMessage("Calling"),
         "camping": MessageLookupByLibrary.simpleMessage("Camping"),
@@ -50,6 +56,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "chats": MessageLookupByLibrary.simpleMessage("Chats"),
         "check_internet_connection": MessageLookupByLibrary.simpleMessage(
             "Check your internet connection"),
+        "city_text": MessageLookupByLibrary.simpleMessage("City"),
         "coin_store": MessageLookupByLibrary.simpleMessage("Coin Store"),
         "college": MessageLookupByLibrary.simpleMessage("College"),
         "confirm_text": MessageLookupByLibrary.simpleMessage("Confirm"),
@@ -66,8 +73,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "daily_task": MessageLookupByLibrary.simpleMessage("Daily Task"),
         "dancing": MessageLookupByLibrary.simpleMessage("Dancing"),
         "date_of_birth": MessageLookupByLibrary.simpleMessage("Date of Birth"),
+        "deposit_fee_and":
+            MessageLookupByLibrary.simpleMessage("deposit fee and"),
         "depositor_name":
             MessageLookupByLibrary.simpleMessage("Depositor Name"),
+        "depositor_text": MessageLookupByLibrary.simpleMessage("Depositor"),
         "describe_yourself":
             MessageLookupByLibrary.simpleMessage("Describe yourself"),
         "devorced": MessageLookupByLibrary.simpleMessage("Devorced"),
@@ -189,6 +199,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "It is allowed to upload any ponographic text or image content. If violations are verified, the corporation will stop it directly and the earnings will be not settled"),
         "note_text": MessageLookupByLibrary.simpleMessage("Note"),
+        "notice_text": MessageLookupByLibrary.simpleMessage("Notice"),
         "ok_text": MessageLookupByLibrary.simpleMessage("Ok"),
         "open_minded": MessageLookupByLibrary.simpleMessage("Open Minded"),
         "otp_cant_be_less_than_six_characters":
@@ -213,7 +224,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "Please enter a valid location"),
         "please_enter_the_depositor_name": MessageLookupByLibrary.simpleMessage(
             "Please enter the depositor name"),
+        "please_wait": MessageLookupByLibrary.simpleMessage("Please wait"),
         "point_text": MessageLookupByLibrary.simpleMessage("point"),
+        "point_to_be_refund":
+            MessageLookupByLibrary.simpleMessage("Point to be refund"),
         "points": MessageLookupByLibrary.simpleMessage("Points"),
         "points_collected_visit_tomorrow_to_have_more":
             MessageLookupByLibrary.simpleMessage(
@@ -278,6 +292,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "terms_and_contitions":
             MessageLookupByLibrary.simpleMessage("Terms and Conditions"),
         "terms_of_use": MessageLookupByLibrary.simpleMessage("Terms Of Use"),
+        "the_minimum_redeem_point_is":
+            MessageLookupByLibrary.simpleMessage("The minimum redeem point is"),
+        "there_are_not_enough_you_have": MessageLookupByLibrary.simpleMessage(
+            "There are not enough you have"),
         "these_are_the_terms_and_conditions_or_our_app":
             MessageLookupByLibrary.simpleMessage(
                 "These are the Terms and Conditions or our app"),
@@ -296,14 +314,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "username": MessageLookupByLibrary.simpleMessage("User Name"),
         "using_or_redeem":
             MessageLookupByLibrary.simpleMessage("using or redeem"),
+        "vat_text": MessageLookupByLibrary.simpleMessage("VAT."),
         "vegan": MessageLookupByLibrary.simpleMessage("Vegan"),
         "vegeterian": MessageLookupByLibrary.simpleMessage("Vegeterian"),
+        "verify_your_internet_connection": MessageLookupByLibrary.simpleMessage(
+            "Verify your internet connection"),
         "video_call": MessageLookupByLibrary.simpleMessage("Video Call"),
         "video_rate": MessageLookupByLibrary.simpleMessage("Video rate"),
         "vip_ubscription_plan":
             MessageLookupByLibrary.simpleMessage("VIP Subscription Plan"),
+        "we_deduct": MessageLookupByLibrary.simpleMessage("We deduct"),
         "welcome_to_look":
             MessageLookupByLibrary.simpleMessage("Welcome to Look"),
+        "what_can_i_help_you":
+            MessageLookupByLibrary.simpleMessage("What can I help you"),
         "what_is_your_education":
             MessageLookupByLibrary.simpleMessage("What is Your Education"),
         "widowed": MessageLookupByLibrary.simpleMessage("Widowed"),

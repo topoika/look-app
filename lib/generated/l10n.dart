@@ -2031,6 +2031,166 @@ class S {
       args: [],
     );
   }
+
+  /// `Ask any question and admin will respond immediatelly`
+  String get ask_any_question_and_admin_will_respond_immediatelly {
+    return Intl.message(
+      'Ask any question and admin will respond immediatelly',
+      name: 'ask_any_question_and_admin_will_respond_immediatelly',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `What can I help you`
+  String get what_can_i_help_you {
+    return Intl.message(
+      'What can I help you',
+      name: 'what_can_i_help_you',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Point to be refund`
+  String get point_to_be_refund {
+    return Intl.message(
+      'Point to be refund',
+      name: 'point_to_be_refund',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bank`
+  String get bank_text {
+    return Intl.message(
+      'Bank',
+      name: 'bank_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Account`
+  String get account_text {
+    return Intl.message(
+      'Account',
+      name: 'account_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Depositor`
+  String get depositor_text {
+    return Intl.message(
+      'Depositor',
+      name: 'depositor_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notice`
+  String get notice_text {
+    return Intl.message(
+      'Notice',
+      name: 'notice_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The minimum redeem point is`
+  String get the_minimum_redeem_point_is {
+    return Intl.message(
+      'The minimum redeem point is',
+      name: 'the_minimum_redeem_point_is',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We deduct`
+  String get we_deduct {
+    return Intl.message(
+      'We deduct',
+      name: 'we_deduct',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `deposit fee and`
+  String get deposit_fee_and {
+    return Intl.message(
+      'deposit fee and',
+      name: 'deposit_fee_and',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `VAT.`
+  String get vat_text {
+    return Intl.message(
+      'VAT.',
+      name: 'vat_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `City`
+  String get city_text {
+    return Intl.message(
+      'City',
+      name: 'city_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Call ended`
+  String get call_ended {
+    return Intl.message(
+      'Call ended',
+      name: 'call_ended',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please wait`
+  String get please_wait {
+    return Intl.message(
+      'Please wait',
+      name: 'please_wait',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verify your internet connection`
+  String get verify_your_internet_connection {
+    return Intl.message(
+      'Verify your internet connection',
+      name: 'verify_your_internet_connection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `There are not enough you have`
+  String get there_are_not_enough_you_have {
+    return Intl.message(
+      'There are not enough you have',
+      name: 'there_are_not_enough_you_have',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

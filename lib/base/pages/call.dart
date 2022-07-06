@@ -42,10 +42,12 @@ class _CallPageState extends StateMVC<CallPage> {
     _engine!.setEventHandler(RtcEngineEventHandler(
         joinChannelSuccess: ((channel, uid, elapsed) {}),
         userJoined: (uid, elapsed) {
+          _con.startTimer(widget.videoCall);
           setState(() => _remoteId = uid);
         },
         userOffline: (uid, reason) {
           Navigator.pop(context);
+          _con.timer.cancel();
           _engine!.destroy();
           _engine!.leaveChannel();
         }));
@@ -149,6 +151,23 @@ class _CallPageState extends StateMVC<CallPage> {
                 ],
               ),
             ),
+            _remoteId != null
+                ? Align(
+                    alignment: Alignment.topRight,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: getVertical(context) * 0.04,
+                          horizontal: getHorizontal(context) * 0.04),
+                      child: Text(
+                        "${_con.hours.toString()}:${_con.minutes.toString()}:${_con.seconds.toString()}",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w800,
+                            color: Colors.grey[900],
+                            fontSize: getHorizontal(context) * 0.045),
+                      ),
+                    ),
+                  )
+                : SizedBox(),
             Align(
               alignment: Alignment.topCenter,
               child: _remoteId != null
@@ -211,6 +230,7 @@ class _CallPageState extends StateMVC<CallPage> {
           onPressed: () {
             Navigator.pop(context);
             _con.declineVideoCall(context, widget.videoCall);
+            _con.timer.cancel();
             _engine!.leaveChannel();
             _engine!.destroy();
           },
@@ -232,7 +252,7 @@ class _CallPageState extends StateMVC<CallPage> {
   void dispose() {
     _engine!.leaveChannel();
     _engine!.destroy();
-
+    _con.timer.cancel();
     super.dispose();
   }
 }

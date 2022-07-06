@@ -9,6 +9,7 @@ class User {
   String? job;
   String? location;
   String? dob;
+  String? joined;
   String? describe;
   String? education;
   String? phone;
@@ -38,6 +39,7 @@ class User {
     this.job,
     this.location,
     this.dob,
+    this.joined,
     this.describe,
     this.education,
     this.phone,
@@ -70,6 +72,7 @@ class User {
       'job': job ?? "",
       'location': location ?? "",
       'dob': dob ?? "",
+      'joined': joined ?? "",
       'describe': describe ?? "",
       'education': education ?? "",
       'phone': phone,
@@ -103,6 +106,7 @@ class User {
       job: map['job'],
       location: map['location'],
       dob: map['dob'],
+      joined: map['joined'],
       describe: map['describe'],
       education: map['education'],
       phone: map['phone'],

@@ -128,8 +128,8 @@ class _MyProfileState extends State<MyProfile> {
                       ),
                       InkWell(
                           onTap: () =>
-                              Navigator.pushNamed(context, "/CallsHistory"),
-                          child: cont(coinstore, "Redeem Points")),
+                              Navigator.pushNamed(context, "/PointRedeem"),
+                          child: cont(coinstore, S.of(context).redeem_points)),
                       InkWell(
                           onTap: () =>
                               Navigator.pushNamed(context, "/CallsHistory"),

@@ -15,6 +15,7 @@ import 'base/pages/modifyinterests.dart';
 import 'base/pages/settings/my_invitees.dart';
 import 'base/pages/settings/one_to_one_chat.dart';
 import 'base/pages/profile/showprofile.dart';
+import 'base/pages/settings/points_redeem.dart';
 import 'base/pages/settings/pubic_notice.dart';
 import 'base/pages/randomcalling.dart';
 import 'base/pages/recharge.dart';
@@ -54,6 +55,8 @@ class RouteGenerator {
             builder: (_) => CallPage(videoCall: args as VideoCall));
       case '/RandomCalling':
         return MaterialPageRoute(builder: (_) => RandomCalling());
+      case '/PointRedeem':
+        return MaterialPageRoute(builder: (_) => PointRedeem());
       case '/TermsAndCondition':
         return MaterialPageRoute(
             builder: (_) => TermsAndCondition(val: args as bool));

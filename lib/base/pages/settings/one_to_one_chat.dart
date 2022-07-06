@@ -38,7 +38,7 @@ class _AdminInquiryState extends StateMVC<AdminInquiry> {
           children: [
             Text("1:1 ${S.of(context).inquiry}"),
             Text(
-              "What can I help you?",
+              S.of(context).what_can_i_help_you + "?",
               style: TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: getHorizontal(context) * 0.035,
@@ -67,9 +67,12 @@ class _AdminInquiryState extends StateMVC<AdminInquiry> {
                       AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
                           snapshot) {
                     return !snapshot.hasData
-                        ? const Center(
+                        ? Center(
                             child: Text(
-                              "No chats, \nbe the first to chat",
+                              S
+                                  .of(context)
+                                  .ask_any_question_and_admin_will_respond_immediatelly,
+                              textAlign: TextAlign.center,
                               style: TextStyle(color: Colors.red),
                             ),
                           )
@@ -101,7 +104,7 @@ class _AdminInquiryState extends StateMVC<AdminInquiry> {
                       textCapitalization: TextCapitalization.sentences,
                       style: TextStyle(
                         fontSize: getHorizontal(context) * 0.038,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w600,
                       ),
                       decoration: InputDecoration(
                         border: OutlineInputBorder(

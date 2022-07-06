@@ -292,7 +292,7 @@ class _OtherUsersDetailsState extends StateMVC<OtherUsersDetails> {
   Future<void> onJoin(chennal, BuildContext context) async {
     await _handleCameraAndMic(Permission.camera);
     await _handleCameraAndMic(Permission.microphone);
-    showToast("Please wait...");
+    showToast(S.of(context).please_wait + "...");
     _con.createVideoCall(context, _user);
   }
 

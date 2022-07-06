@@ -152,7 +152,7 @@ class _ChatState extends StateMVC<Chat> {
                       textCapitalization: TextCapitalization.sentences,
                       style: TextStyle(
                         fontSize: getHorizontal(context) * 0.038,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w600,
                       ),
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
