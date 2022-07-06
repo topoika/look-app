@@ -215,5 +215,9 @@
     "call_ended":"Call ended",
     "please_wait":"Please wait",
     "verify_your_internet_connection":"Verify your internet connection",
-    "there_are_not_enough_you_have":"There are not enough you have"
+    "there_are_not_enough_you_have":"There are not enough you have",
+    "get_one_point_times_points":"Get 1.5 times point when you pay for bank accounts",
+    "searching_for_new_friends":"Searching for new Friends",
+    "go_meet_people_around_the_world":"Go meet people around the world"
+
 }

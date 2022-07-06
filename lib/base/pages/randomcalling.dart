@@ -88,7 +88,7 @@ class _RandomCallingState extends StateMVC<RandomCalling> {
                   ),
                 ),
                 Text(
-                  "Searching for new Friends...",
+                  S.of(context).searching_for_new_friends + "...",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: getHorizontal(context) * 0.06,
@@ -144,7 +144,7 @@ class _RandomCallingState extends StateMVC<RandomCalling> {
                   ),
                 ),
                 Text(
-                  "Go meet people around the world",
+                  S.of(context).go_meet_people_around_the_world,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: getHorizontal(context) * 0.05,

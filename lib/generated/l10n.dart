@@ -2191,6 +2191,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Get 1.5 times point when you pay for bank accounts`
+  String get get_one_point_times_points {
+    return Intl.message(
+      'Get 1.5 times point when you pay for bank accounts',
+      name: 'get_one_point_times_points',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Searching for new Friends`
+  String get searching_for_new_friends {
+    return Intl.message(
+      'Searching for new Friends',
+      name: 'searching_for_new_friends',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Go meet people around the world`
+  String get go_meet_people_around_the_world {
+    return Intl.message(
+      'Go meet people around the world',
+      name: 'go_meet_people_around_the_world',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

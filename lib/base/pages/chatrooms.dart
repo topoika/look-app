@@ -89,7 +89,8 @@ class _ChatRoomsState extends StateMVC<ChatRooms> {
                     ),
                   ),
                   SizedBox(
-                    width: getHorizontal(context),
+                    width:
+                        getHorizontal(context) - getHorizontal(context) * 0.15,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: countries.length,

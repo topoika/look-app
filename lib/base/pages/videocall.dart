@@ -41,17 +41,17 @@ class _VideoCallsState extends StateMVC<VideoCalls> {
             children: [
               topBarItem(context, true),
               Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: getHorizontal(context) * 0.06,
-                    vertical: getVertical(context) * 0.02),
+                margin:
+                    EdgeInsets.symmetric(vertical: getVertical(context) * 0.02),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
                       width: getHorizontal(context) * 0.55,
                       child: TabBar(
-                        indicatorColor: Colors.black,
+                        indicatorColor: Colors.redAccent,
                         indicatorSize: TabBarIndicatorSize.tab,
+                        indicatorWeight: 3,
                         padding: EdgeInsets.all(0),
                         indicatorPadding: EdgeInsets.only(
                             left: getHorizontal(context) * 0.13,
@@ -99,7 +99,8 @@ class _VideoCallsState extends StateMVC<VideoCalls> {
                         ),
                       ),
                       SizedBox(
-                        width: getHorizontal(context),
+                        width: getHorizontal(context) -
+                            getHorizontal(context) * 0.25,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: countries.length,
@@ -146,6 +147,7 @@ class _VideoCallsState extends StateMVC<VideoCalls> {
                       "uid",
                       isNotEqualTo: currentUser.value.uid,
                     )
+                    .where("videoCallsAvailable", isEqualTo: true)
                     .snapshots()
                 : FirebaseFirestore.instance
                     .collection("Users")
@@ -153,6 +155,7 @@ class _VideoCallsState extends StateMVC<VideoCalls> {
                       "uid",
                       isNotEqualTo: currentUser.value.uid,
                     )
+                    .where("videoCallsAvailable", isEqualTo: true)
                     .where("country", isEqualTo: activeCountry)
                     .snapshots(),
             builder:
@@ -315,6 +318,7 @@ class _VideoCallsState extends StateMVC<VideoCalls> {
                     "uid",
                     isNotEqualTo: currentUser.value.uid,
                   )
+                  .where("videoCallsAvailable", isEqualTo: true)
                   .snapshots()
               : FirebaseFirestore.instance
                   .collection("Users")
@@ -322,6 +326,7 @@ class _VideoCallsState extends StateMVC<VideoCalls> {
                     "uid",
                     isNotEqualTo: currentUser.value.uid,
                   )
+                  .where("videoCallsAvailable", isEqualTo: true)
                   .where("country", isEqualTo: activeCountry)
                   .snapshots(),
           builder:

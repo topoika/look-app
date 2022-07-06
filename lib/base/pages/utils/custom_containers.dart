@@ -489,7 +489,7 @@ Widget bigEventBtn(BuildContext context) => Center(
                   horizontal: getHorizontal(context) * 0.04),
               padding: EdgeInsets.symmetric(vertical: 10),
               child: Text(
-                "Get 1.5 times point when you pay for bank accounts",
+                S.of(context).get_one_point_times_points,
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: getHorizontal(context) * 0.035,

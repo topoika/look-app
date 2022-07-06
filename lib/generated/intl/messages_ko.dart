@@ -102,9 +102,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "gender_text": MessageLookupByLibrary.simpleMessage("성별"),
         "get_current_location":
             MessageLookupByLibrary.simpleMessage("현재 위치 가져오기"),
+        "get_one_point_times_points":
+            MessageLookupByLibrary.simpleMessage("은행 계좌 결제 시 1.5배 포인트 적립"),
         "gift_text": MessageLookupByLibrary.simpleMessage("선물"),
         "global_mode": MessageLookupByLibrary.simpleMessage("글로벌 모드"),
         "go_live": MessageLookupByLibrary.simpleMessage("라이브 시작"),
+        "go_meet_people_around_the_world":
+            MessageLookupByLibrary.simpleMessage("전 세계 사람들을 만나러 가세요."),
         "google_play_in_app_bottomsheet_try":
             MessageLookupByLibrary.simpleMessage(
                 "Google Play 인앱 하단 시트, BIG EVENT 시도"),
@@ -215,6 +219,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "search": MessageLookupByLibrary.simpleMessage("검색"),
         "search_username": MessageLookupByLibrary.simpleMessage("사용자 이름 검색"),
         "searching_for_a_user": MessageLookupByLibrary.simpleMessage("사용자 검색"),
+        "searching_for_new_friends":
+            MessageLookupByLibrary.simpleMessage("새 친구 검색 중"),
         "searching_for_user": MessageLookupByLibrary.simpleMessage("사용자 검색"),
         "self_introduction": MessageLookupByLibrary.simpleMessage("자기 소개"),
         "separated": MessageLookupByLibrary.simpleMessage("분리된"),

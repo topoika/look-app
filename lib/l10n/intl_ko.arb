@@ -211,5 +211,7 @@
     "call_ended": "통화 종료됨",
     "Please_wait": "기다려 주십시오",
     "verify_your_internet_connection":"인터넷 연결 확인",
-    "there_are_not_enough_you_have":"당신이 가진 것이 충분하지 않습니다."
+    "there_are_not_enough_you_have":"당신이 가진 것이 충분하지 않습니다.",
+    "get_one_point_times_points":"은행 계좌 결제 시 1.5배 포인트 적립","searching_for_new_friends":"새 친구 검색 중",
+    "go_meet_people_around_the_world":"전 세계 사람들을 만나러 가세요."
 }

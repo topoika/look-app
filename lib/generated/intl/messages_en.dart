@@ -119,9 +119,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "gender_text": MessageLookupByLibrary.simpleMessage("gender"),
         "get_current_location":
             MessageLookupByLibrary.simpleMessage("Get Current Location"),
+        "get_one_point_times_points": MessageLookupByLibrary.simpleMessage(
+            "Get 1.5 times point when you pay for bank accounts"),
         "gift_text": MessageLookupByLibrary.simpleMessage("Gift"),
         "global_mode": MessageLookupByLibrary.simpleMessage("Global mode"),
         "go_live": MessageLookupByLibrary.simpleMessage("Go Live"),
+        "go_meet_people_around_the_world": MessageLookupByLibrary.simpleMessage(
+            "Go meet people around the world"),
         "google_play_in_app_bottomsheet_try":
             MessageLookupByLibrary.simpleMessage(
                 "Google play in app bottomsheet,try BIG EVENT"),
@@ -268,6 +272,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Search Username"),
         "searching_for_a_user":
             MessageLookupByLibrary.simpleMessage("Searching for a User"),
+        "searching_for_new_friends":
+            MessageLookupByLibrary.simpleMessage("Searching for new Friends"),
         "searching_for_user":
             MessageLookupByLibrary.simpleMessage("Searching for new Friends"),
         "self_introduction":
