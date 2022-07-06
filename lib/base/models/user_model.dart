@@ -84,7 +84,7 @@ class User {
       'smsRate': smsRate ?? 0,
       'age': age ?? 0,
       'interests': interests ?? [],
-      'images': images ?? [],
+      'images': images,
       'active': active ?? "online",
       'globalMode': globalMode ?? false,
       'videoCallsAvailable': videoCallsAvailable ?? false,
@@ -118,7 +118,7 @@ class User {
       age: map['age'],
       interests:
           map['interests'] != null ? List<String>.from(map['interests']) : null,
-      images: map['images'] != null ? List<String>.from(map['images']) : null,
+      images: map['images'] != null ? List<String>.from(map['images']) : [],
       active: map['active'],
       globalMode: map['globalMode'],
       videoCallsAvailable: map['videoCallsAvailable'] ?? false,

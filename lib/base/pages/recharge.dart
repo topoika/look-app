@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/strings.dart';
+import 'package:look/base/pages/utils/snackbar.dart';
 
 import '../../generated/l10n.dart';
 import '../repositories/user_repository.dart';
-import 'bankaccountdeposit.dart';
 import 'utils/custom_containers.dart';
 
 class Recharge extends StatefulWidget {
@@ -107,11 +107,7 @@ class _RechargeState extends State<Recharge> {
 
   Widget box(int txt, double price) {
     return GestureDetector(
-      onTap: () => Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  BankAccountDeposit(bigEventPoints: txt, price: price))),
+      onTap: () => showToast(S.of(context).google_play_in_app_bottomsheet_try),
       child: Column(
         children: [
           Container(

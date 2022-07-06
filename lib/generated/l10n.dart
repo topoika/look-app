@@ -1799,6 +1799,238 @@ class S {
       args: [],
     );
   }
+
+  /// `Google play in app bottomsheet,try BIG EVENT`
+  String get google_play_in_app_bottomsheet_try {
+    return Intl.message(
+      'Google play in app bottomsheet,try BIG EVENT',
+      name: 'google_play_in_app_bottomsheet_try',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Payment Amount`
+  String get payment_mount {
+    return Intl.message(
+      'Payment Amount',
+      name: 'payment_mount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Purchase point`
+  String get purchase_point {
+    return Intl.message(
+      'Purchase point',
+      name: 'purchase_point',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Copied to clipboard`
+  String get copied_to_clipboard {
+    return Intl.message(
+      'Copied to clipboard',
+      name: 'copied_to_clipboard',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Copying bank account number`
+  String get copying_bank_account_number {
+    return Intl.message(
+      'Copying bank account number',
+      name: 'copying_bank_account_number',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Depositor Name`
+  String get depositor_name {
+    return Intl.message(
+      'Depositor Name',
+      name: 'depositor_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Account Holder`
+  String get account_holder {
+    return Intl.message(
+      'Account Holder',
+      name: 'account_holder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please Enter the depositor name. If you do not deposit the correct amount or if the depositor name is different, the point charging may be delayed`
+  String get if_you_do_not_deposit_the_correct_amount {
+    return Intl.message(
+      'Please Enter the depositor name. If you do not deposit the correct amount or if the depositor name is different, the point charging may be delayed',
+      name: 'if_you_do_not_deposit_the_correct_amount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bank Account Deposit`
+  String get bank_account_deposit {
+    return Intl.message(
+      'Bank Account Deposit',
+      name: 'bank_account_deposit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have already collected points for today come back tommorow for more`
+  String
+      get you_have_already_collected_points_for_today_come_back_tommorow_for_more {
+    return Intl.message(
+      'You have already collected points for today come back tommorow for more',
+      name:
+          'you_have_already_collected_points_for_today_come_back_tommorow_for_more',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `VIP Subscription Plan`
+  String get vip_ubscription_plan {
+    return Intl.message(
+      'VIP Subscription Plan',
+      name: 'vip_ubscription_plan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Public notice for today is really cool and you gonna love it`
+  String get public_notice_for_today_is_really_cool_and_you_gonna_love_it {
+    return Intl.message(
+      'Public notice for today is really cool and you gonna love it',
+      name: 'public_notice_for_today_is_really_cool_and_you_gonna_love_it',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `recharge or earning`
+  String get recharge_or_rearning {
+    return Intl.message(
+      'recharge or earning',
+      name: 'recharge_or_rearning',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `using or redeem`
+  String get using_or_redeem {
+    return Intl.message(
+      'using or redeem',
+      name: 'using_or_redeem',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `balance`
+  String get balance_text {
+    return Intl.message(
+      'balance',
+      name: 'balance_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `created`
+  String get created_text {
+    return Intl.message(
+      'created',
+      name: 'created_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `name`
+  String get name_text {
+    return Intl.message(
+      'name',
+      name: 'name_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `time`
+  String get time_text {
+    return Intl.message(
+      'time',
+      name: 'time_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `point`
+  String get point_text {
+    return Intl.message(
+      'point',
+      name: 'point_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `full name`
+  String get full_name {
+    return Intl.message(
+      'full name',
+      name: 'full_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `gender`
+  String get gender_text {
+    return Intl.message(
+      'gender',
+      name: 'gender_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `age`
+  String get age_text {
+    return Intl.message(
+      'age',
+      name: 'age_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `location`
+  String get location_text {
+    return Intl.message(
+      'location',
+      name: 'location_text',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

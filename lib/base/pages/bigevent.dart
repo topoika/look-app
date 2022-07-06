@@ -45,7 +45,7 @@ class _BigEventState extends StateMVC<BigEvent> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Bank Account Deposit",
+                S.of(context).bank_account_deposit,
                 style: TextStyle(
                   fontSize: getHorizontal(context) * 0.07,
                   fontWeight: FontWeight.w800,
@@ -170,8 +170,9 @@ class _BigEventState extends StateMVC<BigEvent> {
                                 padding:
                                     const EdgeInsets.only(left: 20, right: 20),
                                 child: Text(
-                                  'Please Enter the depositor name. If you do not deposit the correct amount or if the '
-                                  'depositor name is different, the point charging may be delayed',
+                                  S
+                                      .of(context)
+                                      .if_you_do_not_deposit_the_correct_amount,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontSize: getHorizontal(context) * 0.04),
@@ -228,22 +229,22 @@ class _BigEventState extends StateMVC<BigEvent> {
                           ),
                           child: Column(
                             children: <Widget>[
-                              item(
-                                  "Depositor Name", currentUser.value.name!, 1),
-                              item("Acount Holder", _depositorController.text,
-                                  1),
+                              item(S.of(context).depositor_name,
+                                  currentUser.value.name!, 1),
+                              item(S.of(context).account_holder,
+                                  _depositorController.text, 1),
                               item("Kakao Bank", "333-12-573804", 1),
                               SizedBox(height: getVertical(context) * 0.05),
-                              item("Purchase point", bigEventPoints.toString(),
-                                  2),
-                              item("Payment Amount",
+                              item(S.of(context).purchase_point,
+                                  bigEventPoints.toString(), 2),
+                              item(S.of(context).payment_mount,
                                   "$currency${price.toString()}", 2),
                               SizedBox(height: getVertical(context) * 0.09),
                               GestureDetector(
                                 onTap: () => Clipboard.setData(
                                         ClipboardData(text: "123456789"))
-                                    .then((value) => showSnackBar(
-                                        context, "Copied to clipboard", false)),
+                                    .then((value) => showToast(
+                                        S.of(context).copied_to_clipboard)),
                                 child: Container(
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
@@ -269,7 +270,9 @@ class _BigEventState extends StateMVC<BigEvent> {
                                       SizedBox(
                                           width: getHorizontal(context) * 0.02),
                                       Text(
-                                        "Copying bank account number",
+                                        S
+                                            .of(context)
+                                            .copying_bank_account_number,
                                         style: TextStyle(
                                           fontSize:
                                               getHorizontal(context) * 0.036,

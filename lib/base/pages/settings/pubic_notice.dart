@@ -29,7 +29,7 @@ class _PublicNoticeState extends State<PublicNotice> {
         child: ListView.builder(
           padding: EdgeInsets.symmetric(vertical: 10),
           shrinkWrap: true,
-          itemCount: 8,
+          itemCount: 4,
           physics: ScrollPhysics(),
           itemBuilder: (context, index) => Container(
             child: Column(
@@ -56,7 +56,9 @@ class _PublicNoticeState extends State<PublicNotice> {
                   padding: EdgeInsets.symmetric(
                       horizontal: getHorizontal(context) * 0.04),
                   child: Text(
-                    "Public notice for today is really cool and you gonna love it",
+                    S
+                        .of(context)
+                        .public_notice_for_today_is_really_cool_and_you_gonna_love_it,
                     style: Theme.of(context).textTheme.headline6!.copyWith(
                           color: Colors.black54,
                           fontSize: getHorizontal(context) * 0.04,
@@ -69,7 +71,16 @@ class _PublicNoticeState extends State<PublicNotice> {
                       horizontal: getHorizontal(context) * 0.04, vertical: 10),
                   color: Colors.red.withOpacity(.4),
                   child: Text(
-                      'Public notice for today is really cool and you gonna love it Public notice for today is really cool and you gonna love it Public notice for today is really cool and you gonna love it'),
+                    S
+                            .of(context)
+                            .public_notice_for_today_is_really_cool_and_you_gonna_love_it +
+                        S
+                            .of(context)
+                            .public_notice_for_today_is_really_cool_and_you_gonna_love_it +
+                        S
+                            .of(context)
+                            .public_notice_for_today_is_really_cool_and_you_gonna_love_it,
+                  ),
                 )
               ],
             ),

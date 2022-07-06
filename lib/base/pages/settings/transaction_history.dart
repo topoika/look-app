@@ -63,9 +63,10 @@ class _TransactionHistoryState extends StateMVC<TransactionHistory> {
                     children: [
                       TableRow(
                         children: [
-                          tableItem(context, "recharge or earning"),
-                          tableItem(context, "using or redeem"),
-                          tableItem(context, "balance"),
+                          tableItem(
+                              context, S.of(context).recharge_or_rearning),
+                          tableItem(context, S.of(context).using_or_redeem),
+                          tableItem(context, S.of(context).balance_text),
                         ],
                       ),
                     ],
@@ -124,10 +125,10 @@ class _TransactionHistoryState extends StateMVC<TransactionHistory> {
               children: [
                 TableRow(
                   children: [
-                    tableItem(context, "created"),
-                    tableItem(context, "name"),
-                    tableItem(context, "time"),
-                    tableItem(context, "point"),
+                    tableItem(context, S.of(context).created_text),
+                    tableItem(context, S.of(context).name_text),
+                    tableItem(context, S.of(context).time_text),
+                    tableItem(context, S.of(context).point_text),
                   ],
                 ),
               ],

@@ -49,11 +49,11 @@ class _MyInviteeState extends State<MyInvitee> {
               children: [
                 TableRow(
                   children: [
-                    tableItem(context, "created"),
-                    tableItem(context, "full name"),
-                    tableItem(context, "gender"),
-                    tableItem(context, "age"),
-                    tableItem(context, "location"),
+                    tableItem(context, S.of(context).created_text),
+                    tableItem(context, S.of(context).full_name),
+                    tableItem(context, S.of(context).gender_text),
+                    tableItem(context, S.of(context).age_text),
+                    tableItem(context, S.of(context).location_text),
                   ],
                 ),
               ],

@@ -134,7 +134,7 @@ class _AwardState extends StateMVC<Award> {
                 context,
                 () => Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => const Recharge())),
-                "VIP Subscription Plan"),
+                S.of(context).vip_ubscription_plan),
           ]),
         ),
       ),
@@ -147,8 +147,11 @@ class _AwardState extends StateMVC<Award> {
         GestureDetector(
           onTap: doneToday
               ? () {
-                  snack(number,
-                      "You have already collected points for today come back tommorow for more");
+                  snack(
+                      number,
+                      S
+                          .of(context)
+                          .you_have_already_collected_points_for_today_come_back_tommorow_for_more);
                 }
               : () {
                   setState(() => today = number);

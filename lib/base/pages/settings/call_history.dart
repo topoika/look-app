@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:look/generated/l10n.dart';
 
 class CallsHistory extends StatefulWidget {
   CallsHistory({Key? key}) : super(key: key);
@@ -20,7 +21,7 @@ class _CallsHistoryState extends State<CallsHistory> {
           ),
         ),
         centerTitle: true,
-        title: Text("Call History"),
+        title: Text(S.of(context).call_history),
       ),
       body: Container(),
     );

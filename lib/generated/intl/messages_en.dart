@@ -23,15 +23,21 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accept": MessageLookupByLibrary.simpleMessage("Accept"),
+        "account_holder":
+            MessageLookupByLibrary.simpleMessage("Account Holder"),
         "add_content": MessageLookupByLibrary.simpleMessage("Add content"),
         "age_range_of_partners":
             MessageLookupByLibrary.simpleMessage("Age range of partners"),
+        "age_text": MessageLookupByLibrary.simpleMessage("age"),
         "all": MessageLookupByLibrary.simpleMessage("All"),
         "are_you_sure": MessageLookupByLibrary.simpleMessage("Are you sure"),
         "available_points":
             MessageLookupByLibrary.simpleMessage("Available Points"),
         "bachelor_degree":
             MessageLookupByLibrary.simpleMessage("Bachelor Degree"),
+        "balance_text": MessageLookupByLibrary.simpleMessage("balance"),
+        "bank_account_deposit":
+            MessageLookupByLibrary.simpleMessage("Bank Account Deposit"),
         "big_event": MessageLookupByLibrary.simpleMessage("Big Event"),
         "block_list": MessageLookupByLibrary.simpleMessage("Block List"),
         "call_history": MessageLookupByLibrary.simpleMessage("Call History"),
@@ -52,9 +58,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "continue_to_get_confirmation_code":
             MessageLookupByLibrary.simpleMessage(
                 "Continue to get Confirmation code to your number"),
+        "copied_to_clipboard":
+            MessageLookupByLibrary.simpleMessage("Copied to clipboard"),
+        "copying_bank_account_number":
+            MessageLookupByLibrary.simpleMessage("Copying bank account number"),
+        "created_text": MessageLookupByLibrary.simpleMessage("created"),
         "daily_task": MessageLookupByLibrary.simpleMessage("Daily Task"),
         "dancing": MessageLookupByLibrary.simpleMessage("Dancing"),
         "date_of_birth": MessageLookupByLibrary.simpleMessage("Date of Birth"),
+        "depositor_name":
+            MessageLookupByLibrary.simpleMessage("Depositor Name"),
         "describe_yourself":
             MessageLookupByLibrary.simpleMessage("Describe yourself"),
         "devorced": MessageLookupByLibrary.simpleMessage("Devorced"),
@@ -91,12 +104,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "fishing": MessageLookupByLibrary.simpleMessage("Fishing"),
         "fitness": MessageLookupByLibrary.simpleMessage("Fitness"),
         "free_recharge": MessageLookupByLibrary.simpleMessage("Free Recharge"),
+        "full_name": MessageLookupByLibrary.simpleMessage("full name"),
         "funny": MessageLookupByLibrary.simpleMessage("Funny"),
+        "gender_text": MessageLookupByLibrary.simpleMessage("gender"),
         "get_current_location":
             MessageLookupByLibrary.simpleMessage("Get Current Location"),
         "gift_text": MessageLookupByLibrary.simpleMessage("Gift"),
         "global_mode": MessageLookupByLibrary.simpleMessage("Global mode"),
         "go_live": MessageLookupByLibrary.simpleMessage("Go Live"),
+        "google_play_in_app_bottomsheet_try":
+            MessageLookupByLibrary.simpleMessage(
+                "Google play in app bottomsheet,try BIG EVENT"),
         "grid": MessageLookupByLibrary.simpleMessage("Grid"),
         "heavy_drinker": MessageLookupByLibrary.simpleMessage("Heavy Drinker"),
         "heavy_smoker": MessageLookupByLibrary.simpleMessage("Heavy Smoker"),
@@ -108,6 +126,9 @@ class MessageLookup extends MessageLookupByLibrary {
                 "I agree with above personal handling information"),
         "i_did_not_get_the_code":
             MessageLookupByLibrary.simpleMessage("I don\'t get the code"),
+        "if_you_do_not_deposit_the_correct_amount":
+            MessageLookupByLibrary.simpleMessage(
+                "Please Enter the depositor name. If you do not deposit the correct amount or if the depositor name is different, the point charging may be delayed"),
         "improve_your_profile_to_get_more_attention":
             MessageLookupByLibrary.simpleMessage(
                 "Improve your profile to get more attention"),
@@ -132,6 +153,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "lives_in": MessageLookupByLibrary.simpleMessage("Lives In"),
         "location_based_service_terms": MessageLookupByLibrary.simpleMessage(
             "Location Based Service Terms"),
+        "location_text": MessageLookupByLibrary.simpleMessage("location"),
         "log_out": MessageLookupByLibrary.simpleMessage("Log Out"),
         "make_video_call_with":
             MessageLookupByLibrary.simpleMessage("Make video call with"),
@@ -153,6 +175,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "my_info": MessageLookupByLibrary.simpleMessage("My Info"),
         "my_invitee": MessageLookupByLibrary.simpleMessage("My Invitee"),
         "my_points": MessageLookupByLibrary.simpleMessage("My Points"),
+        "name_text": MessageLookupByLibrary.simpleMessage("name"),
         "new_loction_addition":
             MessageLookupByLibrary.simpleMessage("new location addition"),
         "new_match": MessageLookupByLibrary.simpleMessage("New Match"),
@@ -171,6 +194,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "otp_cant_be_less_than_six_characters":
             MessageLookupByLibrary.simpleMessage(
                 "OTP can\'t be less than 6 characters"),
+        "payment_mount": MessageLookupByLibrary.simpleMessage("Payment Amount"),
         "payment_successful":
             MessageLookupByLibrary.simpleMessage("Payment successful"),
         "personal_information_handling_methods":
@@ -189,6 +213,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Please enter a valid location"),
         "please_enter_the_depositor_name": MessageLookupByLibrary.simpleMessage(
             "Please enter the depositor name"),
+        "point_text": MessageLookupByLibrary.simpleMessage("point"),
         "points": MessageLookupByLibrary.simpleMessage("Points"),
         "points_collected_visit_tomorrow_to_have_more":
             MessageLookupByLibrary.simpleMessage(
@@ -204,10 +229,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "post_graduate": MessageLookupByLibrary.simpleMessage("Post Graduate"),
         "processing_text": MessageLookupByLibrary.simpleMessage("Processing"),
         "public_notice": MessageLookupByLibrary.simpleMessage("Public Notice"),
+        "public_notice_for_today_is_really_cool_and_you_gonna_love_it":
+            MessageLookupByLibrary.simpleMessage(
+                "Public notice for today is really cool and you gonna love it"),
+        "purchase_point":
+            MessageLookupByLibrary.simpleMessage("Purchase point"),
         "push_notifications":
             MessageLookupByLibrary.simpleMessage("Push Notifications"),
         "reading": MessageLookupByLibrary.simpleMessage("Reading"),
         "recharge": MessageLookupByLibrary.simpleMessage("Recharge"),
+        "recharge_or_rearning":
+            MessageLookupByLibrary.simpleMessage("recharge or earning"),
         "recieved_gifts":
             MessageLookupByLibrary.simpleMessage("Recieved Gifts"),
         "redeem_points": MessageLookupByLibrary.simpleMessage("Redeem Points"),
@@ -249,6 +281,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "these_are_the_terms_and_conditions_or_our_app":
             MessageLookupByLibrary.simpleMessage(
                 "These are the Terms and Conditions or our app"),
+        "time_text": MessageLookupByLibrary.simpleMessage("time"),
         "to_use_look_you_must_read_and_agree_to_the_terms_of_user":
             MessageLookupByLibrary.simpleMessage(
                 "To use look, you should read and agree to the terms of use"),
@@ -261,10 +294,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Type atleast 10+ characters"),
         "type_message": MessageLookupByLibrary.simpleMessage("Type Message"),
         "username": MessageLookupByLibrary.simpleMessage("User Name"),
+        "using_or_redeem":
+            MessageLookupByLibrary.simpleMessage("using or redeem"),
         "vegan": MessageLookupByLibrary.simpleMessage("Vegan"),
         "vegeterian": MessageLookupByLibrary.simpleMessage("Vegeterian"),
         "video_call": MessageLookupByLibrary.simpleMessage("Video Call"),
         "video_rate": MessageLookupByLibrary.simpleMessage("Video rate"),
+        "vip_ubscription_plan":
+            MessageLookupByLibrary.simpleMessage("VIP Subscription Plan"),
         "welcome_to_look":
             MessageLookupByLibrary.simpleMessage("Welcome to Look"),
         "what_is_your_education":
@@ -275,6 +312,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "you_are_availble_online_video_call_now_waiting":
             MessageLookupByLibrary.simpleMessage(
                 "You are available online video call now waiting for others"),
+        "you_have_already_collected_points_for_today_come_back_tommorow_for_more":
+            MessageLookupByLibrary.simpleMessage(
+                "You have already collected points for today come back tommorow for more"),
         "your_name_livestream":
             MessageLookupByLibrary.simpleMessage("Your name livestream")
       };

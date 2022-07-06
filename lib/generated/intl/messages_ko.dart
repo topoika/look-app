@@ -23,13 +23,18 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accept": MessageLookupByLibrary.simpleMessage("수락"),
+        "account_holder": MessageLookupByLibrary.simpleMessage("계정 소유자"),
         "add_content": MessageLookupByLibrary.simpleMessage("콘텐츠 추가"),
         "age_range_of_partners":
             MessageLookupByLibrary.simpleMessage("파트너의 연령대"),
+        "age_text": MessageLookupByLibrary.simpleMessage("나이"),
         "all": MessageLookupByLibrary.simpleMessage("모두"),
         "are_you_sure": MessageLookupByLibrary.simpleMessage("확실합니까?"),
         "available_points": MessageLookupByLibrary.simpleMessage("사용 가능한 포인트"),
         "bachelor_degree": MessageLookupByLibrary.simpleMessage("학사 학위"),
+        "balance_text": MessageLookupByLibrary.simpleMessage("균형"),
+        "bank_account_deposit":
+            MessageLookupByLibrary.simpleMessage("은행 계좌 입금"),
         "big_event": MessageLookupByLibrary.simpleMessage("큰 이벤트"),
         "block_list": MessageLookupByLibrary.simpleMessage("차단 목록"),
         "call_history": MessageLookupByLibrary.simpleMessage("통화 기록"),
@@ -48,9 +53,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "continue_text": MessageLookupByLibrary.simpleMessage("계속"),
         "continue_to_get_confirmation_code":
             MessageLookupByLibrary.simpleMessage("당신의 번호로 확인 코드를 계속 받으십시오"),
+        "copying_bank_account_number":
+            MessageLookupByLibrary.simpleMessage("은행 계좌 번호 복사"),
+        "created_text": MessageLookupByLibrary.simpleMessage("생성됨"),
         "daily_task": MessageLookupByLibrary.simpleMessage("일일 작업"),
         "dancing": MessageLookupByLibrary.simpleMessage("춤"),
         "date_of_birth": MessageLookupByLibrary.simpleMessage("생년월일"),
+        "depositor_name": MessageLookupByLibrary.simpleMessage("예금자 이름"),
         "describe_yourself": MessageLookupByLibrary.simpleMessage("자신을 설명하십시오"),
         "devorced": MessageLookupByLibrary.simpleMessage("데버디드"),
         "discard": MessageLookupByLibrary.simpleMessage("폐기"),
@@ -80,12 +89,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "fishing": MessageLookupByLibrary.simpleMessage("낚시"),
         "fitness": MessageLookupByLibrary.simpleMessage("피트니스"),
         "free_recharge": MessageLookupByLibrary.simpleMessage("무료 충전"),
+        "full_name": MessageLookupByLibrary.simpleMessage("이름"),
         "funny": MessageLookupByLibrary.simpleMessage("재미있는"),
+        "gender_text": MessageLookupByLibrary.simpleMessage("성별"),
         "get_current_location":
             MessageLookupByLibrary.simpleMessage("현재 위치 가져오기"),
         "gift_text": MessageLookupByLibrary.simpleMessage("선물"),
         "global_mode": MessageLookupByLibrary.simpleMessage("글로벌 모드"),
         "go_live": MessageLookupByLibrary.simpleMessage("라이브 시작"),
+        "google_play_in_app_bottomsheet_try":
+            MessageLookupByLibrary.simpleMessage(
+                "Google Play 인앱 하단 시트, BIG EVENT 시도"),
         "grid": MessageLookupByLibrary.simpleMessage("그리드"),
         "heavy_drinker": MessageLookupByLibrary.simpleMessage("과음자"),
         "heavy_smoker": MessageLookupByLibrary.simpleMessage("흡연자"),
@@ -96,6 +110,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("위 개인정보취급방침에 동의합니다."),
         "i_did_not_get_the_code":
             MessageLookupByLibrary.simpleMessage("코드를 알 수 없습니다"),
+        "if_you_do_not_deposit_the_correct_amount":
+            MessageLookupByLibrary.simpleMessage(
+                "입금자명을 입력해주세요. 정확한 금액을 입금하지 않거나 입금자명이 다를 경우 포인트 충전이 지연될 수 있습니다"),
         "improve_your_profile_to_get_more_attention":
             MessageLookupByLibrary.simpleMessage("더 많은 관심을 끌기 위해 프로필을 개선하세요"),
         "in_a_relationship": MessageLookupByLibrary.simpleMessage("관계에서"),
@@ -115,6 +132,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "lives_in": MessageLookupByLibrary.simpleMessage("거주"),
         "location_based_service_terms":
             MessageLookupByLibrary.simpleMessage("위치 기반 서비스 약관"),
+        "location_text": MessageLookupByLibrary.simpleMessage("위치"),
         "log_out": MessageLookupByLibrary.simpleMessage("로그아웃"),
         "make_video_call_with":
             MessageLookupByLibrary.simpleMessage("영상 통화 걸기"),
@@ -134,6 +152,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "my_info": MessageLookupByLibrary.simpleMessage("내 정보"),
         "my_invitee": MessageLookupByLibrary.simpleMessage("내 초대자"),
         "my_points": MessageLookupByLibrary.simpleMessage("내 포인트"),
+        "name_text": MessageLookupByLibrary.simpleMessage("이름"),
         "new_loction_addition": MessageLookupByLibrary.simpleMessage("새 위치 추가"),
         "new_match": MessageLookupByLibrary.simpleMessage("새 일치"),
         "next": MessageLookupByLibrary.simpleMessage("다음"),
@@ -147,6 +166,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "open_minded": MessageLookupByLibrary.simpleMessage("오픈 마인드"),
         "otp_cant_be_less_than_six_characters":
             MessageLookupByLibrary.simpleMessage("OTP는 6자 미만일 수 없습니다."),
+        "payment_mount": MessageLookupByLibrary.simpleMessage("지불 금액"),
         "payment_successful": MessageLookupByLibrary.simpleMessage("결제 성공"),
         "personal_information_handling_methods":
             MessageLookupByLibrary.simpleMessage("개인정보 처리 방법"),
@@ -156,6 +176,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "photography": MessageLookupByLibrary.simpleMessage("사진"),
         "please_enter_the_depositor_name":
             MessageLookupByLibrary.simpleMessage("입금자 이름을 입력하세요."),
+        "point_text": MessageLookupByLibrary.simpleMessage("포인트"),
         "points": MessageLookupByLibrary.simpleMessage("포인트"),
         "points_collected_visit_tomorrow_to_have_more":
             MessageLookupByLibrary.simpleMessage(
@@ -167,9 +188,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "post_graduate": MessageLookupByLibrary.simpleMessage("졸업 후"),
         "processing_text": MessageLookupByLibrary.simpleMessage("처리 중"),
         "public_notice": MessageLookupByLibrary.simpleMessage("공시"),
+        "public_notice_for_today_is_really_cool_and_you_gonna_love_it":
+            MessageLookupByLibrary.simpleMessage("오늘의 공개 공지는 정말 멋지고 좋아할 것입니다"),
+        "purchase_point": MessageLookupByLibrary.simpleMessage("구매 포인트"),
         "push_notifications": MessageLookupByLibrary.simpleMessage("푸시 알림"),
         "reading": MessageLookupByLibrary.simpleMessage("독서"),
         "recharge": MessageLookupByLibrary.simpleMessage("재충전"),
+        "recharge_or_rearning":
+            MessageLookupByLibrary.simpleMessage("충전 또는 적립"),
         "recieved_gifts": MessageLookupByLibrary.simpleMessage("받은 선물"),
         "redeem_points": MessageLookupByLibrary.simpleMessage("포인트 사용"),
         "register_the_correct_birthday_to_enjoy_more_and_more_fun":
@@ -199,6 +225,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "status": MessageLookupByLibrary.simpleMessage("상태"),
         "terms_and_contitions": MessageLookupByLibrary.simpleMessage("이용약관"),
         "terms_of_use": MessageLookupByLibrary.simpleMessage("이용 약관"),
+        "time_text": MessageLookupByLibrary.simpleMessage("시간"),
         "to_use_look_you_must_read_and_agree_to_the_terms_of_user":
             MessageLookupByLibrary.simpleMessage(
                 "look을 사용하려면 이용 약관을 읽고 동의해야 합니다"),
@@ -207,10 +234,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "type_a_comment": MessageLookupByLibrary.simpleMessage("댓글을 입력하세요"),
         "type_message": MessageLookupByLibrary.simpleMessage("유형 메시지"),
         "username": MessageLookupByLibrary.simpleMessage("사용자 이름"),
+        "using_or_redeem": MessageLookupByLibrary.simpleMessage("사용 또는 사용"),
         "vegan": MessageLookupByLibrary.simpleMessage("채식주의자"),
         "vegeterian": MessageLookupByLibrary.simpleMessage("채식주의자"),
         "video_call": MessageLookupByLibrary.simpleMessage("화상 통화"),
         "video_rate": MessageLookupByLibrary.simpleMessage("비디오 속도"),
+        "vip_ubscription_plan":
+            MessageLookupByLibrary.simpleMessage("VIP 구독 계획"),
         "welcome_to_look": MessageLookupByLibrary.simpleMessage("봐 주셔서 감사합니다"),
         "what_is_your_education":
             MessageLookupByLibrary.simpleMessage("당신의 교육은 무엇입니까?"),
@@ -220,6 +250,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "you_are_availble_online_video_call_now_waiting":
             MessageLookupByLibrary.simpleMessage(
                 "지금 다른 사람을 기다리는 온라인 화상 통화를 사용할 수 있습니다."),
+        "you_have_already_collected_points_for_today_come_back_tommorow_for_more":
+            MessageLookupByLibrary.simpleMessage("오늘 포인트를 이미 모았습니다. 내일 다시 오세요"),
         "your_name_livestream":
             MessageLookupByLibrary.simpleMessage("당신의 이름은 실시간 스트리밍")
       };

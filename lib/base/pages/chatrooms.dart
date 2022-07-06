@@ -7,7 +7,6 @@ import 'package:look/base/controllers/chat_controller.dart';
 import 'package:look/base/models/chat_room_model.dart';
 import 'package:look/base/pages/search.dart';
 import 'package:look/base/repositories/user_repository.dart';
-import 'package:look/constant/theme.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
@@ -83,8 +82,10 @@ class _ChatRoomsState extends StateMVC<ChatRooms> {
                           children: <Widget>[
                             CircleAvatar(
                               radius: 25.0,
-                              backgroundImage:
-                                  NetworkImage(_otherUser.images!.length>0? _otherUser.images![0] : noImage),
+                              backgroundImage: NetworkImage(
+                                  _otherUser.images!.length > 0
+                                      ? _otherUser.images![0]
+                                      : noImage),
                               backgroundColor: Colors.transparent,
                             ),
                             SizedBox(
