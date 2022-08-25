@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:look/base/controllers/user_controller.dart';
 import 'package:look/base/models/chat_room_model.dart';
 import 'package:look/base/models/message_model.dart';
-import 'package:look/base/pages/utils/snackbar.dart';
 import 'package:look/base/repositories/user_repository.dart';
-import 'package:look/generated/intl/messages_en.dart';
 import './../models/user_model.dart' as userModel;
 
 class SearchController extends UserController {

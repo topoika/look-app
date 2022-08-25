@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
 
-const Color colorAccent = Color(0xff007EF4);
-const Color textColor = Color(0xff071930);
+class theme {
+  Color mC = const Color(0xffff7f6b);
+  Color lightmC = const Color(0xfffccac8);
+  Color mPurple = const Color(0xFFf62459);
+}

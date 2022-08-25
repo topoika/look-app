@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/controllers/chat_controller.dart';
@@ -8,12 +6,11 @@ import 'package:look/base/models/message_model.dart';
 import 'package:look/base/pages/call.dart';
 import 'package:look/base/pages/utils/chat_bubble.dart';
 import 'package:look/base/repositories/user_repository.dart';
-import 'package:look/constant/theme.dart';
+import 'package:look/base/Helper/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as cf;
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
-import '../Helper/helper.dart';
 import '../Helper/strings.dart';
 import '../models/videocall.dart';
 

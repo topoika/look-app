@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:look/base/Helper/dimension.dart';
-import 'package:look/base/controllers/livestream_controller.dart';
 import 'package:look/base/controllers/videocalls_controller.dart';
 import 'package:look/base/models/user_model.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -23,7 +22,7 @@ class VideoCalls extends StatefulWidget {
 }
 
 class _VideoCallsState extends StateMVC<VideoCalls> {
-  String activeCountry = "All";
+  List<String> activeCountry = [];
   late VideoCallsController _con;
   _VideoCallsState() : super(VideoCallsController()) {
     _con = controller as VideoCallsController;
@@ -73,11 +72,7 @@ class _VideoCallsState extends StateMVC<VideoCalls> {
                   child: Row(
                     children: [
                       InkWell(
-                        onTap: () {
-                          setState(() {
-                            activeCountry = "All";
-                          });
-                        },
+                        onTap: () => setState(() => activeCountry = []),
                         child: Container(
                           margin: EdgeInsets.only(
                               right: getHorizontal(context) * 0.03),
@@ -86,7 +81,7 @@ class _VideoCallsState extends StateMVC<VideoCalls> {
                               vertical: 5),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
-                            color: activeCountry == "All"
+                            color: activeCountry.isEmpty
                                 ? Colors.red
                                 : Theme.of(context).accentColor,
                           ),
@@ -106,9 +101,14 @@ class _VideoCallsState extends StateMVC<VideoCalls> {
                           itemCount: countries.length,
                           itemBuilder: (BuildContext context, int index) {
                             var country = countries[index];
-                            return countryItemWidget(context, country, () {
-                              setState(() => activeCountry = country.name!);
-                            }, activeCountry);
+                            return countryItemWidget(
+                                context,
+                                country,
+                                () => setState(() =>
+                                    activeCountry.contains(country.name)
+                                        ? activeCountry.remove(country.name!)
+                                        : activeCountry.add(country.name!)),
+                                activeCountry);
                           },
                         ),
                       ),
@@ -140,7 +140,7 @@ class _VideoCallsState extends StateMVC<VideoCalls> {
           width: getHorizontal(context) * 1,
           height: getVertical(context) * 0.95,
           child: StreamBuilder(
-            stream: activeCountry == "All"
+            stream: activeCountry.isEmpty
                 ? FirebaseFirestore.instance
                     .collection("Users")
                     .where(
@@ -156,7 +156,7 @@ class _VideoCallsState extends StateMVC<VideoCalls> {
                       isNotEqualTo: currentUser.value.uid,
                     )
                     .where("videoCallsAvailable", isEqualTo: true)
-                    .where("country", isEqualTo: activeCountry)
+                    .where("country", whereIn: activeCountry)
                     .snapshots(),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -311,7 +311,7 @@ class _VideoCallsState extends StateMVC<VideoCalls> {
       width: getHorizontal(context) * 0.98,
       height: getVertical(context) * 0.9,
       child: StreamBuilder(
-          stream: activeCountry == "All"
+          stream: activeCountry.isEmpty
               ? FirebaseFirestore.instance
                   .collection("Users")
                   .where(
@@ -327,7 +327,7 @@ class _VideoCallsState extends StateMVC<VideoCalls> {
                     isNotEqualTo: currentUser.value.uid,
                   )
                   .where("videoCallsAvailable", isEqualTo: true)
-                  .where("country", isEqualTo: activeCountry)
+                  .where("country", whereIn: activeCountry)
                   .snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

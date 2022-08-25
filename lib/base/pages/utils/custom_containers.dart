@@ -12,18 +12,18 @@ import 'package:look/base/repositories/user_repository.dart';
 import 'package:look/base/pages/recharge.dart';
 
 import '../awards.dart';
-import '../../../constant/theme.dart';
+import '../../Helper/theme.dart';
 import '../../../generated/l10n.dart';
 import 'titles.dart';
 
 Widget countryItemWidget(BuildContext context, Country country, Function onTap,
-    String activeCountry) {
+    List<String> activeCountry) {
   return GestureDetector(
-    onTap: () => onTap(),
+    onTap: () =>onTap(), 
     child: Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: activeCountry == country.name
+        color: activeCountry.contains(country.name)
             ? Colors.red
             : Theme.of(context).accentColor,
       ),

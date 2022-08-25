@@ -3,7 +3,7 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:look/base/pages/utils/button.dart';
-import 'package:look/constant/theme.dart';
+import 'package:look/base/Helper/theme.dart';
 import 'package:look/base/pages/profile/education.dart';
 
 import '../../../generated/l10n.dart';

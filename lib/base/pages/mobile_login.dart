@@ -1,8 +1,9 @@
-
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/strings.dart';
+import 'package:look/base/pages/utils/custom_containers.dart';
+import 'package:look/base/pages/utils/snackbar.dart';
 import 'package:look/base/repositories/user_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../generated/l10n.dart';
@@ -136,7 +137,7 @@ class _MobilePhoneLoginState extends StateMVC<MobilePhoneLogin> {
                           ),
                         ),
                       ),
-                      SizedBox(height: getVertical(context) * 0.06),
+                      SizedBox(height: getVertical(context) * 0.03),
                       buttonWidget(context, () {
                         if (_phoneFormKey.currentState!.validate()) {
                           currentUser.value.country = country;
@@ -144,6 +145,53 @@ class _MobilePhoneLoginState extends StateMVC<MobilePhoneLogin> {
                               context);
                         }
                       }, S.of(context).next),
+                      Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: getHorizontal(context) * 0.2,
+                              child: Padding(
+                                padding: EdgeInsets.only(right: 8.0),
+                                child: divider(1),
+                              ),
+                            ),
+                            Text(
+                              'OR',
+                            ),
+                            SizedBox(
+                              width: getHorizontal(context) * 0.2,
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 8.0),
+                                child: divider(1),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            socialLoginButton(
+                                context,
+                                () => signInWithGoogle(context),
+                                google,
+                                "Google"),
+                            socialLoginButton(
+                                context,
+                                () => signInWithFacebook(context),
+                                fb,
+                                "Facebbok"),
+                            socialLoginButton(
+                                context,
+                                () =>
+                                    showSnackBar(context, "Coming soon", false),
+                                apple,
+                                "Apple"),
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 ),

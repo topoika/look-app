@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/pages/liveusers.dart';
 import 'package:look/base/pages/utils/button.dart';
-import 'package:look/constant/theme.dart';
+import 'package:look/base/Helper/theme.dart';
 
 import '../../generated/l10n.dart';
 

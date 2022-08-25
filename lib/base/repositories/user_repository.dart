@@ -1,14 +1,14 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/helper.dart';
-import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/pages/mobile_login.dart';
 import 'package:look/base/pages/utils/snackbar.dart';
 
@@ -18,6 +18,8 @@ import 'package:path/path.dart' as Path;
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final FirebaseAuth auth = FirebaseAuth.instance;
 FirebaseStorage storage = FirebaseStorage.instance;
+final GoogleSignIn googleSignIn = GoogleSignIn();
+final fbAuth = FacebookAuth.instance;
 
 ValueNotifier<userModel.User> currentUser = ValueNotifier(userModel.User());
 const userCollection = 'Users';
@@ -88,42 +90,9 @@ Future<userModel.User> updateUser(userModel.User user) async {
   return currentUser.value;
 }
 
-Future<void> profilePhoto({photo, email}) async {
-  Reference storageReference = FirebaseStorage.instance
-      .ref()
-      .child('$email/${Path.basename(photo.path)}');
-  UploadTask uploadTask = storageReference.putFile(photo);
-  await uploadTask.then((res) {
-    res.ref.getDownloadURL();
-  });
-  await storageReference.getDownloadURL().then((fileURL) async {
-    await FirebaseFirestore.instance
-        .collection(userCollection)
-        .doc("hell")
-        .set({
-      'email': email,
-      'image': fileURL,
-    });
-  });
-}
-
-var acs = ActionCodeSettings(
-    // URL you want to redirect back to. The domain (www.example.com) for this
-    // URL must be whitelisted in the Firebase Console.
-    url: 'https://www.example.com/finishSignUp?cartId=1234',
-    // This must be true
-    handleCodeInApp: true,
-    iOSBundleId: 'com.example.ios',
-    androidPackageName: 'com.example.android',
-    // installIfNotAvailable
-    androidInstallApp: true,
-    // minimumVersion
-    androidMinimumVersion: '12');
 Future phoneLogin(String mobile, BuildContext context) async {
   Overlay.of(context)!.insert(loader);
-  log(mobile);
-  auth.sendSignInLinkToEmail(
-      email: "toptam13@gmil.com", actionCodeSettings: acs);
+
   auth.verifyPhoneNumber(
     phoneNumber: mobile,
     timeout: const Duration(seconds: 60),
@@ -184,9 +153,103 @@ Future verifyPhone(
   });
 }
 
+void signInWithGoogle(BuildContext context) async {
+  try {
+    GoogleSignInAccount? account = await googleSignIn.signIn();
+    GoogleSignInAuthentication gSA = await account!.authentication;
+    AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: gSA.accessToken, idToken: gSA.idToken);
+    await auth.signInWithCredential(credential).then((value) async {
+      if (value.user != null) {
+        await FirebaseMessaging.instance.getToken().then((val) {
+          currentUser.value.deviceToken = val.toString();
+        });
+        currentUser.value.email = value.user!.email;
+        currentUser.value.uid = value.user!.uid;
+        currentUser.value.name = value.user!.displayName;
+        currentUser.value.images = [value.user!.photoURL!];
+        currentUser.notifyListeners();
+        Helper.hideLoader(loader);
+        Navigator.pushReplacementNamed(context, "/TermsAndCondition",
+            arguments: false);
+      } else {
+        Helper.hideLoader(loader);
+        Scaffold.of(context)
+            .showSnackBar(const SnackBar(content: Text("Verification Failer")));
+      }
+      var newUser = await getUser(value.user!.uid);
+      if (newUser != null) {
+        currentUser.value = newUser;
+        updateUserStatus(FirebaseAuth.instance.currentUser!.uid, "active");
+        currentUser.notifyListeners();
+      } else {
+        currentUser.value.uid = value.user!.uid;
+        registerUser(currentUser.value);
+        currentUser.notifyListeners();
+      }
+    });
+  } catch (e) {
+    loader.remove();
+    showSnackBar(context, "There is an error, try again", true);
+  }
+}
+
+void signInWithFacebook(BuildContext context) async {
+  await fbAuth.login(
+      permissions: ['public_profile', 'email', "name"],
+      loginBehavior: LoginBehavior.dialogOnly).then((value) {
+    switch (value.status) {
+      case LoginStatus.success:
+        auth
+            .signInWithCustomToken(value.accessToken!.token)
+            .then((results) async {
+          if (results.user != null) {
+            await FirebaseMessaging.instance.getToken().then((val) {
+              currentUser.value.deviceToken = val.toString();
+            });
+            currentUser.value.email = results.user!.email;
+            currentUser.value.uid = results.user!.uid;
+            currentUser.value.name = results.user!.displayName;
+            currentUser.value.images = [results.user!.photoURL!];
+            currentUser.notifyListeners();
+            Helper.hideLoader(loader);
+            Navigator.pushReplacementNamed(context, "/TermsAndCondition",
+                arguments: false);
+          } else {
+            Helper.hideLoader(loader);
+            showSnackBar(context, "Verification Failer", true);
+          }
+          var newUser = await getUser(results.user!.uid);
+          if (newUser != null) {
+            currentUser.value = newUser;
+            updateUserStatus(FirebaseAuth.instance.currentUser!.uid, "active");
+            currentUser.notifyListeners();
+          } else {
+            currentUser.value.uid = results.user!.uid;
+            registerUser(currentUser.value);
+            currentUser.notifyListeners();
+          }
+        });
+        break;
+      case LoginStatus.cancelled:
+        showSnackBar(context, "Facebook login cancelled", true);
+        break;
+      case LoginStatus.failed:
+        showSnackBar(context, "Facebook login failed", true);
+        break;
+      case LoginStatus.operationInProgress:
+        showSnackBar(
+            context, "Facebook login in progress please wait...", false);
+        break;
+    }
+  });
+}
+
 void logOut(context) {
   Overlay.of(context)!.insert(loader);
   auth.signOut();
+  fbAuth.logOut();
+  googleSignIn.signOut();
   currentUser.value = userModel.User();
   Helper.hideLoader(loader);
   Navigator.pushAndRemoveUntil(

@@ -25,7 +25,7 @@ class _ChatRoomsState extends StateMVC<ChatRooms> {
   _ChatRoomsState() : super(ChatController()) {
     _con = controller as ChatController;
   }
-  String activeCountry = "All";
+  List<String> activeCountry = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,9 +63,7 @@ class _ChatRoomsState extends StateMVC<ChatRooms> {
                 children: [
                   InkWell(
                     onTap: () {
-                      setState(() {
-                        activeCountry = "All";
-                      });
+                      setState(() => activeCountry = []);
                     },
                     child: Container(
                       margin: EdgeInsets.only(
@@ -76,7 +74,7 @@ class _ChatRoomsState extends StateMVC<ChatRooms> {
                           vertical: 5),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: activeCountry == "All"
+                        color: activeCountry.isEmpty
                             ? Colors.red
                             : Theme.of(context).accentColor,
                       ),
@@ -96,9 +94,14 @@ class _ChatRoomsState extends StateMVC<ChatRooms> {
                       itemCount: countries.length,
                       itemBuilder: (BuildContext context, int index) {
                         var country = countries[index];
-                        return countryItemWidget(context, country, () {
-                          setState(() => activeCountry = country.name!);
-                        }, activeCountry);
+                        return countryItemWidget(
+                            context,
+                            country,
+                            () => setState(() =>
+                                activeCountry.contains(country.name)
+                                    ? activeCountry.remove(country.name!)
+                                    : activeCountry.add(country.name!)),
+                            activeCountry);
                       },
                     ),
                   ),
@@ -108,7 +111,7 @@ class _ChatRoomsState extends StateMVC<ChatRooms> {
           ),
           SizedBox(height: 20),
           StreamBuilder(
-            stream: activeCountry == "All"
+            stream: activeCountry.isEmpty
                 ? _con.firebaseFirestore
                     .collection(_con.chatRoomCollection)
                     .where('involes', arrayContains: currentUser.value.uid)
@@ -117,7 +120,7 @@ class _ChatRoomsState extends StateMVC<ChatRooms> {
                 : _con.firebaseFirestore
                     .collection(_con.chatRoomCollection)
                     .where('involes', arrayContains: currentUser.value.uid)
-                    .where("country", isEqualTo: activeCountry)
+                    .where("country", whereIn: activeCountry)
                     .orderBy("lastUpdated", descending: true)
                     .snapshots(),
             builder: (BuildContext context,

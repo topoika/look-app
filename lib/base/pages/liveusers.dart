@@ -29,7 +29,7 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
     _con = controller as LiveStreamController;
   }
   bool recharge = false;
-  String activeCountry = "All";
+  List<String> activeCountry = [];
 
   @override
   Widget build(BuildContext context) {
@@ -80,9 +80,7 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
                       children: [
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              activeCountry = "All";
-                            });
+                            setState(() => activeCountry = []);
                           },
                           child: Container(
                             margin: EdgeInsets.only(
@@ -92,7 +90,7 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
                                 vertical: 5),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
-                              color: activeCountry == "All"
+                              color: activeCountry.isEmpty
                                   ? Colors.red
                                   : Theme.of(context).accentColor,
                             ),
@@ -112,9 +110,14 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
                             itemCount: countries.length,
                             itemBuilder: (BuildContext context, int index) {
                               var country = countries[index];
-                              return countryItemWidget(context, country, () {
-                                setState(() => activeCountry = country.name!);
-                              }, activeCountry);
+                              return countryItemWidget(
+                                  context,
+                                  country,
+                                  () => setState(() =>
+                                      activeCountry.contains(country.name)
+                                          ? activeCountry.remove(country.name!)
+                                          : activeCountry.add(country.name!)),
+                                  activeCountry);
                             },
                           ),
                         ),
@@ -148,7 +151,7 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
           width: getHorizontal(context) * 1,
           height: getVertical(context) * 0.95,
           child: StreamBuilder(
-            stream: activeCountry == "All"
+            stream: activeCountry.isEmpty
                 ? FirebaseFirestore.instance
                     .collection("liveStreams")
                     .where(
@@ -162,7 +165,7 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
                       'hostId',
                       isNotEqualTo: FirebaseAuth.instance.currentUser!.uid,
                     )
-                    .where("country", isEqualTo: activeCountry)
+                    .where("country", whereIn: activeCountry)
                     .snapshots(),
             builder: (BuildContext context,
                 AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
@@ -379,7 +382,7 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
       width: getHorizontal(context) * 0.98,
       height: getVertical(context) * 0.9,
       child: StreamBuilder(
-          stream: activeCountry == "All"
+          stream: activeCountry.isEmpty
               ? FirebaseFirestore.instance
                   .collection("liveStreams")
                   .where(
@@ -393,7 +396,7 @@ class _LiveUsersState extends StateMVC<LiveUsers> {
                     'hostId',
                     isNotEqualTo: FirebaseAuth.instance.currentUser!.uid,
                   )
-                  .where("country", isEqualTo: activeCountry)
+                  .where("country", whereIn: activeCountry)
                   .snapshots(),
           builder: (BuildContext context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {

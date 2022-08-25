@@ -3,7 +3,7 @@ import 'package:look/base/Helper/dimension.dart';
 import 'package:look/base/Helper/strings.dart';
 import 'package:look/base/pages/payment_success.dart';
 import 'package:look/base/repositories/user_repository.dart';
-import 'package:look/constant/theme.dart';
+import 'package:look/base/Helper/theme.dart';
 import 'package:look/base/pages/bigevent.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:url_launcher/url_launcher.dart';

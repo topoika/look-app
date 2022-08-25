@@ -24,6 +24,7 @@ dependencies:
   firebase_storage: ^10.1.0
   flutter:
     sdk: flutter
+  flutter_facebook_auth: ^4.4.1
   flutter_local_notifications: ^9.5.3
   flutter_localizations:
     sdk: flutter

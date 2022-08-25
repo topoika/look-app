@@ -39,4 +39,6 @@ class UserController extends ControllerMVC {
         .doc(user.uid)
         .update({"videoRate": user.videoRate, "smsRate": user.smsRate});
   }
+
+  
 }
