@@ -117,6 +117,10 @@ class _ModifyInterestsState extends State<ModifyInterests> {
                   behavior: SnackBarBehavior.floating,
                   content: const Text('your choices are saved'),
                   backgroundColor: (Colors.greenAccent),
+                  onVisible: () {
+                    setState(() {});
+                  },
+                  dismissDirection: DismissDirection.endToStart,
                   action: SnackBarAction(
                     label: 'dismiss',
                     onPressed: () {},
@@ -125,6 +129,7 @@ class _ModifyInterestsState extends State<ModifyInterests> {
                 currentUser.notifyListeners();
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 Navigator.pop(context);
+                setState(() {});
               }, S.of(context).continue_text),
             )
           ],

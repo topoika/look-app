@@ -20,6 +20,6 @@ void showToast(String text) {
     msg: text,
     toastLength: Toast.LENGTH_LONG,
     gravity: ToastGravity.BOTTOM,
-    timeInSecForIosWeb: 5,
+    timeInSecForIosWeb: 2,
   );
 }

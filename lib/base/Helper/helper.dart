@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 import 'package:look/base/repositories/user_repository.dart';
@@ -66,6 +67,7 @@ Future<bool> isConnection() async {
 bool eligibleOfSendingPoints(int points) {
   return currentUser.value.points! > points;
 }
+
 String? getDateFormatedFromString(String date, String type) {
   if (type == "time") {
     return DateFormat.jm().format(DateTime.parse(date)).toString();
@@ -73,6 +75,17 @@ String? getDateFormatedFromString(String date, String type) {
     return DateFormat.yMMMMd('en_US').format(DateTime.parse(date)).toString();
   }
   return null;
+}
+
+void showCustomToast(String message) {
+  Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.TOP,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.black,
+      textColor: Colors.white,
+      fontSize: 16.0);
 }
 
 String? getTimeDifference(String time) {

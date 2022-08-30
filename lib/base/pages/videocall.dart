@@ -371,7 +371,7 @@ class _VideoCallsState extends StateMVC<VideoCalls> {
                               ),
                               SizedBox(width: getHorizontal(context) * 0.02),
                               SizedBox(
-                                width: getHorizontal(context) * 0.55,
+                                width: getHorizontal(context) * 0.52,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment:
@@ -398,11 +398,11 @@ class _VideoCallsState extends StateMVC<VideoCalls> {
                                 children: <Widget>[
                                   Text(
                                     getTimeDifference(_user.dob!)!,
-                                    style: mainStyle(Colors.black45, 0.029),
+                                    style: mainStyle(Colors.black45, 0.023),
                                   ),
                                   Text(
                                     "5Km",
-                                    style: mainStyle(Colors.redAccent, 0.029),
+                                    style: mainStyle(Colors.redAccent, 0.024),
                                   ),
                                 ],
                               ),

@@ -54,16 +54,16 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     final isClosed = state == AppLifecycleState.detached;
     final isScreen = state == AppLifecycleState.resumed;
     final inactive = state == AppLifecycleState.inactive;
-    if (isScreen) {
+    if (isScreen && FirebaseAuth.instance.currentUser != null) {
       updateUserStatus(FirebaseAuth.instance.currentUser!.uid, "active");
     }
-    if (isClosed) {
+    if (isClosed && FirebaseAuth.instance.currentUser != null) {
       updateUserStatus(FirebaseAuth.instance.currentUser!.uid, "offline");
     }
-    if (isBg) {
+    if (isBg && FirebaseAuth.instance.currentUser != null) {
       updateUserStatus(FirebaseAuth.instance.currentUser!.uid, "offline");
     }
-    if (inactive) {
+    if (inactive && FirebaseAuth.instance.currentUser != null) {
       updateUserStatus(FirebaseAuth.instance.currentUser!.uid, "offline");
     }
   }

@@ -57,7 +57,9 @@ Future<userModel.User?> getUser(String id) async {
   });
 }
 
-Future<userModel.User> registerUser(userModel.User user) async {
+Future<userModel.User> registerUser(
+    BuildContext context, userModel.User user) async {
+  Overlay.of(context)!.insert(loader);
   await _firestore
       .collection(userCollection)
       .doc(user.uid)
@@ -68,6 +70,7 @@ Future<userModel.User> registerUser(userModel.User user) async {
           .get()
           .then((value) => userModel.User.fromMap(value.data())));
   currentUser.notifyListeners();
+  Helper.hideLoader(loader);
   return currentUser.value;
 }
 
@@ -144,7 +147,7 @@ Future verifyPhone(
       currentUser.notifyListeners();
     } else {
       currentUser.value.uid = value.user!.uid;
-      registerUser(currentUser.value);
+      registerUser( context, currentUser.value);
     }
     await FirebaseMessaging.instance.getToken().then((value) {
       currentUser.value.deviceToken = value.toString();
@@ -154,6 +157,7 @@ Future verifyPhone(
 }
 
 void signInWithGoogle(BuildContext context) async {
+  showCustomToast("Please wait...");
   try {
     GoogleSignInAccount? account = await googleSignIn.signIn();
     GoogleSignInAuthentication gSA = await account!.authentication;
@@ -166,6 +170,7 @@ void signInWithGoogle(BuildContext context) async {
         });
         currentUser.value.email = value.user!.email;
         currentUser.value.uid = value.user!.uid;
+
         currentUser.value.name = value.user!.displayName;
         currentUser.value.images = [value.user!.photoURL!];
         currentUser.notifyListeners();
@@ -184,7 +189,7 @@ void signInWithGoogle(BuildContext context) async {
         currentUser.notifyListeners();
       } else {
         currentUser.value.uid = value.user!.uid;
-        registerUser(currentUser.value);
+        registerUser(context,currentUser.value);
         currentUser.notifyListeners();
       }
     });
@@ -195,6 +200,7 @@ void signInWithGoogle(BuildContext context) async {
 }
 
 void signInWithFacebook(BuildContext context) async {
+  showCustomToast("Please wait...");
   await fbAuth.login(
       permissions: ['public_profile', 'email', "name"],
       loginBehavior: LoginBehavior.dialogOnly).then((value) {
@@ -226,7 +232,7 @@ void signInWithFacebook(BuildContext context) async {
             currentUser.notifyListeners();
           } else {
             currentUser.value.uid = results.user!.uid;
-            registerUser(currentUser.value);
+            registerUser(context,currentUser.value);
             currentUser.notifyListeners();
           }
         });
@@ -259,7 +265,9 @@ void logOut(context) {
 }
 
 Future<userModel.User> uploadProfilePictures(
-    List<File> photos, userModel.User user) async {
+    BuildContext context, List<File> photos, userModel.User user) async {
+  showCustomToast("Please wait uploading images");
+  Overlay.of(context)!.insert(loader);
   for (var photo in photos) {
     UploadTask uploadTask = storage
         .ref()
@@ -273,7 +281,34 @@ Future<userModel.User> uploadProfilePictures(
       });
     });
   }
+  Helper.hideLoader(loader);
   return updateUser(currentUser.value);
+}
+
+void deleteUsers() async {
+  List valid = [
+    "u1Df8XRK5Yaw2mfarL5GVaUnAAp2",
+    "vU4sd9f8t4X8kAw7QqoInI0yc8U2",
+    "oFY3SgozFkRDTIt66SKTmHWd2P43",
+    "ndSmOD1Mc2ckl3eoD2dcXj4HMJG2",
+    "kt7VMyDMeBP7UgVnD5pLKCy06PF3",
+    "ZUbvFgHnN6Mu8kSyHSmR1PAGzOq1",
+    "XmoMqTHVU4QmJXhjSr6ryxehAwh1",
+    "WFWjI7j6EZXYZrlKyGnmEAcoT9t1",
+    "TuamVJRklDUkSIbvrdjwH8AeUPm1",
+    "Sd4JyI5DaJeyjAYoxHZx7Dn7zn12",
+    "RcmOnRNsYqU2TQaqZIWV21bS3P22",
+    "Lzrz7uPd6seKyl2E6hQ5i4MNv9f2",
+    "IBmlF0RfFBd95bu3ta2JMvpXd9n1",
+    "GFx2XendFXaWM3EfUQZMSNDRCjl2"
+  ];
+  _firestore.collection(userCollection).get().then((value) {
+    for (DocumentSnapshot dc in value.docs) {
+      if (!valid.contains(dc.reference.id)) {
+        dc.reference.delete();
+      }
+    }
+  });
 }
 
 void deleteImage(BuildContext context) async {

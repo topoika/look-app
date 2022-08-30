@@ -89,7 +89,7 @@ class User {
       'interests': interests ?? [],
       'images': images,
       'active': active ?? "online",
-      'globalMode': globalMode ?? false,
+      'globalMode': globalMode ?? true,
       'videoCallsAvailable': videoCallsAvailable ?? false,
     };
   }

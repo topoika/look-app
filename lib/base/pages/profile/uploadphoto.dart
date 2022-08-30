@@ -62,28 +62,38 @@ class _UploadPhotoState extends State<UploadPhoto> {
                   onTap: () {
                     chooseFile();
                   },
-                  child: _images.length < 1
-                      ? Container(
-                          padding: const EdgeInsets.all(10),
-                          width: getHorizontal(context) * 0.35,
-                          height: getVertical(context) * 0.18,
-                          decoration: BoxDecoration(
-                            color: theme().lightmC,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            Icons.add_a_photo,
-                            size: getHorizontal(context) * 0.26,
-                            color: Colors.white,
-                          ),
-                        )
-                      : SizedBox(
+                  child: currentUser.value.images != null &&
+                          currentUser.value.images!.length > 0
+                      ? SizedBox(
                           width: getHorizontal(context) * 0.35,
                           height: getVertical(context) * 0.18,
                           child: CircleAvatar(
-                            backgroundImage: FileImage(_images[0]),
+                            backgroundImage:
+                                NetworkImage(currentUser.value.images![0]),
                           ),
-                        ),
+                        )
+                      : _images.length < 1
+                          ? Container(
+                              padding: const EdgeInsets.all(10),
+                              width: getHorizontal(context) * 0.35,
+                              height: getVertical(context) * 0.18,
+                              decoration: BoxDecoration(
+                                color: theme().lightmC,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                Icons.add_a_photo,
+                                size: getHorizontal(context) * 0.26,
+                                color: Colors.white,
+                              ),
+                            )
+                          : SizedBox(
+                              width: getHorizontal(context) * 0.35,
+                              height: getVertical(context) * 0.18,
+                              child: CircleAvatar(
+                                backgroundImage: FileImage(_images[0]),
+                              ),
+                            ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(
@@ -214,10 +224,11 @@ class _UploadPhotoState extends State<UploadPhoto> {
                     currentUser.value.dob = _selectedDate;
                     currentUser.value.age =
                         int.parse((dur.inDays / 365).floor().toString());
-                    registerUser(currentUser.value).then((value) {
+                    registerUser(context, currentUser.value).then((value) {
                       setState(() {
                         currentUser.value = value;
                         uploadProfilePictures(
+                          context,
                           _images,
                           value,
                         );

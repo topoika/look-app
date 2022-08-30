@@ -40,7 +40,7 @@ Widget socialLoginButton(
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(
           vertical: 10, horizontal: getHorizontal(context) * 0.04),
-      margin: EdgeInsets.symmetric(vertical: 15),
+      margin: EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.circular(30),

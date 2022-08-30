@@ -161,13 +161,16 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                 ),
                 divider(1),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: getHorizontal(context) * 0.05,
-                      vertical: getVertical(context) * 0.01),
-                  child: Text(
-                    S.of(context).interests,
-                    style: _textStyle(true),
+                InkWell(
+                  onTap: () => Navigator.pushNamed(context, "/ModifyInterests"),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: getHorizontal(context) * 0.05,
+                        vertical: getVertical(context) * 0.01),
+                    child: Text(
+                      S.of(context).interests,
+                      style: _textStyle(true),
+                    ),
                   ),
                 ),
                 divider(1),
@@ -176,9 +179,8 @@ class _EditProfileState extends State<EditProfile> {
                       horizontal: getHorizontal(context) * 0.05,
                       vertical: getVertical(context) * 0.01),
                   child: InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(context, "/ModifyInterests");
-                    },
+                    onTap: () =>
+                        Navigator.pushNamed(context, "/ModifyInterests"),
                     child: currentUser.value.interests != null
                         ? Container(
                             child: Wrap(
@@ -270,10 +272,11 @@ class _EditProfileState extends State<EditProfile> {
                     if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
                       currentUser.notifyListeners();
-                      uploadProfilePictures(_images, currentUser.value);
+                      uploadProfilePictures(
+                          context, _images, currentUser.value);
                       updateUser(currentUser.value);
                       showToast("Uploading images...");
-                      await Future.delayed(Duration(seconds: 7)).then((value) =>
+                      await Future.delayed(Duration(seconds: 5)).then((value) =>
                           Navigator.pushReplacementNamed(
                               context, "/MyProfile"));
                     }
