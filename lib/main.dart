@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
     SettingController().initiateSettings();
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     if (FirebaseAuth.instance.currentUser != null) {
       getUser(FirebaseAuth.instance.currentUser!.uid);
       updateUserStatus(FirebaseAuth.instance.currentUser!.uid, "active");
@@ -70,7 +70,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     updateUserStatus(FirebaseAuth.instance.currentUser!.uid, "offline");
     super.dispose();
   }
