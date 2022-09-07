@@ -71,7 +71,6 @@ class _LiveClassState extends StateMVC<LiveClass> {
     _engine!.setEventHandler(
       RtcEngineEventHandler(
           joinChannelSuccess: (String channel, int uid, int elapsed) {
-            log("onchanneljoin : $channel , uid: $uid");
             if (isHost) {
               _con.updateStreamHostUid(liveStream, uid);
               _con.addActivity(context, "joined", " has started live",
@@ -110,9 +109,12 @@ class _LiveClassState extends StateMVC<LiveClass> {
           }),
     );
     await _engine!
-        .joinChannel(liveStream.token, liveStream.title ?? "", null, 0)
+        .joinChannel(liveStream.token, liveStream.title.toString(), null, 0)
         .then((value) => log("Joined"))
         .onError((error, stackTrace) {
+      log("${liveStream.token} name : ${liveStream.title.toString()}");
+      log(error.toString());
+      Navigator.pop(context);
       Navigator.pop(context);
       showSnackBar(
           context, "Unable to create livestream, Please try again", true);
